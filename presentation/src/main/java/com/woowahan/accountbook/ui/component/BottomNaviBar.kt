@@ -1,42 +1,57 @@
 package com.woowahan.accountbook.ui.component
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.runtime.getValue
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.woowahan.accountbook.R
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.woowahan.accountbook.ui.main.BottomNavItem
 import com.woowahan.accountbook.ui.theme.OffWhite
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.accountbook.ui.theme.White
+import com.woowahan.accountbook.ui.theme.White50
 
-@Preview
 @Composable
-fun BottomNaviBar() {
+fun BottomNaviBar(navController: NavController) {
     val items = arrayOf(
-        Pair(R.drawable.ic_document_list, "내역"),
-        Pair(R.drawable.ic_calendar_month, "달력"),
-        Pair(R.drawable.ic_graph, "통계"),
-        Pair(R.drawable.ic_settings, "설정")
+        BottomNavItem.ItemList,
+        BottomNavItem.Calendar,
+        BottomNavItem.Analysis,
+        BottomNavItem.Settings
     )
 
     BottomNavigation(
         backgroundColor = Purple,
         contentColor = OffWhite,
     ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+
         items.forEachIndexed { index, item ->
             BottomNavigationItem(
-                icon = { Icon(painterResource(id = item.first), contentDescription = null) },
-                label = { Text(item.second) },
-                onClick = { },
-                selected = false
+                icon = {
+                    Icon(
+                        painter = painterResource(id = item.icon),
+                        contentDescription = item.title
+                    )
+                },
+                label = { Text(item.title) },
+                onClick = {
+                    navController.navigate(item.screenRoute) {
+                        navController.graph.startDestinationRoute?.let {
+                            popUpTo(it) { saveState = true }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                selectedContentColor = White,
+                unselectedContentColor = White50,
+                selected = currentRoute == item.screenRoute
             )
         }
     }
