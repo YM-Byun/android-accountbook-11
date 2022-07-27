@@ -8,12 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.woowahan.accountbook.R
-import com.woowahan.accountbook.ui.component.AccountBookTopAppBar
+import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.theme.AccountBookTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Scaffold(
                         topBar = {
-                            AccountBookTopAppBar(
+                            TopAppBar(
                                 title = "Good",
                                 btn1Image = R.drawable.ic_left,
                                 btn1OnClick = {
@@ -53,7 +52,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     AccountBookTheme {
-        AccountBookTopAppBar(
+        TopAppBar(
             title = "Good",
             btn1Image = R.drawable.ic_left,
             btn1OnClick = {},
