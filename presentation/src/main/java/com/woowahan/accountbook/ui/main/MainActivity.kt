@@ -19,7 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.woowahan.accountbook.ui.analysis.AnalysisScreen
 import com.woowahan.accountbook.ui.calendar.CalendarScreen
 import com.woowahan.accountbook.ui.component.BottomNaviBar
-import com.woowahan.accountbook.ui.itemList.ItemListScreen
+import com.woowahan.accountbook.ui.itemList.RecordListScreen
 import com.woowahan.accountbook.ui.settings.SettingsScreen
 import com.woowahan.accountbook.ui.theme.AccountBookTheme
 
@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
             startDestination = BottomNavItem.ItemList.screenRoute
         ) {
             composable(BottomNavItem.ItemList.screenRoute) {
-                ItemListScreen(viewModel)
+                RecordListScreen(viewModel)
             }
             composable(BottomNavItem.Calendar.screenRoute) {
                 CalendarScreen(viewModel)
