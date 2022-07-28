@@ -73,7 +73,7 @@ fun SettingsItemWithCategory(
                 text = text,
                 color = Purple,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = 14.sp
             )
             Spacer(modifier = Modifier.weight(1f))
             RoundText(text = category, color = Yellow4)
@@ -104,7 +104,7 @@ fun SettingsItemWithNoCategory(
                 text = text,
                 color = Purple,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = 14.sp
             )
         }
         Spacer(modifier = Modifier.height(13.dp))
@@ -131,7 +131,7 @@ fun SettingsAddItem(text: String, onClick: () -> Unit) {
                 text = text,
                 color = Purple,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = 14.sp
             )
 
             Spacer(modifier = Modifier.weight(1f))
