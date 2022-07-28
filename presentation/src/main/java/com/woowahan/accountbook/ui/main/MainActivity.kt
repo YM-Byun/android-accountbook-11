@@ -11,6 +11,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -20,13 +22,16 @@ import androidx.navigation.compose.rememberNavController
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.BottomNaviBar
 import com.woowahan.accountbook.ui.component.TopAppBar
+import com.woowahan.accountbook.ui.settings.SettingsScreen
 import com.woowahan.accountbook.ui.theme.AccountBookTheme
 
 class MainActivity : ComponentActivity() {
+    private val viewModel = MainViewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen()
+            MainScreen(viewModel)
         }
     }
 
@@ -34,7 +39,7 @@ class MainActivity : ComponentActivity() {
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
-        MainScreen()
+        MainScreen(viewModel)
     }
 
     @Composable
@@ -59,8 +64,9 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun MainScreen() {
+    private fun MainScreen(viewModel: MainViewModel) {
         val navController = rememberNavController()
+        val title: String by viewModel.currentScreen.observeAsState("")
 
         AccountBookTheme {
             // A surface container using the 'background' color from the theme
@@ -71,14 +77,14 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            title = "Good",
+                            title = title,
                             btn1Image = R.drawable.ic_left,
                             btn1OnClick = {
-                                Toast.makeText(this, "btn1", Toast.LENGTH_SHORT).show()
+                                viewModel.onScreenChange("prev")
                             },
                             btn2Image = R.drawable.ic_right,
                             btn2OnClick = {
-                                Toast.makeText(this, "btn2", Toast.LENGTH_SHORT).show()
+                                viewModel.onScreenChange("next")
                             }
                         )
                     },
