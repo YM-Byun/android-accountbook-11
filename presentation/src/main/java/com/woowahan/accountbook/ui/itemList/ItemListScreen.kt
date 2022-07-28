@@ -22,7 +22,7 @@ import com.woowahan.accountbook.ui.theme.Pink4
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.accountbook.ui.theme.Red
 import com.woowahan.accountbook.ui.theme.Yellow4
-import com.woowahan.domain.model.Item
+import com.woowahan.domain.model.RecordItem
 
 @Composable
 fun ItemListScreen(viewModel: MainViewModel) {
@@ -115,11 +115,11 @@ fun RecordItem(
     }
 }
 
-fun getDummy(): ArrayList<Item> {
-    val list = ArrayList<Item>()
+fun getDummy(): ArrayList<RecordItem> {
+    val list = ArrayList<RecordItem>()
 
     for (i in 0..10) {
-        val dummy = Item("type", "title", "payment", "-10,000")
+        val dummy = RecordItem("type", "title", "payment", "-10,000")
         list.add(dummy)
     }
     return list
