@@ -3,28 +3,53 @@ package com.woowahan.accountbook.ui.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import com.woowahan.accountbook.R
+import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.theme.Yellow1
 import com.woowahan.accountbook.ui.theme.Yellow4
 
 @Composable
-fun AnalysisScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Yellow4)
+fun AnalysisScreen(viewModel: MainViewModel) {
+    val title by viewModel.currentScreen.observeAsState("")
+    
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = title,
+                btn1Image = R.drawable.ic_left,
+                btn1OnClick = {
+                    viewModel.onScreenChange("prev")
+                },
+                btn2Image = R.drawable.ic_right,
+                btn2OnClick = {
+                    viewModel.onScreenChange("next")
+                }
+            )
+        }
     ) {
-        Text(
-            text = "Analysis",
-            style = MaterialTheme.typography.h1,
-            textAlign = TextAlign.Center,
-            color = Yellow1,
-            modifier = Modifier.align(alignment = Alignment.Center)
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Yellow4)
+                .padding(it)
+        ) {
+            Text(
+                text = "Analysis",
+                style = MaterialTheme.typography.h1,
+                textAlign = TextAlign.Center,
+                color = Yellow1,
+                modifier = Modifier.align(alignment = Alignment.Center)
+            )
+        }
     }
 }

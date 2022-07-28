@@ -3,6 +3,7 @@ package com.woowahan.accountbook.ui.component
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,9 +16,9 @@ import com.woowahan.accountbook.ui.theme.Purple
 @Composable
 fun TopAppBar(
     title: String,
-    btn1Image: Int,
+    btn1Image: Int?,
     btn1OnClick: () -> Unit,
-    btn2Image: Int,
+    btn2Image: Int?,
     btn2OnClick: () -> Unit
 ) {
     TopAppBar(
@@ -32,17 +33,19 @@ fun TopAppBar(
                 Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
-                    modifier = Modifier
-                        .width(24.dp)
-                        .height(24.dp),
-                    onClick = btn1OnClick,
-                    enabled = true,
-                ) {
-                    Icon(
-                        painter = painterResource(id = btn1Image),
-                        contentDescription = "Back",
-                    )
+                btn1Image?.let {
+                    IconButton(
+                        modifier = Modifier
+                            .width(24.dp)
+                            .height(24.dp),
+                        onClick = btn1OnClick,
+                        enabled = true,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = btn1Image),
+                            contentDescription = "Back",
+                        )
+                    }
                 }
             }
             Row(
@@ -64,17 +67,19 @@ fun TopAppBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {
-                IconButton(
-                    modifier = Modifier
-                        .width(24.dp)
-                        .height(24.dp),
-                    onClick = btn2OnClick,
-                    enabled = true,
-                ) {
-                    Icon(
-                        painter = painterResource(id = btn2Image),
-                        contentDescription = "btn2",
-                    )
+                btn2Image?.let {
+                    IconButton(
+                        modifier = Modifier
+                            .width(24.dp)
+                            .height(24.dp),
+                        onClick = btn2OnClick,
+                        enabled = true,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = btn2Image),
+                            contentDescription = "btn2",
+                        )
+                    }
                 }
             }
 

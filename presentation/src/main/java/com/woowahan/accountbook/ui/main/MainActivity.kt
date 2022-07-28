@@ -1,7 +1,6 @@
 package com.woowahan.accountbook.ui.main
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -12,6 +11,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,16 +49,16 @@ class MainActivity : ComponentActivity() {
             startDestination = BottomNavItem.ItemList.screenRoute
         ) {
             composable(BottomNavItem.ItemList.screenRoute) {
-                ItemListScreen()
+                ItemListScreen(viewModel)
             }
             composable(BottomNavItem.Calendar.screenRoute) {
-                CalendarScreen()
+                CalendarScreen(viewModel)
             }
             composable(BottomNavItem.Analysis.screenRoute) {
-                AnalysisScreen()
+                AnalysisScreen(viewModel)
             }
             composable(BottomNavItem.Settings.screenRoute) {
-                SettingsScreen()
+                SettingsScreen(viewModel)
             }
         }
     }
@@ -66,7 +66,6 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun MainScreen(viewModel: MainViewModel) {
         val navController = rememberNavController()
-        val title: String by viewModel.currentScreen.observeAsState("")
 
         AccountBookTheme {
             // A surface container using the 'background' color from the theme
@@ -75,19 +74,6 @@ class MainActivity : ComponentActivity() {
                 color = MaterialTheme.colors.background
             ) {
                 Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = title,
-                            btn1Image = R.drawable.ic_left,
-                            btn1OnClick = {
-                                viewModel.onScreenChange("prev")
-                            },
-                            btn2Image = R.drawable.ic_right,
-                            btn2OnClick = {
-                                viewModel.onScreenChange("next")
-                            }
-                        )
-                    },
                     bottomBar = {
                         BottomNaviBar(navController)
                     }

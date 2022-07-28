@@ -1,22 +1,22 @@
 package com.woowahan.accountbook.ui.main
 
-import android.graphics.Paint
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.woowahan.accountbook.R
+import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.theme.Pink4
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.accountbook.ui.theme.Red
@@ -24,15 +24,34 @@ import com.woowahan.accountbook.ui.theme.Yellow4
 import com.woowahan.domain.model.Item
 
 @Composable
-fun ItemListScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Pink4)
-    ) {
-        val dummies = getDummy()
-        LazyColumn() {
+fun ItemListScreen(viewModel: MainViewModel) {
+    val title = viewModel.currentScreen.observeAsState("").value
 
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = title,
+                btn1Image = R.drawable.ic_left,
+                btn1OnClick = {
+                    viewModel.onScreenChange("prev")
+                },
+                btn2Image = R.drawable.ic_right,
+                btn2OnClick = {
+                    viewModel.onScreenChange("next")
+                }
+            )
+        },
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Pink4)
+                .padding(it)
+        ) {
+            val dummies = getDummy()
+            LazyColumn() {
+
+            }
         }
     }
 }
