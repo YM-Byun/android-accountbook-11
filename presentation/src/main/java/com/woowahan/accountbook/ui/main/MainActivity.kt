@@ -10,18 +10,16 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.woowahan.accountbook.R
+import com.woowahan.accountbook.ui.analysis.AnalysisScreen
+import com.woowahan.accountbook.ui.calendar.CalendarScreen
 import com.woowahan.accountbook.ui.component.BottomNaviBar
-import com.woowahan.accountbook.ui.component.TopAppBar
+import com.woowahan.accountbook.ui.itemList.ItemListScreen
 import com.woowahan.accountbook.ui.settings.SettingsScreen
 import com.woowahan.accountbook.ui.theme.AccountBookTheme
 

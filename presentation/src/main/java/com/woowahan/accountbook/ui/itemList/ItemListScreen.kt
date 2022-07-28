@@ -1,4 +1,4 @@
-package com.woowahan.accountbook.ui.main
+package com.woowahan.accountbook.ui.itemList
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.TopAppBar
+import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.theme.Pink4
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.accountbook.ui.theme.Red

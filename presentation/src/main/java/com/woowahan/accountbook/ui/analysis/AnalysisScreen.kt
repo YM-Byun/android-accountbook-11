@@ -1,4 +1,4 @@
-package com.woowahan.accountbook.ui.main
+package com.woowahan.accountbook.ui.analysis
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.TopAppBar
+import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.theme.Yellow1
 import com.woowahan.accountbook.ui.theme.Yellow4
 
