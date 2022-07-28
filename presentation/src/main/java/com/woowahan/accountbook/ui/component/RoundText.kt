@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 fun RoundText(text: String, color: Color) {
     Text(
         modifier = Modifier
-            .width(56.dp)
+            .width(70.dp)
             .clip(CircleShape)
             .background(color)
             .padding(10.dp, 5.dp, 10.dp, 5.dp),
