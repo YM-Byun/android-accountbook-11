@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +24,7 @@ fun RoundText(text: String, color: Color) {
             .padding(10.dp, 5.dp, 10.dp, 5.dp),
         text = text,
         textAlign = TextAlign.Center,
+        fontWeight = FontWeight.Bold,
         fontSize = 10.sp
     )
 }
