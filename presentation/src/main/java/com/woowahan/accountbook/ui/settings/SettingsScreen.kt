@@ -1,21 +1,27 @@
 package com.woowahan.accountbook.ui.settings
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import com.woowahan.accountbook.ui.component.TopAppBar
-import com.woowahan.accountbook.ui.main.MainViewModel
-import com.woowahan.accountbook.ui.settings.SettingsItemWithCategory
-import com.woowahan.accountbook.ui.theme.Blue1
-import com.woowahan.accountbook.ui.theme.Blue4
+import com.woowahan.domain.model.Category
+import com.woowahan.domain.model.Payment
 
 @Composable
-fun SettingsScreen(viewModel: MainViewModel) {
+fun SettingsScreen(context: Context) {
+    val viewModel = SettingsViewModel()
+    val payments: List<Payment> = viewModel.payments.observeAsState().value!!
+    val spending: List<Category> = viewModel.spending.observeAsState().value!!
+    val income: List<Category> = viewModel.income.observeAsState().value!!
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -31,9 +37,50 @@ fun SettingsScreen(viewModel: MainViewModel) {
                 .fillMaxSize()
                 .padding(it)
         ) {
-            LazyColumn() {
-                itemsIndexed(listOf("test1", "test2", "test3")) { index, item ->
-                    SettingsItemWithCategory(text = item, category = item)
+            LazyColumn {
+                item {
+                    SettingsHeader(header = "결제수단")
+                }
+                items(
+                    items = payments,
+                    itemContent = {
+                        SettingsItemWithNoCategory(text = it.name)
+                    }
+                )
+                item {
+                    SettingsAddItem(text = "결제수단 추가하기") {
+                        Toast.makeText(context, "구현 예정", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                item {
+                    SettingsHeader(header = "지출 카테고리")
+                }
+                items(
+                    items = spending,
+                    itemContent = {
+                        SettingsItemWithCategory(it.name)
+                    }
+                )
+                item {
+                    SettingsAddItem(text = "지출 카테고리 추가하기") {
+                        Toast.makeText(context, "구현 예정", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                item {
+                    SettingsHeader(header = "수입 카테고리")
+                }
+                items(
+                    items = income,
+                    itemContent = {
+                        SettingsItemWithCategory(it.name)
+                    }
+                )
+                item {
+                    SettingsAddItem(text = "수입 카테고리 추가하기") {
+                        Toast.makeText(context, "구현 예정", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

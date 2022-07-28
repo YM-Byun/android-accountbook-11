@@ -1,10 +1,9 @@
 package com.woowahan.accountbook.ui.settings
 
-import android.widget.Space
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,7 +25,7 @@ import com.woowahan.accountbook.R
 fun preview() {
     Column() {
         SettingsHeader(header = "header")
-        SettingsItemWithCategory(text = "test", category = "testest")
+        SettingsItemWithCategory(category = "test")
         SettingsItemWithNoCategory(text = "text")
         SettingsAddItem(text = "test") {
         }
@@ -56,7 +55,6 @@ fun SettingsHeader(header: String) {
 
 @Composable
 fun SettingsItemWithCategory(
-    text: String,
     category: String
 ) {
     Column(
@@ -70,7 +68,7 @@ fun SettingsItemWithCategory(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = text,
+                text = category,
                 color = Purple,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
@@ -120,8 +118,9 @@ fun SettingsAddItem(text: String, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp, 10.dp, 10.dp, 0.dp),
-        verticalArrangement = Arrangement.Center
+            .padding(10.dp, 10.dp, 10.dp, 0.dp)
+            .clickable { onClick },
+        verticalArrangement = Arrangement.Center,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

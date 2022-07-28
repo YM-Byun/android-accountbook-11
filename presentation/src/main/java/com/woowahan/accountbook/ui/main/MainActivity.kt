@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                 AnalysisScreen(viewModel)
             }
             composable(BottomNavItem.Settings.screenRoute) {
-                SettingsScreen(viewModel)
+                SettingsScreen(context = this@MainActivity)
             }
         }
     }
