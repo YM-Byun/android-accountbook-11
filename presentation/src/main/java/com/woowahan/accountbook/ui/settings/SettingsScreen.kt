@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.domain.model.Category
@@ -17,7 +18,7 @@ import com.woowahan.domain.model.Payment
 
 @Composable
 fun SettingsScreen(context: Context) {
-    val viewModel = SettingsViewModel()
+    val viewModel = remember { SettingsViewModel() }
     val payments: List<Payment> = viewModel.payments.observeAsState().value!!
     val spending: List<Category> = viewModel.spending.observeAsState().value!!
     val income: List<Category> = viewModel.income.observeAsState().value!!
