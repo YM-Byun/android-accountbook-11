@@ -1,6 +1,5 @@
 package com.woowahan.accountbook.ui.itemList
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -38,6 +37,7 @@ fun RecordListScreen(viewModel: MainViewModel) {
                 }
             )
         },
+        floatingActionButton = { FloatingActionButton({}) }
     ) {
         Column(
             modifier = Modifier

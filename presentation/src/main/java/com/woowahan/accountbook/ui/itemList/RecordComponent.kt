@@ -9,10 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.theme.*
 
 @Composable
@@ -83,6 +87,26 @@ fun RecordItem(
                 .height(1.dp),
             color = LightPurple
         )
+    }
+}
+
+@Composable
+fun FloatingActionButton(
+    onClick: () -> Unit
+) {
+    Box() {
+        Button(
+            modifier = Modifier.size(56.dp),
+            onClick = onClick,
+            shape = RoundedCornerShape(28.dp),
+            colors = ButtonDefaults.buttonColors(Yellow)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_plus),
+                tint = White,
+                contentDescription = "plus button",
+            )
+        }
     }
 }
 
