@@ -19,14 +19,6 @@ class MainViewModel : ViewModel() {
     val currentScreen: LiveData<String>
         get() = _currentScreen
 
-    private val _leftBtnOnClick = MutableLiveData<(() -> Unit)>()
-    val leftBtnOnClick: LiveData<(() -> Unit)>
-        get() = _leftBtnOnClick
-
-    private val _rightBtnOnClick = MutableLiveData<(() -> Unit)>()
-    val rightBtnOnClick: LiveData<(() -> Unit)>
-        get() = _rightBtnOnClick
-
 
     fun onScreenChange(type: String) {
         when (type) {

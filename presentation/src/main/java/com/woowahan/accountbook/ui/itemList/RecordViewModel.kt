@@ -10,6 +10,9 @@ class RecordViewModel : ViewModel() {
     val records: LiveData<List<RecordItem>>
         get() = _records
 
+    val leftBtnOnClick = MutableLiveData(true)
+    val rightBtnOnClick = MutableLiveData(true)
+
     init {
         val list = ArrayList<RecordItem>()
 
