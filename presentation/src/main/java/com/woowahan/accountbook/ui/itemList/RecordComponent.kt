@@ -7,9 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -203,7 +201,9 @@ fun FilterButton(
 }
 
 @Composable
-fun InputTextItem(title: String, text: String) {
+fun InputTextItem(title: String) {
+    var text by remember { mutableStateOf("") }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -218,13 +218,14 @@ fun InputTextItem(title: String, text: String) {
         Spacer(modifier = Modifier.width(30.dp))
         BasicTextField(
             value = text,
-            onValueChange = {},
+            onValueChange = { text = it },
             decorationBox = {
                 if (text.isEmpty()) {
                     Text(
                         text = "선택하세요",
                         fontSize = 14.sp,
-                        color = LightPurple
+                        color = LightPurple,
+                        fontWeight = FontWeight.Normal
                     )
                 }
                 it()
@@ -312,7 +313,9 @@ fun InputSpinnerItem(
 
 
 @Composable
-fun InputPriceItem(title: String, text: String) {
+fun InputPriceItem(title: String) {
+    var text by remember { mutableStateOf("") }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -327,7 +330,7 @@ fun InputPriceItem(title: String, text: String) {
         Spacer(modifier = Modifier.width(30.dp))
         BasicTextField(
             value = text,
-            onValueChange = {},
+            onValueChange = { text = it },
             decorationBox = {
                 if (text.isEmpty()) {
                     Text(
