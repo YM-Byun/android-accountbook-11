@@ -94,7 +94,7 @@ fun SettingAddScreen(
             Spacer(modifier = Modifier.weight(1f))
             LargeButton(
                 modifier = Modifier.padding(16.dp),
-                enabled = true
+                enabled = viewModel.isValid()
             ) {
 
             }

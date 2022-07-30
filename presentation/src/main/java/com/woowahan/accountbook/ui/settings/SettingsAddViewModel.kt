@@ -26,4 +26,7 @@ class SettingsAddViewModel : ViewModel() {
         }
     }
 
+    fun isValid(): Boolean {
+        return name.value.isNotEmpty()
+    }
 }
