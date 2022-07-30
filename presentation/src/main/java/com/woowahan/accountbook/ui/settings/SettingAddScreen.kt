@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.HeaderTextView
+import com.woowahan.accountbook.ui.component.LargeButton
 import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.itemList.InputTextItem
@@ -48,6 +49,7 @@ fun SettingAddScreen() {
     ) {
         Column(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(it)
         ) {
             LazyColumn(
@@ -83,6 +85,14 @@ fun SettingAddScreen() {
                         )
                     }
                 }
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+            LargeButton(
+                modifier = Modifier.padding(16.dp),
+                enabled = true
+            ) {
+
             }
         }
     }
