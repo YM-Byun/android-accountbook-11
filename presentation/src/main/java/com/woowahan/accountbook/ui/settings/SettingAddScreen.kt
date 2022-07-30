@@ -26,11 +26,11 @@ import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.itemList.InputTextItem
 import com.woowahan.accountbook.ui.theme.*
 
-@Preview
 @Composable
-fun SettingAddScreen() {
+fun SettingAddScreen(
+    mode: String,
+) {
     var viewModel = remember { SettingsAddViewModel() }
-    val mode = "spending"
     val colors = viewModel.getColors(mode)
     var selectedColor by viewModel.selectedColorIdx
 
@@ -58,31 +58,35 @@ fun SettingAddScreen() {
                 item {
                     InputTextItem(title = "이름", content = viewModel.name)
                     LightDivider()
-                    Spacer(modifier = Modifier.height(10.dp))
-                    HeaderTextView(header = "색상")
-                    LightDivider()
-                    Spacer(modifier = Modifier.height(10.dp))
+                    if (mode != PAYMENTS) {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        HeaderTextView(header = "색상")
+                        LightDivider()
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
                 }
-                colorPalette(colors) {
-                    Box(
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clickable {
-                                selectedColor = colors.indexOf(it)
-                            }
-                    ) {
-                        val size = if (selectedColor == colors.indexOf(it)) {
-                            24
-                        } else {
-                            20
-                        }
-
-                        Spacer(
+                if (mode != PAYMENTS) {
+                    colorPalette(colors) {
+                        Box(
                             modifier = Modifier
-                                .align(Alignment.Center)
-                                .size(size.dp)
-                                .background(it)
-                        )
+                                .size(48.dp)
+                                .clickable {
+                                    selectedColor = colors.indexOf(it)
+                                }
+                        ) {
+                            val size = if (selectedColor == colors.indexOf(it)) {
+                                24
+                            } else {
+                                20
+                            }
+
+                            Spacer(
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .size(size.dp)
+                                    .background(it)
+                            )
+                        }
                     }
                 }
             }

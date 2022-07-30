@@ -19,7 +19,7 @@ class SettingsAddViewModel : ViewModel() {
     )
 
     fun getColors(mode: String): List<Color> {
-        return if (mode == "spending") {
+        return if (mode == SPENDING) {
             spendingColors
         } else {
             incomeColors
