@@ -1,14 +1,20 @@
 package com.woowahan.accountbook.ui.itemList
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -18,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.theme.*
+import com.woowahan.domain.model.Category
 
 @Composable
 fun RecordItem(
@@ -192,5 +199,185 @@ fun FilterButton(
                 fontSize = 12.sp
             )
         }
+    }
+}
+
+@Composable
+fun InputTextItem(title: String, text: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 7.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            fontSize = 14.sp,
+            color = Purple
+        )
+        Spacer(modifier = Modifier.width(30.dp))
+        BasicTextField(
+            value = text,
+            onValueChange = {},
+            decorationBox = {
+                if (text.isEmpty()) {
+                    Text(
+                        text = "선택하세요",
+                        fontSize = 14.sp,
+                        color = LightPurple
+                    )
+                }
+                it()
+            },
+            textStyle = LocalTextStyle.current.copy(
+                color = Purple,
+                fontWeight = FontWeight.Bold
+            )
+        )
+    }
+}
+
+@Composable
+fun InputSpinnerItem(
+    title: String,
+    list: List<String>
+) {
+    val isClicked = remember { mutableStateOf(false) }
+    val currentItem = remember { mutableStateOf(-1) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 7.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            fontSize = 14.sp,
+            color = Purple
+        )
+        Spacer(modifier = Modifier.width(30.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    isClicked.value = !(isClicked.value)
+                }
+        ) {
+            if (currentItem.value == -1) {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    text = "선택하세요",
+                    color = LightPurple,
+                    fontSize = 14.sp,
+                )
+            } else {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    text = list[currentItem.value],
+                    color = Purple,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Icon(
+                modifier = (if (isClicked.value) {
+                    Modifier.rotate(180F)
+                } else {
+                    Modifier.rotate(0F)
+                }).align(Alignment.CenterEnd),
+                painter = painterResource(id = R.drawable.ic_variant13),
+                contentDescription = "more",
+                tint = LightPurple,
+            )
+
+            DropdownMenu(
+                expanded = isClicked.value,
+                onDismissRequest = { isClicked.value = false }
+            ) {
+                list.forEach {
+                    DropdownMenuItem(onClick = {
+                        isClicked.value = false
+                        currentItem.value = list.indexOf(it)
+                    }) {
+                        Text(
+                            text = it
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun InputPriceItem(title: String, text: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 7.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            fontSize = 14.sp,
+            color = Purple
+        )
+        Spacer(modifier = Modifier.width(30.dp))
+        BasicTextField(
+            value = text,
+            onValueChange = {},
+            decorationBox = {
+                if (text.isEmpty()) {
+                    Text(
+                        text = "선택하세요",
+                        fontSize = 14.sp,
+                        color = LightPurple
+                    )
+                }
+                it()
+            },
+            textStyle = LocalTextStyle.current.copy(
+                color = Purple,
+                fontWeight = FontWeight.Bold
+            )
+        )
+    }
+}
+
+
+@Composable
+fun InputDateItem(title: String, text: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 7.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            fontSize = 14.sp,
+            color = Purple
+        )
+        Spacer(modifier = Modifier.width(30.dp))
+        BasicTextField(
+            value = text,
+            onValueChange = {},
+            decorationBox = {
+                if (text.isEmpty()) {
+                    Text(
+                        text = "선택하세요",
+                        fontSize = 14.sp,
+                        color = LightPurple
+                    )
+                }
+                it()
+            },
+            textStyle = LocalTextStyle.current.copy(
+                color = Purple,
+                fontWeight = FontWeight.Bold
+            )
+        )
     }
 }
