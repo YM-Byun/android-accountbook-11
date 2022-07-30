@@ -292,18 +292,24 @@ fun InputSpinnerItem(
                 tint = LightPurple,
             )
 
-            DropdownMenu(
-                expanded = isClicked.value,
-                onDismissRequest = { isClicked.value = false }
+            MaterialTheme(
+                shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(16.dp)),
             ) {
-                list.forEach {
-                    DropdownMenuItem(onClick = {
-                        isClicked.value = false
-                        currentItem.value = list.indexOf(it)
-                    }) {
-                        Text(
-                            text = it
-                        )
+                DropdownMenu(
+                    expanded = isClicked.value,
+                    onDismissRequest = { isClicked.value = false },
+                ) {
+                    list.forEach {
+                        DropdownMenuItem(onClick = {
+                            isClicked.value = false
+                            currentItem.value = list.indexOf(it)
+                        }) {
+                            Text(
+                                text = it,
+                                fontSize = 12.sp,
+                                color = Purple
+                            )
+                        }
                     }
                 }
             }
