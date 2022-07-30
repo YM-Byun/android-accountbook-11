@@ -1,7 +1,6 @@
 package com.woowahan.accountbook.ui.itemList
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,74 +23,155 @@ import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.DatePicker
 import com.woowahan.accountbook.ui.theme.*
+import com.woowahan.domain.model.Category
+import com.woowahan.domain.model.Payment
 
+@Composable
+fun RecordHeader(
+    header: String,
+    income: Long,
+    spending: Long,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 15.dp, 0.dp, 5.dp),
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Text(
+            text = header,
+            color = LightPurple,
+            fontSize = 16.sp
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        if (income != 0L) {
+            Text(
+                text = "수입",
+                color = LightPurple,
+                fontSize = 10.sp
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = String.format("%,d", income),
+                color = LightPurple,
+                fontSize = 10.sp
+            )
+        }
+        if (spending != 0L) {
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "지출",
+                color = LightPurple,
+                fontSize = 10.sp
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "23424",
+                color = LightPurple,
+                fontSize = 10.sp
+            )
+        }
+
+    }
+}
+
+@ExperimentalFoundationApi
 @Composable
 fun RecordItem(
     recordType: String,
     paymentType: String,
     title: String,
     amount: String,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    isSelected: Boolean
 ) {
+    val backgroundModifier = Modifier
+        .fillMaxWidth()
+        .combinedClickable(
+            onClick = onClick,
+            onLongClick = onLongClick
+        )
+
+    if (isSelected) {
+        backgroundModifier.background(White)
+    }
+
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp, 10.dp, 10.dp, 0.dp)
+        modifier = backgroundModifier
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
+            if (isSelected) {
+                Icon(
+                    modifier = Modifier.padding(16.dp),
+                    painter = painterResource(id = R.drawable.ic_checkbox_checked),
+                    contentDescription = "checked",
+                    tint = Color.Unspecified
+                )
+
+            }
+            Column(
                 modifier = Modifier
-                    .width(56.dp)
-                    .clip(CircleShape)
-                    .background(Yellow4)
-                    .padding(10.dp, 5.dp, 10.dp, 5.dp),
-                text = recordType,
-                textAlign = TextAlign.Center,
-                fontSize = 10.sp
-            )
+                    .padding(10.dp, 10.dp, 10.dp, 0.dp),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .width(56.dp)
+                            .clip(CircleShape)
+                            .background(Yellow4)
+                            .padding(10.dp, 5.dp, 10.dp, 5.dp),
+                        text = recordType,
+                        textAlign = TextAlign.Center,
+                        fontSize = 10.sp
+                    )
 
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                fontSize = 10.sp,
-                color = Purple,
-                text = paymentType
-            )
-        }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        fontSize = 10.sp,
+                        color = Purple,
+                        text = paymentType
+                    )
+                }
 
-        Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                fontSize = 14.sp,
-                color = Purple,
-                fontWeight = FontWeight.Bold,
-                text = title
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                fontSize = 14.sp,
-                color = if (amount.startsWith("-")) {
-                    Red
-                } else {
-                    Green6
-                },
-                fontWeight = FontWeight.Bold,
-                text = amount
-            )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        fontSize = 14.sp,
+                        color = Purple,
+                        fontWeight = FontWeight.Bold,
+                        text = title
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        fontSize = 14.sp,
+                        color = if (amount.startsWith("-")) {
+                            Red
+                        } else {
+                            Green6
+                        },
+                        fontWeight = FontWeight.Bold,
+                        text = amount
+                    )
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(1.dp),
-            color = LightPurple
+                .height(1.dp)
         )
     }
 }
@@ -201,9 +282,7 @@ fun FilterButton(
 }
 
 @Composable
-fun InputTextItem(title: String) {
-    var text by remember { mutableStateOf("") }
-
+fun InputTextItem(title: String, content: MutableState<String>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -217,10 +296,10 @@ fun InputTextItem(title: String) {
         )
         Spacer(modifier = Modifier.width(30.dp))
         BasicTextField(
-            value = text,
-            onValueChange = { text = it },
+            value = content.value,
+            onValueChange = { content.value = it },
             decorationBox = {
-                if (text.isEmpty()) {
+                if (content.value.isEmpty()) {
                     Text(
                         text = "선택하세요",
                         fontSize = 14.sp,
@@ -241,7 +320,8 @@ fun InputTextItem(title: String) {
 @Composable
 fun InputSpinnerItem(
     title: String,
-    list: List<String>
+    list: List<String>,
+    mutableState: MutableState<String>
 ) {
     val isClicked = remember { mutableStateOf(false) }
     val currentItem = remember { mutableStateOf(-1) }
@@ -273,6 +353,7 @@ fun InputSpinnerItem(
                     fontSize = 14.sp,
                 )
             } else {
+                mutableState.value = list[currentItem.value]
                 Text(
                     modifier = Modifier.align(Alignment.CenterStart),
                     text = list[currentItem.value],
@@ -292,18 +373,25 @@ fun InputSpinnerItem(
                 tint = LightPurple,
             )
 
-            DropdownMenu(
-                expanded = isClicked.value,
-                onDismissRequest = { isClicked.value = false }
+            MaterialTheme(
+                shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(16.dp)),
             ) {
-                list.forEach {
-                    DropdownMenuItem(onClick = {
-                        isClicked.value = false
-                        currentItem.value = list.indexOf(it)
-                    }) {
-                        Text(
-                            text = it
-                        )
+                DropdownMenu(
+                    modifier = Modifier.border(1.dp, Purple, RoundedCornerShape(16.dp)),
+                    expanded = isClicked.value,
+                    onDismissRequest = { isClicked.value = false },
+                ) {
+                    list.forEach {
+                        DropdownMenuItem(onClick = {
+                            isClicked.value = false
+                            currentItem.value = list.indexOf(it)
+                        }) {
+                            Text(
+                                text = it,
+                                fontSize = 12.sp,
+                                color = Purple
+                            )
+                        }
                     }
                 }
             }
@@ -313,9 +401,7 @@ fun InputSpinnerItem(
 
 
 @Composable
-fun InputPriceItem(title: String) {
-    var text by remember { mutableStateOf("") }
-
+fun InputPriceItem(title: String, price: MutableState<String>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -329,10 +415,10 @@ fun InputPriceItem(title: String) {
         )
         Spacer(modifier = Modifier.width(30.dp))
         BasicTextField(
-            value = text,
-            onValueChange = { text = it },
+            value = price.value,
+            onValueChange = { price.value = it },
             decorationBox = {
-                if (text.isEmpty()) {
+                if (price.value.isEmpty()) {
                     Text(
                         text = "선택하세요",
                         fontSize = 14.sp,
@@ -352,8 +438,7 @@ fun InputPriceItem(title: String) {
 
 
 @Composable
-fun InputDateItem(title: String) {
-    var text by remember { mutableStateOf("선택하세요") }
+fun InputDateItem(title: String, text: MutableState<String>) {
     val context = LocalContext.current
 
     Row(
@@ -373,16 +458,20 @@ fun InputDateItem(title: String) {
                 .fillMaxWidth()
                 .clickable {
                     DatePicker(context) { year, month, day ->
-                        text = "${year}년 ${month}월 ${day}일"
+                        text.value = "${year}년 ${month}월 ${day}일"
                     }
                 },
-            text = text,
-            color = if (text == "선택하세요") {
+            text = if (text.value.isEmpty()) {
+                "선택하세요"
+            } else {
+                text.value
+            },
+            color = if (text.value.isEmpty()) {
                 LightPurple
             } else {
                 Purple
             },
-            fontWeight = if (text == "선택하세요") {
+            fontWeight = if (text.value.isEmpty()) {
                 FontWeight.Normal
             } else {
                 FontWeight.Bold

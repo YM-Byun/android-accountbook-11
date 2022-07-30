@@ -18,10 +18,10 @@ class RecordViewModel : ViewModel() {
 
         for (i in 0..10) {
             if (i % 2 == 0) {
-                val dummy = RecordItem("type", "title", "payment", "-10,000")
+                val dummy = RecordItem(i, "type", "title", "payment", "-10,000")
                 list.add(dummy)
             } else {
-                val dummy = RecordItem("type", "title", "payment", "10,000")
+                val dummy = RecordItem(i, "type", "title", "payment", "10,000")
                 list.add(dummy)
             }
         }

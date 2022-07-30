@@ -44,6 +44,7 @@ fun TopAppBar(
                         Icon(
                             painter = painterResource(id = btn1Image),
                             contentDescription = "Back",
+                            tint = Color.Unspecified
                         )
                     }
                 }
@@ -78,6 +79,7 @@ fun TopAppBar(
                         Icon(
                             painter = painterResource(id = btn2Image),
                             contentDescription = "btn2",
+                            tint = Color.Unspecified
                         )
                     }
                 }
