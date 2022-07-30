@@ -1,6 +1,7 @@
 package com.woowahan.accountbook.ui.itemList
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -296,6 +297,7 @@ fun InputSpinnerItem(
                 shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(16.dp)),
             ) {
                 DropdownMenu(
+                    modifier = Modifier.border(1.dp, Purple, RoundedCornerShape(16.dp)),
                     expanded = isClicked.value,
                     onDismissRequest = { isClicked.value = false },
                 ) {
