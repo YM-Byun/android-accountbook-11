@@ -25,18 +25,13 @@ fun HeaderTextView(header: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp, 10.dp, 10.dp, 0.dp)
+            .padding(0.dp, 10.dp, 0.dp, 0.dp)
     ) {
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             fontSize = 16.sp,
             text = header,
             color = LightPurple
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = Purple40
         )
     }
 }
