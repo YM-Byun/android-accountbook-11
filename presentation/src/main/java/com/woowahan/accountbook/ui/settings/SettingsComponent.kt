@@ -96,12 +96,13 @@ fun SettingsAddItem(text: String, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp, 10.dp, 10.dp, 0.dp)
-            .clickable { onClick },
+            .clickable { onClick() },
         verticalArrangement = Arrangement.Center,
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp, 10.dp, 10.dp, 0.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -118,10 +119,5 @@ fun SettingsAddItem(text: String, onClick: () -> Unit) {
                 contentDescription = "Add icon",
             )
         }
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = Purple40
-        )
     }
 }

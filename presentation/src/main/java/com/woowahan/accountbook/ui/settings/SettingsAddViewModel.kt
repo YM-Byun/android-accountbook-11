@@ -3,6 +3,7 @@ package com.woowahan.accountbook.ui.settings
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
 import com.woowahan.accountbook.ui.theme.*
 
 class SettingsAddViewModel : ViewModel() {
@@ -19,7 +20,7 @@ class SettingsAddViewModel : ViewModel() {
     )
 
     fun getColors(mode: String): List<Color> {
-        return if (mode == SPENDING) {
+        return if (mode == ADD_SPENDING) {
             spendingColors
         } else {
             incomeColors

@@ -18,16 +18,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.HeaderTextView
 import com.woowahan.accountbook.ui.component.LargeButton
 import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.itemList.InputTextItem
+import com.woowahan.accountbook.ui.navigate.ADD_INCOME
+import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.theme.*
 
 @Composable
 fun SettingAddScreen(
+    navController: NavController,
     mode: String,
 ) {
     var viewModel = remember { SettingsAddViewModel() }
@@ -37,10 +41,16 @@ fun SettingAddScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = "내역 등록",
+                title = if (mode == ADD_PAYMENTS) {
+                    "결제 수단 추가하기"
+                } else if (mode == ADD_INCOME) {
+                    "수입 카테고리 추기"
+                } else {
+                    "지출 카테고리 추가"
+                },
                 btn1Image = R.drawable.ic_back,
                 btn1OnClick = {
-                    //navController.popBackStack()
+                    navController.popBackStack()
                 },
                 btn2Image = null,
                 btn2OnClick = {}
@@ -58,14 +68,14 @@ fun SettingAddScreen(
                 item {
                     InputTextItem(title = "이름", content = viewModel.name)
                     LightDivider()
-                    if (mode != PAYMENTS) {
+                    if (mode != ADD_PAYMENTS) {
                         Spacer(modifier = Modifier.height(10.dp))
                         HeaderTextView(header = "색상")
                         LightDivider()
                         Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
-                if (mode != PAYMENTS) {
+                if (mode != ADD_PAYMENTS) {
                     colorPalette(colors) {
                         Box(
                             modifier = Modifier
