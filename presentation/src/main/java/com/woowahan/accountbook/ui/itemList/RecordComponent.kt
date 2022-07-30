@@ -1,6 +1,5 @@
 package com.woowahan.accountbook.ui.itemList
 
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -27,9 +26,12 @@ import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.DatePicker
 import com.woowahan.accountbook.ui.theme.*
 
-@Preview(showBackground = true)
 @Composable
-fun RecordHeader() {
+fun RecordHeader(
+    header: String,
+    income: Long,
+    spending: Long,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,34 +39,38 @@ fun RecordHeader() {
         verticalAlignment = Alignment.Bottom
     ) {
         Text(
-            text = "test",
+            text = header,
             color = LightPurple,
             fontSize = 16.sp
         )
         Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = "수입",
-            color = LightPurple,
-            fontSize = 10.sp
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = "23424",
-            color = LightPurple,
-            fontSize = 10.sp
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = "지출",
-            color = LightPurple,
-            fontSize = 10.sp
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = "23424",
-            color = LightPurple,
-            fontSize = 10.sp
-        )
+        if (income != 0L) {
+            Text(
+                text = "수입",
+                color = LightPurple,
+                fontSize = 10.sp
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = String.format("%,d", income),
+                color = LightPurple,
+                fontSize = 10.sp
+            )
+        }
+        if (spending != 0L) {
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "지출",
+                color = LightPurple,
+                fontSize = 10.sp
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "23424",
+                color = LightPurple,
+                fontSize = 10.sp
+            )
+        }
 
     }
 }
