@@ -117,7 +117,9 @@ fun RecordListScreen(
                             },
                             onLongClick = {
                                 selectMode = true
-                                selectedItems.add(it)
+                                if (!selectedItems.contains(it)) {
+                                    selectedItems.add(it)
+                                }
                             },
                             isSelected = selectedItems.contains(it),
                         )
