@@ -8,18 +8,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.TopAppBar
 
-@Preview
 @Composable
-fun RecordAddScreen() {
+fun RecordAddScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = "내역 등록",
                 btn1Image = R.drawable.ic_back,
-                btn1OnClick = {},
+                btn1OnClick = {
+                    navController.popBackStack()
+                },
                 btn2Image = null,
                 btn2OnClick = {}
             )

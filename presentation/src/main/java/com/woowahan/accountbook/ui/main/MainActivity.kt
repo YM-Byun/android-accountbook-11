@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                 SettingsScreen(context = this@MainActivity)
             }
             composable(BottomNavItem.AddItem.screenRoute) {
-                RecordAddScreen()
+                RecordAddScreen(navController)
             }
         }
     }
