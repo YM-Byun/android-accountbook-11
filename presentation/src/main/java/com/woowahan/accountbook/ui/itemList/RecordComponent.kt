@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -21,8 +22,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
+import com.woowahan.accountbook.ui.component.DatePicker
 import com.woowahan.accountbook.ui.theme.*
 import com.woowahan.domain.model.Category
+import java.util.*
 
 @Composable
 fun RecordItem(
@@ -351,7 +354,10 @@ fun InputPriceItem(title: String) {
 
 
 @Composable
-fun InputDateItem(title: String, text: String) {
+fun InputDateItem(title: String) {
+    var text by remember { mutableStateOf("선택하세요") }
+    val context = LocalContext.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -364,23 +370,25 @@ fun InputDateItem(title: String, text: String) {
             color = Purple
         )
         Spacer(modifier = Modifier.width(30.dp))
-        BasicTextField(
-            value = text,
-            onValueChange = {},
-            decorationBox = {
-                if (text.isEmpty()) {
-                    Text(
-                        text = "선택하세요",
-                        fontSize = 14.sp,
-                        color = LightPurple
-                    )
-                }
-                it()
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    DatePicker(context) { year, month, day ->
+                        text = "${year}년 ${month}월 ${day}일"
+                    }
+                },
+            text = text,
+            color = if (text == "선택하세요") {
+                LightPurple
+            } else {
+                Purple
             },
-            textStyle = LocalTextStyle.current.copy(
-                color = Purple,
-                fontWeight = FontWeight.Bold
-            )
+            fontWeight = if (text == "선택하세요") {
+                FontWeight.Normal
+            } else {
+                FontWeight.Bold
+            }
         )
     }
 }

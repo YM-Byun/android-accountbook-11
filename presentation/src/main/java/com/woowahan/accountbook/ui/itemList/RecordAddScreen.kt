@@ -60,7 +60,7 @@ fun RecordAddScreen(
             ) {
                 if (isIncomeClicked) {
                     item {
-                        InputDateItem(title = "일자", text = "선택하세요.")
+                        InputDateItem(title = "일자")
 
                         Divider(
                             modifier = Modifier.fillMaxWidth(),
