@@ -11,12 +11,18 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
+import com.woowahan.accountbook.ui.navigate.ADD_ITEM
+import com.woowahan.accountbook.ui.navigate.ITEM_LIST
 
 @Composable
-fun RecordListScreen(viewModel: MainViewModel) {
+fun RecordListScreen(
+    navController: NavController,
+    viewModel: MainViewModel
+) {
     val title = viewModel.currentScreen.observeAsState("").value
     val recordViewModel = remember { RecordViewModel() }
     val records = recordViewModel.records.observeAsState().value!!
@@ -37,7 +43,17 @@ fun RecordListScreen(viewModel: MainViewModel) {
                 }
             )
         },
-        floatingActionButton = { FloatingActionButton({}) }
+        floatingActionButton = {
+            FloatingActionButton {
+                navController.navigate(ADD_ITEM) {
+                    navController.graph.startDestinationRoute?.let {
+                        popUpTo(it) { saveState = true }
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+        }
     ) {
         Column(
             modifier = Modifier

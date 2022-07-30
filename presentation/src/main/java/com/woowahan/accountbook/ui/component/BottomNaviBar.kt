@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.woowahan.accountbook.ui.main.BottomNavItem
+import com.woowahan.accountbook.ui.navigate.BottomNavItem
 import com.woowahan.accountbook.ui.theme.OffWhite
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.accountbook.ui.theme.White

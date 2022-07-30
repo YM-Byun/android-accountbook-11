@@ -1,10 +1,6 @@
-package com.woowahan.accountbook.ui.main
+package com.woowahan.accountbook.ui.navigate
 
 import com.woowahan.accountbook.R
-import com.woowahan.accountbook.ui.navigate.ANALYSIS
-import com.woowahan.accountbook.ui.navigate.CALENDAR
-import com.woowahan.accountbook.ui.navigate.ITEM_LIST
-import com.woowahan.accountbook.ui.navigate.SETTINGS
 
 sealed class BottomNavItem(
     val title: String, val icon: Int, val screenRoute: String
@@ -13,4 +9,5 @@ sealed class BottomNavItem(
     object Calendar : BottomNavItem("달력", R.drawable.ic_calendar_month, CALENDAR)
     object Analysis : BottomNavItem("통계", R.drawable.ic_graph, ANALYSIS)
     object Settings : BottomNavItem("설정", R.drawable.ic_settings, SETTINGS)
+    object AddItem : BottomNavItem("내역 등록", 0, ADD_ITEM)
 }
