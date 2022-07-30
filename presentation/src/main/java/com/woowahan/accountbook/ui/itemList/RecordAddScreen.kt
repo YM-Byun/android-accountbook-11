@@ -111,7 +111,6 @@ fun RecordAddScreen(
 
             LargeButton(
                 modifier = Modifier.padding(16.dp, 10.dp, 16.dp, 20.dp),
-                text = "등록하기",
                 enabled = viewModel.isValid(isIncomeClicked),
             ) {
 
