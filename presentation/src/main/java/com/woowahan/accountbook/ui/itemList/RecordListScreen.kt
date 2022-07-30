@@ -35,17 +35,32 @@ fun RecordListScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = title,
-                btn1Image = R.drawable.ic_left,
-                btn1OnClick = {
-                    viewModel.onScreenChange("prev")
-                },
-                btn2Image = R.drawable.ic_right,
-                btn2OnClick = {
-                    viewModel.onScreenChange("next")
-                }
-            )
+            if (selectMode) {
+                TopAppBar(
+                    title = "${selectedItems.size}개 선택",
+                    btn1Image = R.drawable.ic_back,
+                    btn1OnClick = {
+                        selectMode = false
+                        selectedItems.clear()
+                    },
+                    btn2Image = R.drawable.ic_trash,
+                    btn2OnClick = {
+
+                    }
+                )
+            } else {
+                TopAppBar(
+                    title = title,
+                    btn1Image = R.drawable.ic_left,
+                    btn1OnClick = {
+                        viewModel.onScreenChange("prev")
+                    },
+                    btn2Image = R.drawable.ic_right,
+                    btn2OnClick = {
+                        viewModel.onScreenChange("next")
+                    }
+                )
+            }
         },
         floatingActionButton = {
             FloatingActionButton {
