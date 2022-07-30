@@ -1,14 +1,14 @@
 package com.woowahan.accountbook.ui.itemList
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -17,7 +17,9 @@ import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_ITEM
 import com.woowahan.accountbook.ui.navigate.ITEM_LIST
+import com.woowahan.domain.model.RecordItem
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RecordListScreen(
     navController: NavController,
@@ -28,6 +30,8 @@ fun RecordListScreen(
     val records = recordViewModel.records.observeAsState().value!!
     val leftClicked = recordViewModel.leftBtnOnClick.observeAsState().value!!
     val rightClicked = recordViewModel.rightBtnOnClick.observeAsState().value!!
+    var selectMode by remember { mutableStateOf(false) }
+    val selectedItems = remember { mutableStateListOf<RecordItem>() }
 
     Scaffold(
         topBar = {
@@ -82,7 +86,25 @@ fun RecordListScreen(
                             recordType = it.type,
                             paymentType = it.payment,
                             title = it.title,
-                            amount = it.amount
+                            amount = it.amount,
+                            onClick = {
+                                if (selectMode) {
+                                    if (selectedItems.contains(it)) {
+                                        selectedItems.remove(it)
+
+                                        if (selectedItems.isEmpty()) {
+                                            selectMode = false
+                                        }
+                                    } else {
+                                        selectedItems.add(it)
+                                    }
+                                }
+                            },
+                            onLongClick = {
+                                selectMode = true
+                                selectedItems.add(it)
+                            },
+                            isSelected = selectedItems.contains(it),
                         )
                     }
                 )
