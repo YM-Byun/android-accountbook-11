@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.DatePicker
 import com.woowahan.accountbook.ui.theme.*
+import com.woowahan.domain.model.Category
+import com.woowahan.domain.model.Payment
 
 @Composable
 fun RecordHeader(
@@ -280,9 +282,7 @@ fun FilterButton(
 }
 
 @Composable
-fun InputTextItem(title: String) {
-    var text by remember { mutableStateOf("") }
-
+fun InputTextItem(title: String, content: MutableState<String>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -296,10 +296,10 @@ fun InputTextItem(title: String) {
         )
         Spacer(modifier = Modifier.width(30.dp))
         BasicTextField(
-            value = text,
-            onValueChange = { text = it },
+            value = content.value,
+            onValueChange = { content.value = it },
             decorationBox = {
-                if (text.isEmpty()) {
+                if (content.value.isEmpty()) {
                     Text(
                         text = "선택하세요",
                         fontSize = 14.sp,
@@ -320,7 +320,8 @@ fun InputTextItem(title: String) {
 @Composable
 fun InputSpinnerItem(
     title: String,
-    list: List<String>
+    list: List<String>,
+    mutableState: MutableState<String>
 ) {
     val isClicked = remember { mutableStateOf(false) }
     val currentItem = remember { mutableStateOf(-1) }
@@ -352,6 +353,7 @@ fun InputSpinnerItem(
                     fontSize = 14.sp,
                 )
             } else {
+                mutableState.value = list[currentItem.value]
                 Text(
                     modifier = Modifier.align(Alignment.CenterStart),
                     text = list[currentItem.value],
@@ -399,9 +401,7 @@ fun InputSpinnerItem(
 
 
 @Composable
-fun InputPriceItem(title: String) {
-    var text by remember { mutableStateOf("") }
-
+fun InputPriceItem(title: String, price: MutableState<String>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -415,10 +415,10 @@ fun InputPriceItem(title: String) {
         )
         Spacer(modifier = Modifier.width(30.dp))
         BasicTextField(
-            value = text,
-            onValueChange = { text = it },
+            value = price.value,
+            onValueChange = { price.value = it },
             decorationBox = {
-                if (text.isEmpty()) {
+                if (price.value.isEmpty()) {
                     Text(
                         text = "선택하세요",
                         fontSize = 14.sp,
@@ -438,8 +438,7 @@ fun InputPriceItem(title: String) {
 
 
 @Composable
-fun InputDateItem(title: String) {
-    var text by remember { mutableStateOf("선택하세요") }
+fun InputDateItem(title: String, text: MutableState<String>) {
     val context = LocalContext.current
 
     Row(
@@ -459,16 +458,20 @@ fun InputDateItem(title: String) {
                 .fillMaxWidth()
                 .clickable {
                     DatePicker(context) { year, month, day ->
-                        text = "${year}년 ${month}월 ${day}일"
+                        text.value = "${year}년 ${month}월 ${day}일"
                     }
                 },
-            text = text,
-            color = if (text == "선택하세요") {
+            text = if (text.value.isEmpty()) {
+                "선택하세요"
+            } else {
+                text.value
+            },
+            color = if (text.value.isEmpty()) {
                 LightPurple
             } else {
                 Purple
             },
-            fontWeight = if (text == "선택하세요") {
+            fontWeight = if (text.value.isEmpty()) {
                 FontWeight.Normal
             } else {
                 FontWeight.Bold
