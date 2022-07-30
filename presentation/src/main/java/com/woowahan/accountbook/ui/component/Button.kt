@@ -17,12 +17,13 @@ import com.woowahan.accountbook.ui.theme.Yellow
 
 @Composable
 fun LargeButton(
+    modifier: Modifier,
     text: String,
     enabled: Boolean,
     onClick: () -> Unit
 ) {
     Button(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
         enabled = enabled,
