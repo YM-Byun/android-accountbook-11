@@ -1,5 +1,6 @@
 package com.woowahan.accountbook.ui.itemList
 
+import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -19,11 +20,54 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.DatePicker
 import com.woowahan.accountbook.ui.theme.*
+
+@Preview(showBackground = true)
+@Composable
+fun RecordHeader() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 15.dp, 0.dp, 5.dp),
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Text(
+            text = "test",
+            color = LightPurple,
+            fontSize = 16.sp
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = "수입",
+            color = LightPurple,
+            fontSize = 10.sp
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "23424",
+            color = LightPurple,
+            fontSize = 10.sp
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "지출",
+            color = LightPurple,
+            fontSize = 10.sp
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "23424",
+            color = LightPurple,
+            fontSize = 10.sp
+        )
+
+    }
+}
 
 @Composable
 fun RecordItem(
