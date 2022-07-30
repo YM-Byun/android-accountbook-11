@@ -86,7 +86,6 @@ fun RecordItem(
 ) {
     val backgroundModifier = Modifier
         .fillMaxWidth()
-        .padding(10.dp, 10.dp, 10.dp, 0.dp)
         .combinedClickable(
             onClick = onClick,
             onLongClick = onLongClick
@@ -111,9 +110,13 @@ fun RecordItem(
                 )
 
             }
-            Column {
+            Column(
+                modifier = Modifier
+                    .padding(10.dp, 10.dp, 10.dp, 0.dp),
+            ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
