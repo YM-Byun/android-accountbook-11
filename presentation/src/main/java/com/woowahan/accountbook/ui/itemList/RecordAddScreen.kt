@@ -58,36 +58,43 @@ fun RecordAddScreen(
             LazyColumn(
                 modifier = Modifier.padding(horizontal = 16.dp)
             ) {
-                if (isIncomeClicked) {
-                    item {
-                        InputDateItem(title = "일자")
+                item {
+                    InputDateItem(title = "일자")
 
-                        Divider(
-                            modifier = Modifier.fillMaxWidth(),
-                            color = LightPurple
-                        )
+                    Divider(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = LightPurple
+                    )
 
-                        InputPriceItem(title = "금액")
+                    InputPriceItem(title = "금액")
 
-                        Divider(
-                            modifier = Modifier.fillMaxWidth(),
-                            color = LightPurple
-                        )
+                    Divider(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = LightPurple
+                    )
 
-                        InputSpinnerItem(title = "분류", list = listOf("월급", "금융수입"))
-
-                        Divider(
-                            modifier = Modifier.fillMaxWidth(),
-                            color = LightPurple
-                        )
-
-                        InputTextItem(title = "내용")
+                    if(!isIncomeClicked){
+                        InputSpinnerItem(title = "결제수단", list = listOf("카드", "현금"))
 
                         Divider(
                             modifier = Modifier.fillMaxWidth(),
                             color = LightPurple
                         )
                     }
+
+                    InputSpinnerItem(title = "분류", list = listOf("월급", "금융수입"))
+
+                    Divider(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = LightPurple
+                    )
+
+                    InputTextItem(title = "내용")
+
+                    Divider(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = LightPurple
+                    )
                 }
             }
 
