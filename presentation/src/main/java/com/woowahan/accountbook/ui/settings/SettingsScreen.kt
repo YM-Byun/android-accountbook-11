@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.woowahan.accountbook.ui.component.HeaderTextView
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Payment
@@ -40,7 +41,7 @@ fun SettingsScreen(context: Context) {
         ) {
             LazyColumn {
                 item {
-                    SettingsHeader(header = "결제수단")
+                    HeaderTextView(header = "결제수단")
                 }
                 items(
                     items = payments,
@@ -55,7 +56,7 @@ fun SettingsScreen(context: Context) {
                 }
 
                 item {
-                    SettingsHeader(header = "지출 카테고리")
+                    HeaderTextView(header = "지출 카테고리")
                 }
                 items(
                     items = spending,
@@ -70,7 +71,7 @@ fun SettingsScreen(context: Context) {
                 }
 
                 item {
-                    SettingsHeader(header = "수입 카테고리")
+                    HeaderTextView(header = "수입 카테고리")
                 }
                 items(
                     items = income,
