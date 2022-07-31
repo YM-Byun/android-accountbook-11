@@ -8,5 +8,5 @@
 - 통계 확인
 
 
-## ERD
-![Untitled Diagram drawio](https://user-images.githubusercontent.com/29909314/182026272-4cd8771f-d166-4a00-8f79-858eafd922fa.png)
+## ERD 
+![AccountBookERD](https://user-images.githubusercontent.com/29909314/182032160-2bb9681e-5cd9-4d62-820e-f1b1d71d4839.png)
