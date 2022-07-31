@@ -24,32 +24,10 @@ import com.woowahan.accountbook.R
 @Composable
 fun preview() {
     Column() {
-        SettingsHeader(header = "header")
         SettingsItemWithCategory(category = "test")
         SettingsItemWithNoCategory(text = "text")
         SettingsAddItem(text = "test") {
         }
-    }
-}
-
-@Composable
-fun SettingsHeader(header: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp, 10.dp, 10.dp, 0.dp)
-    ) {
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            fontSize = 16.sp,
-            text = header,
-            color = LightPurple
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = Purple40
-        )
     }
 }
 
@@ -118,12 +96,13 @@ fun SettingsAddItem(text: String, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp, 10.dp, 10.dp, 0.dp)
-            .clickable { onClick },
+            .clickable { onClick() },
         verticalArrangement = Arrangement.Center,
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp, 10.dp, 10.dp, 0.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -140,10 +119,5 @@ fun SettingsAddItem(text: String, onClick: () -> Unit) {
                 contentDescription = "Add icon",
             )
         }
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = Purple40
-        )
     }
 }

@@ -22,7 +22,11 @@ import com.woowahan.accountbook.ui.calendar.CalendarScreen
 import com.woowahan.accountbook.ui.component.BottomNaviBar
 import com.woowahan.accountbook.ui.itemList.RecordAddScreen
 import com.woowahan.accountbook.ui.itemList.RecordListScreen
+import com.woowahan.accountbook.ui.navigate.ADD_INCOME
+import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
+import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
 import com.woowahan.accountbook.ui.navigate.BottomNavItem
+import com.woowahan.accountbook.ui.settings.SettingAddScreen
 import com.woowahan.accountbook.ui.settings.SettingsScreen
 import com.woowahan.accountbook.ui.theme.AccountBookTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,10 +68,19 @@ class MainActivity : ComponentActivity() {
                 AnalysisScreen(viewModel)
             }
             composable(BottomNavItem.Settings.screenRoute) {
-                SettingsScreen(context = this@MainActivity)
+                SettingsScreen(navController = navController, context = this@MainActivity)
             }
-            composable(BottomNavItem.AddItem.screenRoute) {
-                RecordAddScreen(navController)
+            composable(BottomNavItem.AddRecordItem.screenRoute) {
+                RecordAddScreen(navController = navController)
+            }
+            composable(BottomNavItem.AddPayments.screenRoute) {
+                SettingAddScreen(navController = navController, ADD_PAYMENTS)
+            }
+            composable(BottomNavItem.AddIncome.screenRoute) {
+                SettingAddScreen(navController = navController, ADD_INCOME)
+            }
+            composable(BottomNavItem.AddSpending.screenRoute) {
+                SettingAddScreen(navController = navController, ADD_SPENDING)
             }
         }
     }
