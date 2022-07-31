@@ -8,32 +8,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.RoundText
-import com.woowahan.accountbook.ui.theme.LightPurple
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.accountbook.ui.theme.Purple40
-import com.woowahan.accountbook.ui.theme.Yellow4
-import com.woowahan.accountbook.R
-
-@Preview
-@Composable
-fun preview() {
-    Column() {
-        SettingsItemWithCategory(category = "test")
-        SettingsItemWithNoCategory(text = "text")
-        SettingsAddItem(text = "test") {
-        }
-    }
-}
 
 @Composable
 fun SettingsItemWithCategory(
-    category: String
+    name: String,
+    color: Color
 ) {
     Column(
         modifier = Modifier
@@ -46,13 +34,13 @@ fun SettingsItemWithCategory(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = category,
+                text = name,
                 color = Purple,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
             Spacer(modifier = Modifier.weight(1f))
-            RoundText(text = category, color = Yellow4)
+            RoundText(text = name, color = color)
         }
         Spacer(modifier = Modifier.height(10.dp))
         Divider(

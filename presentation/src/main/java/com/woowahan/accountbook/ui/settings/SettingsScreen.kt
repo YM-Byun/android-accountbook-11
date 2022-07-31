@@ -10,6 +10,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.woowahan.accountbook.ui.component.HeaderTextView
@@ -18,15 +19,19 @@ import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
+import com.woowahan.accountbook.ui.theme.incomeColors
+import com.woowahan.accountbook.ui.theme.spendingColors
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Payment
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(
     navController: NavController,
-    context: Context
+    settingsViewModel: SettingsViewModel
 ) {
-    val viewModel = remember { SettingsViewModel() }
+    val viewModel = remember { settingsViewModel }
+
     val payments: List<Payment> = viewModel.payments.observeAsState().value!!
     val spending: List<Category> = viewModel.spending.observeAsState().value!!
     val income: List<Category> = viewModel.income.observeAsState().value!!
@@ -75,7 +80,7 @@ fun SettingsScreen(
                 items(
                     items = spending,
                     itemContent = {
-                        SettingsItemWithCategory(it.name)
+                        SettingsItemWithCategory(it.name, spendingColors[0])
                     }
                 )
                 item {
@@ -97,7 +102,7 @@ fun SettingsScreen(
                 items(
                     items = income,
                     itemContent = {
-                        SettingsItemWithCategory(it.name)
+                        SettingsItemWithCategory(it.name, incomeColors[it.color])
                     }
                 )
                 item {

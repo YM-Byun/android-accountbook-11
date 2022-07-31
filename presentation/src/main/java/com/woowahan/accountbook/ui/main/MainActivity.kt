@@ -29,6 +29,7 @@ import com.woowahan.accountbook.ui.navigate.BottomNavItem
 import com.woowahan.accountbook.ui.settings.SettingAddScreen
 import com.woowahan.accountbook.ui.settings.SettingsAddViewModel
 import com.woowahan.accountbook.ui.settings.SettingsScreen
+import com.woowahan.accountbook.ui.settings.SettingsViewModel
 import com.woowahan.accountbook.ui.theme.AccountBookTheme
 import com.woowahan.data.entity.DBHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +38,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel = MainViewModel()
+
+    private val settingsViewModel by viewModels<SettingsViewModel>()
     private val settingAddViewModel by viewModels<SettingsAddViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +47,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             MainScreen(viewModel)
         }
+
+        settingsViewModel.getIncomeCategory()
     }
 
 
@@ -69,7 +74,7 @@ class MainActivity : ComponentActivity() {
                 AnalysisScreen(viewModel)
             }
             composable(BottomNavItem.Settings.screenRoute) {
-                SettingsScreen(navController = navController, context = this@MainActivity)
+                SettingsScreen(navController = navController, settingsViewModel)
             }
             composable(BottomNavItem.AddRecordItem.screenRoute) {
                 RecordAddScreen(navController = navController)

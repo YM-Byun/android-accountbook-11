@@ -1,8 +1,12 @@
 package com.woowahan.data.account
 
 import android.R.attr
+import android.annotation.SuppressLint
 import android.content.ContentValues
+import com.woowahan.data.entity.CategoryData
 import com.woowahan.data.entity.DBHelper
+import com.woowahan.data.entity.toModel
+import com.woowahan.domain.model.Category
 
 
 class AccountLocalDataSourceImpl(
@@ -32,4 +36,22 @@ class AccountLocalDataSourceImpl(
         dbHelper.wriable.insert("category", null, values)
     }
 
+    @SuppressLint("Range")
+    override suspend fun getIncomeCategory(): List<Category> {
+        val query = "select * from category where record_type = '${DBHelper.INCOME}'"
+        val categories = ArrayList<Category>()
+
+        dbHelper.readable.use {
+            val cursor = it.rawQuery(query, null)
+
+            while (cursor.moveToNext()) {
+                val name = cursor.getString(cursor.getColumnIndex("name"))
+                val color = cursor.getInt(cursor.getColumnIndex("color"))
+                categories.add(CategoryData(name, color).toModel())
+            }
+        }
+
+        return categories
+
+    }
 }

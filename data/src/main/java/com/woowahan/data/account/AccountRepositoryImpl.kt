@@ -1,5 +1,6 @@
 package com.woowahan.data.account
 
+import com.woowahan.domain.model.Category
 import com.woowahan.domain.repository.AccountRepository
 
 class AccountRepositoryImpl(
@@ -15,5 +16,9 @@ class AccountRepositoryImpl(
 
     override suspend fun addSpendingCategory(name: String, color: Int) {
         return dataSource.addSpendingCategory(name, color)
+    }
+
+    override suspend fun getIncomeCategory(): List<Category> {
+        return dataSource.getIncomeCategory()
     }
 }

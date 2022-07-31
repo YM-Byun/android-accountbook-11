@@ -1,4 +1,12 @@
 package com.woowahan.data.entity
 
-class CategoryData {
+import com.woowahan.domain.model.Category
+
+data class CategoryData(
+    val name: String,
+    val color: Int
+)
+
+fun CategoryData.toModel(): Category {
+    return Category(this.name, this.color)
 }
