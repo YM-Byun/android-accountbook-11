@@ -2,6 +2,7 @@ package com.woowahan.accountbook.di.module
 
 import com.woowahan.domain.accountUseCase.AddIncomeCategoryUseCase
 import com.woowahan.domain.accountUseCase.AddPaymentUseCase
+import com.woowahan.domain.accountUseCase.AddSpendingUseCase
 import com.woowahan.domain.repository.AccountRepository
 import dagger.Module
 import dagger.Provides
@@ -22,5 +23,11 @@ object UseCaseModule {
     @Provides
     fun provideAddIncomeUseCase(repository: AccountRepository): AddIncomeCategoryUseCase {
         return AddIncomeCategoryUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAddSpendingUseCase(repository: AccountRepository): AddSpendingUseCase {
+        return AddSpendingUseCase(repository)
     }
 }

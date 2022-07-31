@@ -25,6 +25,11 @@ class AccountLocalDataSourceImpl(
     }
 
     override suspend fun addSpendingCategory(name: String, color: Int) {
+        val values = ContentValues()
+        values.put("name", name)
+        values.put("color", color)
+        values.put("record_type", DBHelper.SPENDING)
+        dbHelper.wriable.insert("category", null, values)
     }
 
 }

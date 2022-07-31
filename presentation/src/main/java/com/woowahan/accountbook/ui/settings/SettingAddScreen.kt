@@ -24,6 +24,7 @@ import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.itemList.InputTextItem
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
+import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
 import com.woowahan.accountbook.ui.theme.*
 import kotlinx.coroutines.launch
 
@@ -114,6 +115,13 @@ fun SettingAddScreen(
                     ADD_INCOME ->
                         coroutineScope.launch {
                             viewModel.addIncomeCategory(
+                                viewModel.name.value,
+                                viewModel.selectedColorIdx.value
+                            )
+                        }
+                    ADD_SPENDING ->
+                        coroutineScope.launch {
+                            viewModel.addSpendingCategory(
                                 viewModel.name.value,
                                 viewModel.selectedColorIdx.value
                             )
