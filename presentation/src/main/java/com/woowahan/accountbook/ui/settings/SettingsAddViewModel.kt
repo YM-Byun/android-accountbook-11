@@ -5,9 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
 import com.woowahan.accountbook.ui.theme.*
-import com.woowahan.domain.accountUseCase.AddIncomeCategoryUseCase
-import com.woowahan.domain.accountUseCase.AddPaymentUseCase
-import com.woowahan.domain.accountUseCase.AddSpendingUseCase
+import com.woowahan.domain.accountUseCase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

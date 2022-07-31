@@ -1,6 +1,5 @@
 package com.woowahan.accountbook.ui.settings
 
-import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,7 +9,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.woowahan.accountbook.ui.component.HeaderTextView
@@ -23,7 +21,6 @@ import com.woowahan.accountbook.ui.theme.incomeColors
 import com.woowahan.accountbook.ui.theme.spendingColors
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Payment
-import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(
@@ -31,6 +28,8 @@ fun SettingsScreen(
     settingsViewModel: SettingsViewModel
 ) {
     val viewModel = remember { settingsViewModel }
+
+    viewModel.getSettings()
 
     val payments: List<Payment> = viewModel.payments.observeAsState().value!!
     val spending: List<Category> = viewModel.spending.observeAsState().value!!
