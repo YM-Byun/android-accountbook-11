@@ -16,7 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.woowahan.accountbook.di.module.DBHelper
+import com.woowahan.data.entity.DBHelper
 import com.woowahan.accountbook.ui.analysis.AnalysisScreen
 import com.woowahan.accountbook.ui.calendar.CalendarScreen
 import com.woowahan.accountbook.ui.component.BottomNaviBar
@@ -25,7 +25,10 @@ import com.woowahan.accountbook.ui.itemList.RecordListScreen
 import com.woowahan.accountbook.ui.navigate.BottomNavItem
 import com.woowahan.accountbook.ui.settings.SettingsScreen
 import com.woowahan.accountbook.ui.theme.AccountBookTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel = MainViewModel()
 

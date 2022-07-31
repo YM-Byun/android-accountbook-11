@@ -1,15 +1,15 @@
-package com.woowahan.accountbook.di.module
+package com.woowahan.data.entity
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 class DBHelper(
-    context: Context,
+    appContext: Context,
     name: String,
     factory: SQLiteDatabase.CursorFactory?,
     version: Int
-) : SQLiteOpenHelper(context, name, factory, version) {
+) : SQLiteOpenHelper(appContext, name, factory, version) {
     val readable = readableDatabase
     val wriable = writableDatabase
 
