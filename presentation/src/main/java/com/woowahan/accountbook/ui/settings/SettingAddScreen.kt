@@ -51,6 +51,7 @@ fun SettingAddScreen(
                 },
                 btn1Image = R.drawable.ic_back,
                 btn1OnClick = {
+                    viewModel.init()
                     navController.popBackStack()
                 },
                 btn2Image = null,
@@ -127,6 +128,7 @@ fun SettingAddScreen(
                             )
                         }
                 }
+                navController.popBackStack()
             }
         }
     }

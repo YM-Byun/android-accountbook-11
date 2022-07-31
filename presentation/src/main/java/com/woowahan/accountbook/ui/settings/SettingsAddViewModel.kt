@@ -31,14 +31,17 @@ class SettingsAddViewModel @Inject constructor(
 
     suspend fun addPayment(name: String) {
         addPaymentUseCase.execute(name)
+        init()
     }
 
     suspend fun addIncomeCategory(name: String, color: Int) {
         addIncomeCategoryUseCase.execute(name, color)
+        init()
     }
 
     suspend fun addSpendingCategory(name: String, color: Int) {
         addSpendingUseCase.execute(name, color)
+        init()
     }
 
     fun getColors(mode: String): List<Color> {
@@ -51,5 +54,10 @@ class SettingsAddViewModel @Inject constructor(
 
     fun isValid(): Boolean {
         return name.value.isNotEmpty()
+    }
+
+    fun init() {
+        name.value = ""
+        selectedColorIdx.value = 0
     }
 }
