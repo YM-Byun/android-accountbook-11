@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.woowahan.accountbook.di.module.DBHelper
 import com.woowahan.accountbook.ui.analysis.AnalysisScreen
 import com.woowahan.accountbook.ui.calendar.CalendarScreen
 import com.woowahan.accountbook.ui.component.BottomNaviBar
@@ -33,6 +34,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             MainScreen(viewModel)
         }
+
+        DBHelper(this, "test.db", null, 1)
     }
 
 
