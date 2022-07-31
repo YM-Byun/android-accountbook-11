@@ -44,6 +44,12 @@ class DBHelper(
                 "foreign key(`category`, `record_type`) references `category`(`name`, `record_type`)" +
                 ")"
         db?.execSQL(createRecordTable)
+
+        val insertIncomeType = "insert into record_type(`name`) values('income')"
+        db?.execSQL(insertIncomeType)
+
+        val insertSpendingType = "insert into record_type(`name`) values('spending')"
+        db?.execSQL(insertSpendingType)
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
