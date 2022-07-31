@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
             MainScreen(viewModel)
         }
 
-        settingsViewModel.getIncomeCategory()
+        settingsViewModel.getSettings()
     }
 
 

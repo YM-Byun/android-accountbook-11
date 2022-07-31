@@ -80,7 +80,7 @@ fun SettingsScreen(
                 items(
                     items = spending,
                     itemContent = {
-                        SettingsItemWithCategory(it.name, spendingColors[0])
+                        SettingsItemWithCategory(it.name, spendingColors[it.color])
                     }
                 )
                 item {

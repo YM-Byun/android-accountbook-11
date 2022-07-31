@@ -1,9 +1,6 @@
 package com.woowahan.accountbook.di.module
 
-import com.woowahan.domain.accountUseCase.AddIncomeCategoryUseCase
-import com.woowahan.domain.accountUseCase.AddPaymentUseCase
-import com.woowahan.domain.accountUseCase.AddSpendingUseCase
-import com.woowahan.domain.accountUseCase.GetIncomeCategoryUseCase
+import com.woowahan.domain.accountUseCase.*
 import com.woowahan.domain.repository.AccountRepository
 import dagger.Module
 import dagger.Provides
@@ -36,5 +33,11 @@ object UseCaseModule {
     @Provides
     fun provideGetIncomeCategory(repository: AccountRepository): GetIncomeCategoryUseCase {
         return GetIncomeCategoryUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetSpendingCategory(repository: AccountRepository): GetSpendingCategoryUseCase {
+        return GetSpendingCategoryUseCase(repository)
     }
 }

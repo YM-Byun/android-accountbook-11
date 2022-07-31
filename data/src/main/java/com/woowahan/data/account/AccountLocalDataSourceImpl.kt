@@ -15,9 +15,7 @@ class AccountLocalDataSourceImpl(
     AccountLocalDataSource {
     override suspend fun addPayment(name: String) {
         val sqlInsertPayment = "insert into payments(`name`) values('$name')"
-        dbHelper.wriable.use {
-            it.execSQL(sqlInsertPayment)
-        }
+        dbHelper.wriable.execSQL(sqlInsertPayment)
     }
 
     override suspend fun addIncomeCategory(name: String, color: Int) {
@@ -37,18 +35,16 @@ class AccountLocalDataSourceImpl(
     }
 
     @SuppressLint("Range")
-    override suspend fun getIncomeCategory(): List<Category> {
-        val query = "select * from category where record_type = '${DBHelper.INCOME}'"
+    override suspend fun getCategory(mode: String): List<Category> {
+        val query = "select * from category where record_type = '${mode}'"
         val categories = ArrayList<Category>()
 
-        dbHelper.readable.use {
-            val cursor = it.rawQuery(query, null)
+        val cursor = dbHelper.readable.rawQuery(query, null)
 
-            while (cursor.moveToNext()) {
-                val name = cursor.getString(cursor.getColumnIndex("name"))
-                val color = cursor.getInt(cursor.getColumnIndex("color"))
-                categories.add(CategoryData(name, color).toModel())
-            }
+        while (cursor.moveToNext()) {
+            val name = cursor.getString(cursor.getColumnIndex("name"))
+            val color = cursor.getInt(cursor.getColumnIndex("color"))
+            categories.add(CategoryData(name, color).toModel())
         }
 
         return categories

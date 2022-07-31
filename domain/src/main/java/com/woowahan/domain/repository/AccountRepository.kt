@@ -8,5 +8,5 @@ interface AccountRepository {
     suspend fun addIncomeCategory(name: String, color: Int)
     suspend fun addSpendingCategory(name: String, color: Int)
 
-    suspend fun getIncomeCategory(): List<Category>
+    suspend fun getCategory(mode: String): List<Category>
 }
