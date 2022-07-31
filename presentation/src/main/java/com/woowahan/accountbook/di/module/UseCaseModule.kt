@@ -31,13 +31,19 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideGetIncomeCategory(repository: AccountRepository): GetIncomeCategoryUseCase {
+    fun provideGetIncomeCategoryUseCase(repository: AccountRepository): GetIncomeCategoryUseCase {
         return GetIncomeCategoryUseCase(repository)
     }
 
     @Singleton
     @Provides
-    fun provideGetSpendingCategory(repository: AccountRepository): GetSpendingCategoryUseCase {
+    fun provideGetSpendingCategoryUseCase(repository: AccountRepository): GetSpendingCategoryUseCase {
         return GetSpendingCategoryUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetPaymentsUseCase(repository: AccountRepository): GetPaymentsUseCase {
+        return GetPaymentsUseCase(repository)
     }
 }

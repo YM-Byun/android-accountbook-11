@@ -1,6 +1,7 @@
 package com.woowahan.domain.repository
 
 import com.woowahan.domain.model.Category
+import com.woowahan.domain.model.Payment
 import kotlinx.coroutines.flow.Flow
 
 interface AccountRepository {
@@ -9,4 +10,5 @@ interface AccountRepository {
     suspend fun addSpendingCategory(name: String, color: Int)
 
     suspend fun getCategory(mode: String): List<Category>
+    suspend fun getPayments(): List<Payment>
 }

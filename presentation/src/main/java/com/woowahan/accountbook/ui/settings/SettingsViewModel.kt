@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.woowahan.domain.accountUseCase.GetIncomeCategoryUseCase
+import com.woowahan.domain.accountUseCase.GetPaymentsUseCase
 import com.woowahan.domain.accountUseCase.GetSpendingCategoryUseCase
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Payment
@@ -14,6 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    private val getPaymentsUseCase: GetPaymentsUseCase,
     private val getSpendingCategoryUseCase: GetSpendingCategoryUseCase,
     private val getIncomeCategoryUseCase: GetIncomeCategoryUseCase
 ) : ViewModel() {
@@ -31,9 +33,14 @@ class SettingsViewModel @Inject constructor(
 
     fun getSettings() {
         viewModelScope.launch {
+            getPayments()
             getSpendingCategory()
             getIncomeCategory()
         }
+    }
+
+    private suspend fun getPayments() {
+        _payments.postValue(getPaymentsUseCase.execute())
     }
 
     private suspend fun getSpendingCategory() {
@@ -42,13 +49,5 @@ class SettingsViewModel @Inject constructor(
 
     private suspend fun getIncomeCategory() {
         _income.postValue(getIncomeCategoryUseCase.execute())
-    }
-
-    init {
-        val dummyPayments = ArrayList<Payment>()
-        dummyPayments.add(Payment("카카오 체크카드"))
-        dummyPayments.add(Payment("신용카드"))
-        dummyPayments.add(Payment("체크카드"))
-        _payments.value = dummyPayments
     }
 }

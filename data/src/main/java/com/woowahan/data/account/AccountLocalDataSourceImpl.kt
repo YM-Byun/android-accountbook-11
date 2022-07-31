@@ -5,8 +5,10 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import com.woowahan.data.entity.CategoryData
 import com.woowahan.data.entity.DBHelper
+import com.woowahan.data.entity.PaymentData
 import com.woowahan.data.entity.toModel
 import com.woowahan.domain.model.Category
+import com.woowahan.domain.model.Payment
 
 
 class AccountLocalDataSourceImpl(
@@ -48,6 +50,20 @@ class AccountLocalDataSourceImpl(
         }
 
         return categories
+    }
 
+    @SuppressLint("Range")
+    override suspend fun getPayments(): List<Payment> {
+        val query = "select * from payments"
+        val payments = ArrayList<Payment>()
+
+        val cursor = dbHelper.readable.rawQuery(query, null)
+
+        while (cursor.moveToNext()) {
+            val name = cursor.getString(cursor.getColumnIndex("name"))
+            payments.add(PaymentData(name).toModel())
+        }
+
+        return payments
     }
 }
