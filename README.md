@@ -9,4 +9,4 @@
 
 
 ## ERD
-![제목 없는 다이어그램 drawio](https://user-images.githubusercontent.com/29909314/182008084-022662bb-01f0-4dda-91ca-6a9a95334c54.png)
+![Untitled Diagram drawio](https://user-images.githubusercontent.com/29909314/182026272-4cd8771f-d166-4a00-8f79-858eafd922fa.png)
