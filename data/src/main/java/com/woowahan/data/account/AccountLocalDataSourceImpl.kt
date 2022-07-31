@@ -1,7 +1,9 @@
 package com.woowahan.data.account
 
+import android.R.attr
+import android.content.ContentValues
 import com.woowahan.data.entity.DBHelper
-import com.woowahan.domain.repository.AccountRepository
+
 
 class AccountLocalDataSourceImpl(
     private val dbHelper: DBHelper
@@ -15,6 +17,11 @@ class AccountLocalDataSourceImpl(
     }
 
     override suspend fun addIncomeCategory(name: String, color: Int) {
+        val values = ContentValues()
+        values.put("name", name)
+        values.put("color", color)
+        values.put("record_type", DBHelper.INCOME)
+        dbHelper.wriable.insert("category", null, values)
     }
 
     override suspend fun addSpendingCategory(name: String, color: Int) {

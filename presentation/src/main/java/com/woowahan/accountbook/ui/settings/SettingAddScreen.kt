@@ -106,10 +106,18 @@ fun SettingAddScreen(
                 modifier = Modifier.padding(16.dp),
                 enabled = viewModel.isValid()
             ) {
-                if (mode == ADD_PAYMENTS) {
-                    coroutineScope.launch {
-                        viewModel.addPayment(viewModel.name.value)
-                    }
+                when (mode) {
+                    ADD_PAYMENTS ->
+                        coroutineScope.launch {
+                            viewModel.addPayment(viewModel.name.value)
+                        }
+                    ADD_INCOME ->
+                        coroutineScope.launch {
+                            viewModel.addIncomeCategory(
+                                viewModel.name.value,
+                                viewModel.selectedColorIdx.value
+                            )
+                        }
                 }
             }
         }

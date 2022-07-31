@@ -5,13 +5,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
 import com.woowahan.accountbook.ui.theme.*
+import com.woowahan.domain.accountUseCase.AddIncomeCategoryUseCase
 import com.woowahan.domain.accountUseCase.AddPaymentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsAddViewModel @Inject constructor(
-    private val addPaymentUseCase: AddPaymentUseCase
+    private val addPaymentUseCase: AddPaymentUseCase,
+    private val addIncomeCategoryUseCase: AddIncomeCategoryUseCase
 ) : ViewModel() {
     var name = mutableStateOf("")
     var selectedColorIdx = mutableStateOf(0)
@@ -27,6 +29,10 @@ class SettingsAddViewModel @Inject constructor(
 
     suspend fun addPayment(name: String) {
         addPaymentUseCase.execute(name)
+    }
+
+    suspend fun addIncomeCategory(name: String, color: Int) {
+        addIncomeCategoryUseCase.execute(name, color)
     }
 
     fun getColors(mode: String): List<Color> {

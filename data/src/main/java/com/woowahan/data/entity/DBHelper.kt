@@ -10,6 +10,11 @@ class DBHelper(
     factory: SQLiteDatabase.CursorFactory?,
     version: Int
 ) : SQLiteOpenHelper(appContext, name, factory, version) {
+    companion object {
+        val SPENDING = "spending"
+        val INCOME = "income"
+    }
+
     val readable = readableDatabase
     val wriable = writableDatabase
 
@@ -27,6 +32,7 @@ class DBHelper(
         val createCategoryTable = "create table category(" +
                 "name varchar(40)," +
                 "record_type varchar(20)," +
+                "color integer," +
                 "foreign key (`record_type`) references `record_type` (`name`)," +
                 "primary key(`name`, `record_type`)" +
                 ")"
@@ -45,10 +51,10 @@ class DBHelper(
                 ")"
         db?.execSQL(createRecordTable)
 
-        val insertIncomeType = "insert into record_type(`name`) values('income')"
+        val insertIncomeType = "insert into record_type(`name`) values('$INCOME')"
         db?.execSQL(insertIncomeType)
 
-        val insertSpendingType = "insert into record_type(`name`) values('spending')"
+        val insertSpendingType = "insert into record_type(`name`) values('$SPENDING')"
         db?.execSQL(insertSpendingType)
     }
 
