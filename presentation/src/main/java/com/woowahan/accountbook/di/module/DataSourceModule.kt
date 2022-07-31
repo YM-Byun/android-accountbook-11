@@ -1,7 +1,8 @@
 package com.woowahan.accountbook.di.module
 
+import com.woowahan.data.account.AccountLocalDataSource
 import com.woowahan.data.account.AccountLocalDataSourceImpl
-import com.woowahan.domain.repository.AccountRepository
+import com.woowahan.data.entity.DBHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 object DataSourceModule {
     @Singleton
     @Provides
-    fun provideAccountDataSource(repository: AccountRepository): AccountLocalDataSourceImpl {
-        return AccountLocalDataSourceImpl(repository)
+    fun provideAccountDataSource(dbHelper: DBHelper): AccountLocalDataSource {
+        return AccountLocalDataSourceImpl(dbHelper)
     }
 }

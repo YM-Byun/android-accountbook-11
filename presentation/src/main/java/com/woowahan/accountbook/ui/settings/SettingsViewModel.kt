@@ -3,16 +3,10 @@ package com.woowahan.accountbook.ui.settings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.woowahan.domain.accountUseCase.AddPaymentUseCase
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Payment
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
-    private val addPaymentUseCase: AddPaymentUseCase
-) : ViewModel() {
+class SettingsViewModel : ViewModel() {
     private val _payments = MutableLiveData<List<Payment>>()
     val payments: LiveData<List<Payment>>
         get() = _payments
@@ -24,10 +18,6 @@ class SettingsViewModel @Inject constructor(
     private val _income = MutableLiveData<List<Category>>()
     val income: LiveData<List<Category>>
         get() = _income
-
-    suspend fun addPayment(name: String) {
-        addPaymentUseCase.execute(name)
-    }
 
     init {
         val dummyPayments = ArrayList<Payment>()

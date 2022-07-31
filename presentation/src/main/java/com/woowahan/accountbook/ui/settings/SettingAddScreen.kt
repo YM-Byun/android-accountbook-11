@@ -9,10 +9,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,15 +25,18 @@ import com.woowahan.accountbook.ui.itemList.InputTextItem
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.theme.*
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingAddScreen(
     navController: NavController,
     mode: String,
+    settingsAddViewModel: SettingsAddViewModel
 ) {
-    var viewModel = remember { SettingsAddViewModel() }
+    var viewModel = remember { settingsAddViewModel }
     val colors = viewModel.getColors(mode)
     var selectedColor by viewModel.selectedColorIdx
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -106,7 +106,11 @@ fun SettingAddScreen(
                 modifier = Modifier.padding(16.dp),
                 enabled = viewModel.isValid()
             ) {
-
+                if (mode == ADD_PAYMENTS) {
+                    coroutineScope.launch {
+                        viewModel.addPayment(viewModel.name.value)
+                    }
+                }
             }
         }
     }

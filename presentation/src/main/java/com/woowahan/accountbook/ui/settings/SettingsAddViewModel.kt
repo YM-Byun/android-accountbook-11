@@ -5,8 +5,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
 import com.woowahan.accountbook.ui.theme.*
+import com.woowahan.domain.accountUseCase.AddPaymentUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SettingsAddViewModel : ViewModel() {
+@HiltViewModel
+class SettingsAddViewModel @Inject constructor(
+    private val addPaymentUseCase: AddPaymentUseCase
+) : ViewModel() {
     var name = mutableStateOf("")
     var selectedColorIdx = mutableStateOf(0)
 
@@ -18,6 +24,10 @@ class SettingsAddViewModel : ViewModel() {
     private val incomeColors = listOf(
         Olive1, Olive2, Olive3, Olive4, Olive5, Yellow1, Yellow2, Yellow3, Yellow4, Yellow5
     )
+
+    suspend fun addPayment(name: String) {
+        addPaymentUseCase.execute(name)
+    }
 
     fun getColors(mode: String): List<Color> {
         return if (mode == ADD_SPENDING) {

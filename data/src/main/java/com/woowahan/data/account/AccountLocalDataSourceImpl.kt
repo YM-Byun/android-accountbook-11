@@ -8,7 +8,7 @@ class AccountLocalDataSourceImpl(
 ) :
     AccountLocalDataSource {
     override suspend fun addPayment(name: String) {
-        val sqlInsertPayment = "insert into payments values(`$name`)"
+        val sqlInsertPayment = "insert into payments(`name`) values('$name')"
         dbHelper.wriable.use {
             it.execSQL(sqlInsertPayment)
         }
