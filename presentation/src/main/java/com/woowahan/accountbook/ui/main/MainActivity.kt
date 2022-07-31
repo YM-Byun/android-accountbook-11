@@ -44,8 +44,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             MainScreen(viewModel)
         }
-
-        DBHelper(this, "test.db", null, 1)
     }
 
 
