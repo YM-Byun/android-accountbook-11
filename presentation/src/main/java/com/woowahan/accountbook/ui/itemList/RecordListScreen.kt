@@ -25,10 +25,10 @@ import com.woowahan.domain.model.Record
 @Composable
 fun RecordListScreen(
     navController: NavController,
-    viewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    recordViewModel: RecordViewModel
 ) {
-    val title = viewModel.currentScreen.observeAsState("").value
-    val recordViewModel = remember { RecordViewModel() }
+    val title = mainViewModel.currentScreen.observeAsState("").value
     val records = recordViewModel.records.observeAsState().value
     val leftClicked = recordViewModel.leftBtnOnClick.observeAsState().value!!
     val rightClicked = recordViewModel.rightBtnOnClick.observeAsState().value!!
@@ -55,11 +55,11 @@ fun RecordListScreen(
                     title = title,
                     btn1Image = R.drawable.ic_left,
                     btn1OnClick = {
-                        viewModel.onScreenChange("prev")
+                        mainViewModel.onScreenChange("prev")
                     },
                     btn2Image = R.drawable.ic_right,
                     btn2OnClick = {
-                        viewModel.onScreenChange("next")
+                        mainViewModel.onScreenChange("next")
                     }
                 )
             }
@@ -113,7 +113,7 @@ fun RecordListScreen(
                                     recordType = it.type,
                                     paymentType = it.payment.name,
                                     content = it.content,
-                                    price = it.price.toString(),
+                                    price = it.price,
                                     category = it.category,
                                     onClick = {
                                         if (selectMode) {

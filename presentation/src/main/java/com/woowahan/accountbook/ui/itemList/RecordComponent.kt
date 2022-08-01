@@ -79,7 +79,7 @@ fun RecordItem(
     recordType: String,
     paymentType: String,
     content: String,
-    price: String,
+    price: Long,
     category: Category,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -150,7 +150,7 @@ fun RecordItem(
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         fontSize = 14.sp,
-                        color = if (price.startsWith("-")) {
+                        color = if (price < 0) {
                             Red
                         } else {
                             Green6
