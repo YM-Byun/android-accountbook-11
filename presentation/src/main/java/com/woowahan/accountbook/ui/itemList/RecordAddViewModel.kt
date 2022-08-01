@@ -91,12 +91,17 @@ class RecordAddViewModel @Inject constructor(
 
     private fun getNewRecord(mode: String): Record {
         val tokens = date.value.replace("년", "").replace("월", "").replace("일", "").split(" ")
+        val amount = if (mode == DBHelper.INCOME) {
+            price.value.toLong()
+        } else {
+            (price.value.toLong()) * -1
+        }
         return Record(
             0,
             tokens[0].toInt(),
             tokens[1].toInt(),
             tokens[2].toInt(),
-            price.value.toLong(),
+            amount,
             mode,
             payment.value,
             content.value,

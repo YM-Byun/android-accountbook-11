@@ -1,8 +1,6 @@
 package com.woowahan.accountbook.ui.settings
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
@@ -10,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.woowahan.accountbook.ui.component.BoldDivider
 import com.woowahan.accountbook.ui.component.HeaderTextView
 import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
@@ -53,11 +53,13 @@ fun SettingsScreen(
             LazyColumn {
                 item {
                     HeaderTextView(header = "결제수단")
+                    LightDivider(padding = 16)
                 }
                 items(
                     items = payments,
                     itemContent = {
                         SettingsItemWithNoCategory(text = it.name)
+                        LightDivider(padding = 16)
                     }
                 )
                 item {
@@ -70,7 +72,7 @@ fun SettingsScreen(
                             restoreState = true
                         }
                     }
-                    LightDivider()
+                    BoldDivider()
                 }
 
                 item {
@@ -80,6 +82,7 @@ fun SettingsScreen(
                     items = spending,
                     itemContent = {
                         SettingsItemWithCategory(it.name, spendingColors[it.color])
+                        LightDivider(padding = 16)
                     }
                 )
                 item {
@@ -92,7 +95,7 @@ fun SettingsScreen(
                             restoreState = true
                         }
                     }
-                    LightDivider()
+                    BoldDivider()
                 }
 
                 item {
@@ -102,6 +105,7 @@ fun SettingsScreen(
                     items = income,
                     itemContent = {
                         SettingsItemWithCategory(it.name, incomeColors[it.color])
+                        LightDivider(padding = 16)
                     }
                 )
                 item {
@@ -114,7 +118,8 @@ fun SettingsScreen(
                             restoreState = true
                         }
                     }
-                    LightDivider()
+                    BoldDivider()
+                    Spacer(modifier = Modifier.height(30.dp))
                 }
             }
         }

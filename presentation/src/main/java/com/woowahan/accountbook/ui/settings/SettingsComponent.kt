@@ -26,7 +26,7 @@ fun SettingsItemWithCategory(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp, 10.dp, 10.dp, 0.dp),
+            .padding(16.dp, 10.dp, 16.dp, 10.dp),
         verticalArrangement = Arrangement.Center
     ) {
         Row(
@@ -42,11 +42,6 @@ fun SettingsItemWithCategory(
             Spacer(modifier = Modifier.weight(1f))
             RoundText(text = name, color = color)
         }
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = Purple40
-        )
     }
 }
 
@@ -57,7 +52,7 @@ fun SettingsItemWithNoCategory(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp, 13.dp, 10.dp, 0.dp),
+            .padding(16.dp, 10.dp, 16.dp, 10.dp),
         verticalArrangement = Arrangement.Center
     ) {
         Row(
@@ -71,11 +66,6 @@ fun SettingsItemWithNoCategory(
                 fontSize = 14.sp
             )
         }
-        Spacer(modifier = Modifier.height(13.dp))
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = Purple40
-        )
     }
 }
 
@@ -90,7 +80,7 @@ fun SettingsAddItem(text: String, onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp, 10.dp, 10.dp, 0.dp),
+                .padding(16.dp, 10.dp, 16.dp, 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -105,6 +95,7 @@ fun SettingsAddItem(text: String, onClick: () -> Unit) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_plus),
                 contentDescription = "Add icon",
+                tint = Purple
             )
         }
     }

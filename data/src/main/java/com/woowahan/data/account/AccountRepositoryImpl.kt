@@ -32,7 +32,7 @@ class AccountRepositoryImpl(
         return dataSource.addRecord(mode, record)
     }
 
-    override suspend fun getRecords(): List<Record> {
-        return dataSource.getRecords()
+    override suspend fun getRecordsByMonth(year: Int, month: Int): List<Record> {
+        return dataSource.getRecords(year, month)
     }
 }

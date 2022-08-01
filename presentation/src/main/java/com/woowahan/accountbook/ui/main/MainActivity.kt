@@ -52,7 +52,6 @@ class MainActivity : ComponentActivity() {
             MainScreen(viewModel)
         }
 
-        recordViewModel.getRecords()
         settingsViewModel.getSettings()
     }
 

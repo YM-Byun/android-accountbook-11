@@ -113,11 +113,10 @@ fun RecordItem(
             }
             Column(
                 modifier = Modifier
-                    .padding(10.dp, 10.dp, 10.dp, 0.dp),
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     val color = if (recordType == DBHelper.INCOME) {
@@ -161,13 +160,6 @@ fun RecordItem(
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-        )
     }
 }
 
@@ -277,19 +269,20 @@ fun FilterButton(
 }
 
 @Composable
-fun InputTextItem(title: String, content: MutableState<String>) {
+fun InputTextItem(title: String, content: MutableState<String>, padding: Int = 0) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 7.dp),
+            .height(40.dp)
+            .padding(vertical = 7.dp, horizontal = padding.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.width(80.dp),
             text = title,
             fontSize = 14.sp,
             color = Purple
         )
-        Spacer(modifier = Modifier.width(30.dp))
         BasicTextField(
             value = content.value,
             onValueChange = { content.value = it },
@@ -299,7 +292,7 @@ fun InputTextItem(title: String, content: MutableState<String>) {
                         text = "선택하세요",
                         fontSize = 14.sp,
                         color = LightPurple,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
                     )
                 }
                 it()
@@ -324,15 +317,16 @@ fun InputPaymentSpinnerItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(40.dp)
             .padding(vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.width(80.dp),
             text = title,
             fontSize = 14.sp,
             color = Purple
         )
-        Spacer(modifier = Modifier.width(30.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -406,15 +400,16 @@ fun InputCategorySpinnerItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(40.dp)
             .padding(vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.width(80.dp),
             text = title,
             fontSize = 14.sp,
             color = Purple
         )
-        Spacer(modifier = Modifier.width(30.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()

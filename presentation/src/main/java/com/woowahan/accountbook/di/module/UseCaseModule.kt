@@ -61,7 +61,7 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideGetRecordsUseCase(repository: AccountRepository): GetRecordsUseCase {
-        return GetRecordsUseCase(repository)
+    fun provideGetRecordsByMonthUseCase(repository: AccountRepository): GetRecordsByMonthUseCase {
+        return GetRecordsByMonthUseCase(repository)
     }
 }

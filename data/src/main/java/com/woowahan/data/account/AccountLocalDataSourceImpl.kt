@@ -67,7 +67,15 @@ class AccountLocalDataSourceImpl(
 
     override suspend fun addRecord(mode: String, record: Record) {
         val values = ContentValues()
-        values.put("date", "${record.year}-${record.month}-${record.day}")
+        values.put(
+            "date",
+            "${record.year}-${String.format("%02d", record.month)}-${
+                String.format(
+                    "%02d",
+                    record.day
+                )
+            }"
+        )
         values.put("price", record.price)
         values.put("content", record.content)
         values.put("payments", record.payment.name)
@@ -78,9 +86,11 @@ class AccountLocalDataSourceImpl(
     }
 
     @SuppressLint("Range")
-    override suspend fun getRecords(): List<Record> {
+    override suspend fun getRecords(year: Int, month: Int): List<Record> {
         val query = "select * from record " +
-                "inner join category on record.`category` = category.`name`"
+                "inner join category on record.`category` = category.`name` " +
+                "where strftime('%m', date) = '${String.format("%02d", month)}' " +
+                "and strftime('%Y', date) = '$year'"
         val records = ArrayList<Record>()
 
         val cursor = dbHelper.readable.rawQuery(query, null)

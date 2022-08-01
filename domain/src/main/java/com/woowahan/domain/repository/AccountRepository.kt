@@ -13,5 +13,5 @@ interface AccountRepository {
     suspend fun getPayments(): List<Payment>
 
     suspend fun addRecord(mode: String, record: Record)
-    suspend fun getRecords(): List<Record>
+    suspend fun getRecordsByMonth(year: Int, month: Int): List<Record>
 }

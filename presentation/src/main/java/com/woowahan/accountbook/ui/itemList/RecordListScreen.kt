@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.woowahan.accountbook.R
+import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_ITEM
@@ -28,12 +29,14 @@ fun RecordListScreen(
     mainViewModel: MainViewModel,
     recordViewModel: RecordViewModel
 ) {
-    val title = mainViewModel.currentScreen.observeAsState("").value
+    val title by mainViewModel.currentScreen.observeAsState("")
     val records = recordViewModel.records.observeAsState().value
     val leftClicked = recordViewModel.leftBtnOnClick.observeAsState().value!!
     val rightClicked = recordViewModel.rightBtnOnClick.observeAsState().value!!
     var selectMode by remember { mutableStateOf(false) }
     val selectedItems = remember { mutableStateListOf<Record>() }
+
+    recordViewModel.getRecords(title)
 
     Scaffold(
         topBar = {
@@ -136,6 +139,8 @@ fun RecordListScreen(
                                     },
                                     isSelected = selectedItems.contains(it),
                                 )
+
+                                LightDivider(16)
                             }
                         )
                     }

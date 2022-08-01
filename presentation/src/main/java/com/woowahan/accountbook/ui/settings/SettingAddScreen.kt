@@ -5,27 +5,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.woowahan.accountbook.R
-import com.woowahan.accountbook.ui.component.HeaderTextView
-import com.woowahan.accountbook.ui.component.LargeButton
-import com.woowahan.accountbook.ui.component.LightDivider
-import com.woowahan.accountbook.ui.component.TopAppBar
+import com.woowahan.accountbook.ui.component.*
 import com.woowahan.accountbook.ui.itemList.InputTextItem
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
-import com.woowahan.accountbook.ui.theme.*
 import kotlinx.coroutines.launch
 
 @Composable
@@ -64,16 +56,15 @@ fun SettingAddScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            LazyColumn(
-                modifier = Modifier.padding(16.dp)
-            ) {
+            Spacer(modifier = Modifier.height(20.dp))
+            LazyColumn {
                 item {
-                    InputTextItem(title = "이름", content = viewModel.name)
-                    LightDivider()
+                    InputTextItem(title = "이름", content = viewModel.name, padding = 16)
+                    LightDivider(16)
                     if (mode != ADD_PAYMENTS) {
                         Spacer(modifier = Modifier.height(10.dp))
                         HeaderTextView(header = "색상")
-                        LightDivider()
+                        LightDivider(16)
                         Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
@@ -87,9 +78,9 @@ fun SettingAddScreen(
                                 }
                         ) {
                             val size = if (selectedColor == colors.indexOf(it)) {
-                                24
+                                22
                             } else {
-                                20
+                                18
                             }
 
                             Spacer(
@@ -99,6 +90,10 @@ fun SettingAddScreen(
                                     .background(it)
                             )
                         }
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        BoldDivider()
                     }
                 }
             }
@@ -146,6 +141,7 @@ fun LazyListScope.colorPalette(
 
     items(rows) { rowIdx ->
         Row(
+            modifier = Modifier.padding(horizontal = 10.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
