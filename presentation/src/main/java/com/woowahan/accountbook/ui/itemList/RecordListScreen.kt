@@ -29,12 +29,14 @@ fun RecordListScreen(
     mainViewModel: MainViewModel,
     recordViewModel: RecordViewModel
 ) {
-    val title = mainViewModel.currentScreen.observeAsState("").value
+    val title by mainViewModel.currentScreen.observeAsState("")
     val records = recordViewModel.records.observeAsState().value
     val leftClicked = recordViewModel.leftBtnOnClick.observeAsState().value!!
     val rightClicked = recordViewModel.rightBtnOnClick.observeAsState().value!!
     var selectMode by remember { mutableStateOf(false) }
     val selectedItems = remember { mutableStateListOf<Record>() }
+
+    recordViewModel.getRecords(title)
 
     Scaffold(
         topBar = {
