@@ -1,5 +1,6 @@
 package com.woowahan.accountbook.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -16,10 +17,11 @@ import com.woowahan.accountbook.ui.theme.Purple
 @Composable
 fun TopAppBar(
     title: String,
+    titleOnClick: () -> Unit = {},
     btn1Image: Int?,
     btn1OnClick: () -> Unit,
     btn2Image: Int?,
-    btn2OnClick: () -> Unit
+    btn2OnClick: () -> Unit,
 ) {
     TopAppBar(
         backgroundColor = Color.Transparent,
@@ -53,10 +55,13 @@ fun TopAppBar(
             }
             Row(
                 Modifier.fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .clickable { titleOnClick() },
                     textAlign = TextAlign.Center,
                     maxLines = 1,
                     fontSize = 18.sp,

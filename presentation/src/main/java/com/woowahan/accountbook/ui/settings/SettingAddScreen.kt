@@ -101,7 +101,8 @@ fun SettingAddScreen(
             Spacer(modifier = Modifier.weight(1f))
             LargeButton(
                 modifier = Modifier.padding(16.dp),
-                enabled = viewModel.isValid()
+                enabled = viewModel.isValid(),
+                text = "등록하기"
             ) {
                 when (mode) {
                     ADD_PAYMENTS ->
