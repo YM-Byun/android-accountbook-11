@@ -13,13 +13,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.HeaderTextView
 import com.woowahan.accountbook.ui.component.LargeButton
-import com.woowahan.accountbook.ui.component.LightDivider
+import com.woowahan.accountbook.ui.component.Purple40Divider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.itemList.InputTextItem
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
@@ -69,11 +68,11 @@ fun SettingAddScreen(
             ) {
                 item {
                     InputTextItem(title = "이름", content = viewModel.name)
-                    LightDivider()
+                    Purple40Divider()
                     if (mode != ADD_PAYMENTS) {
                         Spacer(modifier = Modifier.height(10.dp))
                         HeaderTextView(header = "색상")
-                        LightDivider()
+                        Purple40Divider()
                         Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
