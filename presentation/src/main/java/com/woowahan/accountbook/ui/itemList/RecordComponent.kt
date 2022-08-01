@@ -313,10 +313,10 @@ fun InputTextItem(title: String, content: MutableState<String>) {
 }
 
 @Composable
-fun InputSpinnerItem(
+fun InputPaymentSpinnerItem(
     title: String,
-    list: List<String>,
-    onValueSelected: (String) -> Unit
+    list: List<Payment>,
+    onValueSelected: (Payment) -> Unit
 ) {
     val isClicked = remember { mutableStateOf(false) }
     val currentItem = remember { mutableStateOf(-1) }
@@ -351,7 +351,7 @@ fun InputSpinnerItem(
                 onValueSelected(list[currentItem.value])
                 Text(
                     modifier = Modifier.align(Alignment.CenterStart),
-                    text = list[currentItem.value],
+                    text = list[currentItem.value].name,
                     color = Purple,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
@@ -382,7 +382,89 @@ fun InputSpinnerItem(
                             currentItem.value = list.indexOf(it)
                         }) {
                             Text(
-                                text = it,
+                                text = it.name,
+                                fontSize = 12.sp,
+                                color = Purple
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun InputCategorySpinnerItem(
+    title: String,
+    list: List<Category>,
+    onValueSelected: (Category) -> Unit
+) {
+    val isClicked = remember { mutableStateOf(false) }
+    val currentItem = remember { mutableStateOf(-1) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 7.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            fontSize = 14.sp,
+            color = Purple
+        )
+        Spacer(modifier = Modifier.width(30.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    isClicked.value = !(isClicked.value)
+                }
+        ) {
+            if (currentItem.value == -1) {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    text = "선택하세요",
+                    color = LightPurple,
+                    fontSize = 14.sp,
+                )
+            } else {
+                onValueSelected(list[currentItem.value])
+                Text(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    text = list[currentItem.value].name,
+                    color = Purple,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Icon(
+                modifier = (if (isClicked.value) {
+                    Modifier.rotate(180F)
+                } else {
+                    Modifier.rotate(0F)
+                }).align(Alignment.CenterEnd),
+                painter = painterResource(id = R.drawable.ic_variant13),
+                contentDescription = "more",
+                tint = LightPurple,
+            )
+
+            MaterialTheme(
+                shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(16.dp)),
+            ) {
+                DropdownMenu(
+                    modifier = Modifier.border(1.dp, Purple, RoundedCornerShape(16.dp)),
+                    expanded = isClicked.value,
+                    onDismissRequest = { isClicked.value = false },
+                ) {
+                    list.forEach {
+                        DropdownMenuItem(onClick = {
+                            isClicked.value = false
+                            currentItem.value = list.indexOf(it)
+                        }) {
+                            Text(
+                                text = it.name,
                                 fontSize = 12.sp,
                                 color = Purple
                             )

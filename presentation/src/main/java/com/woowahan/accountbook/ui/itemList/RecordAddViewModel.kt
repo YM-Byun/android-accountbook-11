@@ -55,12 +55,13 @@ class RecordAddViewModel @Inject constructor(
                 return payment.value.name.isNotEmpty()
             }
             return true
-        } 
+        }
         return false
     }
 
     suspend fun addSpendingRecord() {
         addSpendingRecordUseCase.execute(getNewRecord(DBHelper.SPENDING))
+        init()
     }
 
     suspend fun addIncomeRecord() {

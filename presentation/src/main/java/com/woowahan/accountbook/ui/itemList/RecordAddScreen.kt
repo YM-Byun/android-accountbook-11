@@ -17,7 +17,6 @@ import com.woowahan.accountbook.ui.component.InputPriceItem
 import com.woowahan.accountbook.ui.component.LargeButton
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.theme.LightPurple
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -83,13 +82,11 @@ fun RecordAddScreen(
                     )
 
                     if (!isIncomeClicked) {
-                        InputSpinnerItem(
+                        InputPaymentSpinnerItem(
                             title = "결제수단",
-                            list = viewModel.payments.value!!.map {
-                                it.name
-                            }
+                            list = viewModel.payments.value!!
                         ) {
-                            viewModel.payment.value.name = it
+                            viewModel.payment.value = it
                         }
 
                         Divider(
@@ -98,19 +95,15 @@ fun RecordAddScreen(
                         )
                     }
 
-                    InputSpinnerItem(
+                    InputCategorySpinnerItem(
                         title = "분류",
                         list = if (isIncomeClicked) {
-                            viewModel.income.value!!.map {
-                                it.name
-                            }
+                            viewModel.income.value!!
                         } else {
-                            viewModel.spending.value!!.map {
-                                it.name
-                            }
+                            viewModel.spending.value!!
                         }
                     ) {
-                        viewModel.category.value.name = it
+                        viewModel.category.value = it
                     }
                     Divider(
                         modifier = Modifier.fillMaxWidth(),
@@ -136,8 +129,12 @@ fun RecordAddScreen(
                     coroutineScope.launch {
                         viewModel.addIncomeRecord()
                     }
-                    navController.popBackStack()
+                } else {
+                    coroutineScope.launch {
+                        viewModel.addSpendingRecord()
+                    }
                 }
+                navController.popBackStack()
             }
         }
     }
