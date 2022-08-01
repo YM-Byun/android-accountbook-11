@@ -70,7 +70,7 @@ fun SettingsScreen(
                             restoreState = true
                         }
                     }
-                    LightDivider()
+                    LightDivider(16)
                 }
 
                 item {
@@ -92,7 +92,7 @@ fun SettingsScreen(
                             restoreState = true
                         }
                     }
-                    LightDivider()
+                    LightDivider(16)
                 }
 
                 item {
@@ -114,7 +114,7 @@ fun SettingsScreen(
                             restoreState = true
                         }
                     }
-                    LightDivider()
+                    LightDivider(16)
                 }
             }
         }

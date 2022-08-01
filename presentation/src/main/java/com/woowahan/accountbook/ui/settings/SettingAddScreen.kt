@@ -64,11 +64,11 @@ fun SettingAddScreen(
             ) {
                 item {
                     InputTextItem(title = "이름", content = viewModel.name)
-                    LightDivider()
+                    LightDivider(16)
                     if (mode != ADD_PAYMENTS) {
                         Spacer(modifier = Modifier.height(10.dp))
                         HeaderTextView(header = "색상")
-                        LightDivider()
+                        LightDivider(16)
                         Spacer(modifier = Modifier.height(10.dp))
                     }
                 }

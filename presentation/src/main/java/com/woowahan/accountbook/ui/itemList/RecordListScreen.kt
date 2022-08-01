@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.woowahan.accountbook.R
+import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_ITEM
@@ -136,6 +137,8 @@ fun RecordListScreen(
                                     },
                                     isSelected = selectedItems.contains(it),
                                 )
+
+                                LightDivider(16)
                             }
                         )
                     }

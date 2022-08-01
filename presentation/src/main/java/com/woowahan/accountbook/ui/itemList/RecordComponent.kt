@@ -113,11 +113,10 @@ fun RecordItem(
             }
             Column(
                 modifier = Modifier
-                    .padding(10.dp, 10.dp, 10.dp, 0.dp),
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     val color = if (recordType == DBHelper.INCOME) {
@@ -161,13 +160,6 @@ fun RecordItem(
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(10.dp))
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-        )
     }
 }
 
