@@ -97,7 +97,7 @@ fun InputDateItem(title: String, text: MutableState<String>) {
                 .fillMaxWidth()
                 .clickable {
                     DatePicker(context) { year, month, day ->
-                        text.value = "${year}년 ${month}월 ${day}일"
+                        text.value = "${year}년 ${month + 1}월 ${day}일"
                     }
                 },
             text = if (text.value.isEmpty()) {
