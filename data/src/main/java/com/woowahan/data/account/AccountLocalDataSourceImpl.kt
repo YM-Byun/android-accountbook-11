@@ -70,7 +70,7 @@ class AccountLocalDataSourceImpl(
 
     override suspend fun addRecord(mode: String, record: Record) {
         val values = ContentValues()
-        values.put("date", record.date)
+        values.put("date", "${record.year}-${record.month}-${record.day}")
         values.put("price", record.price)
         values.put("content", record.content)
         values.put("payments", record.payment.name)

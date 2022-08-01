@@ -22,6 +22,7 @@ import com.woowahan.accountbook.ui.component.RoundText
 import com.woowahan.accountbook.ui.theme.*
 import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.model.Category
+import com.woowahan.domain.model.Payment
 
 @Composable
 fun RecordHeader(
@@ -315,7 +316,7 @@ fun InputTextItem(title: String, content: MutableState<String>) {
 fun InputSpinnerItem(
     title: String,
     list: List<String>,
-    mutableState: MutableState<String>
+    onValueSelected: (String) -> Unit
 ) {
     val isClicked = remember { mutableStateOf(false) }
     val currentItem = remember { mutableStateOf(-1) }
@@ -347,7 +348,7 @@ fun InputSpinnerItem(
                     fontSize = 14.sp,
                 )
             } else {
-                mutableState.value = list[currentItem.value]
+                onValueSelected(list[currentItem.value])
                 Text(
                     modifier = Modifier.align(Alignment.CenterStart),
                     text = list[currentItem.value],

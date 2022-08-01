@@ -29,7 +29,7 @@ class AccountRepositoryImpl(
     }
 
     override suspend fun addRecord(mode: String, record: Record) {
-        TODO("Not yet implemented")
+        return dataSource.addRecord(mode, record)
     }
 
     override suspend fun getRecords(): List<Record> {

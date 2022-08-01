@@ -46,4 +46,16 @@ object UseCaseModule {
     fun provideGetPaymentsUseCase(repository: AccountRepository): GetPaymentsUseCase {
         return GetPaymentsUseCase(repository)
     }
+
+    @Singleton
+    @Provides
+    fun provideAddIncomeRecordUseCase(repository: AccountRepository): AddIncomeRecordUseCase {
+        return AddIncomeRecordUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAddSpendingRecordUseCase(repository: AccountRepository): AddSpendingRecordUseCase {
+        return AddSpendingRecordUseCase(repository)
+    }
 }

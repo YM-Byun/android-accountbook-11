@@ -17,13 +17,18 @@ import com.woowahan.accountbook.ui.component.InputPriceItem
 import com.woowahan.accountbook.ui.component.LargeButton
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.theme.LightPurple
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecordAddScreen(
-    navController: NavController
+    navController: NavController,
+    recordAddViewModel: RecordAddViewModel
 ) {
     var isIncomeClicked by remember { mutableStateOf(true) }
-    val viewModel = remember { RecordAddViewModel() }
+    val viewModel = remember { recordAddViewModel }
+    val coroutineScope = rememberCoroutineScope()
+    viewModel.getOptions()
 
     Scaffold(
         topBar = {
@@ -80,9 +85,12 @@ fun RecordAddScreen(
                     if (!isIncomeClicked) {
                         InputSpinnerItem(
                             title = "결제수단",
-                            list = listOf("카드", "현금"),
-                            viewModel.payments
-                        )
+                            list = viewModel.payments.value!!.map {
+                                it.name
+                            }
+                        ) {
+                            viewModel.payment.value.name = it
+                        }
 
                         Divider(
                             modifier = Modifier.fillMaxWidth(),
@@ -92,9 +100,18 @@ fun RecordAddScreen(
 
                     InputSpinnerItem(
                         title = "분류",
-                        list = listOf("월급", "금융수입"),
-                        viewModel.category
-                    )
+                        list = if (isIncomeClicked) {
+                            viewModel.income.value!!.map {
+                                it.name
+                            }
+                        } else {
+                            viewModel.spending.value!!.map {
+                                it.name
+                            }
+                        }
+                    ) {
+                        viewModel.category.value.name = it
+                    }
                     Divider(
                         modifier = Modifier.fillMaxWidth(),
                         color = LightPurple
@@ -115,7 +132,12 @@ fun RecordAddScreen(
                 modifier = Modifier.padding(16.dp, 10.dp, 16.dp, 20.dp),
                 enabled = viewModel.isValid(isIncomeClicked),
             ) {
-
+                if (isIncomeClicked) {
+                    coroutineScope.launch {
+                        viewModel.addIncomeRecord()
+                    }
+                    navController.popBackStack()
+                }
             }
         }
     }
