@@ -21,15 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.woowahan.accountbook.R
-import com.woowahan.accountbook.ui.component.BoldDivider
-import com.woowahan.accountbook.ui.component.HeaderTextView
-import com.woowahan.accountbook.ui.component.LightDivider
-import com.woowahan.accountbook.ui.component.TopAppBar
+import com.woowahan.accountbook.ui.component.*
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_ITEM
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.model.Record
+import java.time.Month
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -42,8 +40,10 @@ fun RecordListScreen(
 
     val leftClicked = recordViewModel.leftBtnOnClick.observeAsState().value!!
     val rightClicked = recordViewModel.rightBtnOnClick.observeAsState().value!!
+
     var selectMode by remember { mutableStateOf(false) }
     val selectedItems = remember { mutableStateListOf<Record>() }
+
     val records: List<Record> =
         if (leftClicked && rightClicked) {
             recordViewModel.records.observeAsState().value!!
@@ -58,6 +58,9 @@ fun RecordListScreen(
         } else {
             emptyList()
         }
+
+    val dateTokens = title.replace("년", "").replace("월", "").replace("일", "").split(" ")
+    var showPicker by remember { mutableStateOf(false) }
 
     recordViewModel.getRecords(title)
 
@@ -86,6 +89,9 @@ fun RecordListScreen(
                     btn2Image = R.drawable.ic_right,
                     btn2OnClick = {
                         mainViewModel.onScreenChange("next")
+                    },
+                    titleOnClick = {
+                        showPicker = true
                     }
                 )
             }
@@ -102,105 +108,116 @@ fun RecordListScreen(
             }
         }
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            var totalIncome = 0L
-            var totalSpending = 0L
-
-            records.forEach { record ->
-                if (record.type == DBHelper.INCOME) {
-                    totalIncome += record.price
-                } else {
-                    totalSpending += (record.price * -1)
+            if (showPicker) {
+                MonthPicker(
+                    currentYear = dateTokens[0].toInt(),
+                    currentMonth = dateTokens[1].toInt(),
+                    onDismissRequest = { showPicker = false }) { nYear, nMonth ->
+                    mainViewModel.onDatePicked(nYear, nMonth)
+                    showPicker = false
                 }
             }
+            Column {
+                var totalIncome = 0L
+                var totalSpending = 0L
 
-            FilterButton(
-                showCheckBox = true,
-                isLeftChecked = leftClicked,
-                isRightChecked = rightClicked,
-                leftText = "수입 ${String.format("%,d", totalIncome)}",
-                rightText = "지출 ${String.format("%,d", totalSpending)}",
-                modifier = Modifier.padding(16.dp),
-                leftOnClick = {
-                    recordViewModel.leftBtnOnClick.postValue(!recordViewModel.leftBtnOnClick.value!!)
-                },
-                rightOnClick = {
-                    recordViewModel.rightBtnOnClick.postValue(!recordViewModel.rightBtnOnClick.value!!)
+                records.forEach { record ->
+                    if (record.type == DBHelper.INCOME) {
+                        totalIncome += record.price
+                    } else {
+                        totalSpending += (record.price * -1)
+                    }
                 }
-            )
 
-            if (records.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    Text(
-                        modifier = Modifier.align(Alignment.Center),
-                        text = "내역이 없습니다",
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center,
-                        color = Purple
-                    )
-                }
-            } else {
-                LazyColumn {
-                    records.groupBy { it.day }.forEach { entry ->
-                        val month = entry.value.first().month
-                        val day = entry.value.first().day
-                        val total = getTotalIncomeSpending(entry.value)
-                        var idx = 0
+                FilterButton(
+                    showCheckBox = true,
+                    isLeftChecked = leftClicked,
+                    isRightChecked = rightClicked,
+                    leftText = "수입 ${String.format("%,d", totalIncome)}",
+                    rightText = "지출 ${String.format("%,d", totalSpending)}",
+                    modifier = Modifier.padding(16.dp),
+                    leftOnClick = {
+                        recordViewModel.leftBtnOnClick.postValue(!recordViewModel.leftBtnOnClick.value!!)
+                    },
+                    rightOnClick = {
+                        recordViewModel.rightBtnOnClick.postValue(!recordViewModel.rightBtnOnClick.value!!)
+                    }
+                )
 
-                        item {
-                            BoldDivider()
+                if (records.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            text = "내역이 없습니다",
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center,
+                            color = Purple
+                        )
+                    }
+                } else {
+                    LazyColumn {
+                        records.groupBy { it.day }.forEach { entry ->
+                            val month = entry.value.first().month
+                            val day = entry.value.first().day
+                            val total = getTotalIncomeSpending(entry.value)
+                            var idx = 0
 
-                            idx += 1
+                            item {
+                                BoldDivider()
 
-                            RecordHeader(
-                                header = "${month}월 ${day}일",
-                                income = total.first,
-                                spending = total.second
-                            )
+                                idx += 1
 
-                            LightDivider(padding = 16)
-                        }
-                        items(
-                            items = entry.value,
-                            itemContent = {
-                                RecordItem(
-                                    recordType = it.type,
-                                    paymentType = it.payment.name,
-                                    content = it.content,
-                                    price = it.price,
-                                    category = it.category,
-                                    onClick = {
-                                        if (selectMode) {
-                                            if (selectedItems.contains(it)) {
-                                                selectedItems.remove(it)
-
-                                                if (selectedItems.isEmpty()) {
-                                                    selectMode = false
-                                                }
-                                            } else {
-                                                selectedItems.add(it)
-                                            }
-                                        }
-                                    },
-                                    onLongClick = {
-                                        selectMode = true
-                                        if (!selectedItems.contains(it)) {
-                                            selectedItems.add(it)
-                                        }
-                                    },
-                                    isSelected = selectedItems.contains(it),
+                                RecordHeader(
+                                    header = "${month}월 ${day}일",
+                                    income = total.first,
+                                    spending = total.second
                                 )
 
-                                LightDivider(16)
+                                LightDivider(padding = 16)
                             }
-                        )
+                            items(
+                                items = entry.value,
+                                itemContent = {
+                                    RecordItem(
+                                        recordType = it.type,
+                                        paymentType = it.payment.name,
+                                        content = it.content,
+                                        price = it.price,
+                                        category = it.category,
+                                        onClick = {
+                                            if (selectMode) {
+                                                if (selectedItems.contains(it)) {
+                                                    selectedItems.remove(it)
+
+                                                    if (selectedItems.isEmpty()) {
+                                                        selectMode = false
+                                                    }
+                                                } else {
+                                                    selectedItems.add(it)
+                                                }
+                                            }
+                                        },
+                                        onLongClick = {
+                                            selectMode = true
+                                            if (!selectedItems.contains(it)) {
+                                                selectedItems.add(it)
+                                            }
+                                        },
+                                        isSelected = selectedItems.contains(it),
+                                    )
+
+                                    LightDivider(16)
+                                }
+                            )
+                        }
                     }
                 }
             }

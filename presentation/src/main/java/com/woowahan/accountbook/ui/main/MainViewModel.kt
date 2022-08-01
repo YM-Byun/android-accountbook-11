@@ -38,4 +38,8 @@ class MainViewModel : ViewModel() {
             }
         }
     }
+
+    fun onDatePicked(newYear: Int, newMonth: Int) {
+        _currentScreen.value = "${newYear}년 ${newMonth}월"
+    }
 }
