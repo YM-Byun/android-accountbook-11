@@ -33,6 +33,6 @@ class AccountRepositoryImpl(
     }
 
     override suspend fun getRecords(): List<Record> {
-        TODO("Not yet implemented")
+        return dataSource.getRecords()
     }
 }

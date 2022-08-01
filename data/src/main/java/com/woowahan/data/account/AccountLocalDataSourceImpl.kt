@@ -3,10 +3,7 @@ package com.woowahan.data.account
 import android.R.attr
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import com.woowahan.data.entity.CategoryData
-import com.woowahan.data.entity.DBHelper
-import com.woowahan.data.entity.PaymentData
-import com.woowahan.data.entity.toModel
+import com.woowahan.data.entity.*
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Payment
 import com.woowahan.domain.model.Record
@@ -82,17 +79,26 @@ class AccountLocalDataSourceImpl(
 
     @SuppressLint("Range")
     override suspend fun getRecords(): List<Record> {
-        val query = "select * from record" +
+        val query = "select * from record " +
                 "inner join category on record.`category` = category.`name`"
-        val record = ArrayList<Record>()
+        val records = ArrayList<Record>()
 
         val cursor = dbHelper.readable.rawQuery(query, null)
 
         while (cursor.moveToNext()) {
-            val name = cursor.getString(cursor.getColumnIndex("price"))
-            print(name)
+            val id = cursor.getInt(cursor.getColumnIndex("id"))
+            val date = cursor.getString(cursor.getColumnIndex("date"))
+            val price = cursor.getLong(cursor.getColumnIndex("price"))
+            val content = cursor.getString(cursor.getColumnIndex("content"))
+            val payment = cursor.getString(cursor.getColumnIndex("payments"))
+            val category = cursor.getString(cursor.getColumnIndex("category"))
+            val recordType = cursor.getString(cursor.getColumnIndex("record_type"))
+            val color = cursor.getInt(cursor.getColumnIndex("color"))
+
+            val record = RecordData(id, date, price, content, payment, category, recordType, color)
+            records.add(record.toModel())
         }
 
-        return record
+        return records
     }
 }

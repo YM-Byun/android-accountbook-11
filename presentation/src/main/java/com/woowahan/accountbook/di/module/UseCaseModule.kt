@@ -58,4 +58,10 @@ object UseCaseModule {
     fun provideAddSpendingRecordUseCase(repository: AccountRepository): AddSpendingRecordUseCase {
         return AddSpendingRecordUseCase(repository)
     }
+
+    @Singleton
+    @Provides
+    fun provideGetRecordsUseCase(repository: AccountRepository): GetRecordsUseCase {
+        return GetRecordsUseCase(repository)
+    }
 }
