@@ -20,6 +20,7 @@ import com.woowahan.accountbook.ui.theme.Yellow50
 @Composable
 fun LargeButton(
     modifier: Modifier,
+    text: String,
     enabled: Boolean,
     onClick: () -> Unit
 ) {
@@ -36,7 +37,7 @@ fun LargeButton(
         shape = RoundedCornerShape(14.dp)
     ) {
         Text(
-            text = "등록하기",
+            text = text,
             color = White,
             fontSize = 14.sp,
             textAlign = TextAlign.Center

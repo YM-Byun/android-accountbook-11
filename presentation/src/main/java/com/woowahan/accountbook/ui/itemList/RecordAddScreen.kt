@@ -108,6 +108,7 @@ fun RecordAddScreen(
             LargeButton(
                 modifier = Modifier.padding(16.dp, 10.dp, 16.dp, 20.dp),
                 enabled = viewModel.isValid(isIncomeClicked),
+                text = "등록하기"
             ) {
                 if (isIncomeClicked) {
                     coroutineScope.launch {
