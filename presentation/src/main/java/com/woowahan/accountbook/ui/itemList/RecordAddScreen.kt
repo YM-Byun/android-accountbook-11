@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.woowahan.accountbook.R
+import com.woowahan.accountbook.ui.component.InputDateItem
+import com.woowahan.accountbook.ui.component.InputPriceItem
 import com.woowahan.accountbook.ui.component.LargeButton
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.theme.LightPurple
@@ -111,7 +113,6 @@ fun RecordAddScreen(
 
             LargeButton(
                 modifier = Modifier.padding(16.dp, 10.dp, 16.dp, 20.dp),
-                text = "등록하기",
                 enabled = viewModel.isValid(isIncomeClicked),
             ) {
 

@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.woowahan.accountbook.ui.theme.White
 
 @Composable
 fun RoundText(text: String, color: Color) {
@@ -25,6 +26,7 @@ fun RoundText(text: String, color: Color) {
         text = text,
         textAlign = TextAlign.Center,
         fontWeight = FontWeight.Bold,
+        color = White,
         fontSize = 10.sp
     )
 }

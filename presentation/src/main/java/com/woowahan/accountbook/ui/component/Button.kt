@@ -15,11 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.ui.theme.White
 import com.woowahan.accountbook.ui.theme.Yellow
+import com.woowahan.accountbook.ui.theme.Yellow50
 
 @Composable
 fun LargeButton(
     modifier: Modifier,
-    text: String,
     enabled: Boolean,
     onClick: () -> Unit
 ) {
@@ -29,11 +29,14 @@ fun LargeButton(
             .height(50.dp),
         enabled = enabled,
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(Yellow),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Yellow,
+            disabledBackgroundColor = Yellow50
+        ),
         shape = RoundedCornerShape(14.dp)
     ) {
         Text(
-            text = text,
+            text = "등록하기",
             color = White,
             fontSize = 14.sp,
             textAlign = TextAlign.Center

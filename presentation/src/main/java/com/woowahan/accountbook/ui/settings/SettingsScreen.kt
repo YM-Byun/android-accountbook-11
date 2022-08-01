@@ -1,7 +1,5 @@
 package com.woowahan.accountbook.ui.settings
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,13 +10,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import com.woowahan.accountbook.ui.component.HeaderTextView
+import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
+import com.woowahan.accountbook.ui.navigate.ADD_INCOME
+import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
+import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
+import com.woowahan.accountbook.ui.theme.incomeColors
+import com.woowahan.accountbook.ui.theme.spendingColors
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Payment
 
 @Composable
-fun SettingsScreen(context: Context) {
-    val viewModel = remember { SettingsViewModel() }
+fun SettingsScreen(
+    navController: NavController,
+    settingsViewModel: SettingsViewModel
+) {
+    val viewModel = remember { settingsViewModel }
+
+    viewModel.getSettings()
+
     val payments: List<Payment> = viewModel.payments.observeAsState().value!!
     val spending: List<Category> = viewModel.spending.observeAsState().value!!
     val income: List<Category> = viewModel.income.observeAsState().value!!
@@ -40,7 +52,7 @@ fun SettingsScreen(context: Context) {
         ) {
             LazyColumn {
                 item {
-                    SettingsHeader(header = "결제수단")
+                    HeaderTextView(header = "결제수단")
                 }
                 items(
                     items = payments,
@@ -50,38 +62,59 @@ fun SettingsScreen(context: Context) {
                 )
                 item {
                     SettingsAddItem(text = "결제수단 추가하기") {
-                        Toast.makeText(context, "구현 예정", Toast.LENGTH_SHORT).show()
+                        navController.navigate(ADD_PAYMENTS) {
+                            navController.graph.startDestinationRoute?.let {
+                                popUpTo(it) { saveState = true }
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
+                    LightDivider()
                 }
 
                 item {
-                    SettingsHeader(header = "지출 카테고리")
+                    HeaderTextView(header = "지출 카테고리")
                 }
                 items(
                     items = spending,
                     itemContent = {
-                        SettingsItemWithCategory(it.name)
+                        SettingsItemWithCategory(it.name, spendingColors[it.color])
                     }
                 )
                 item {
                     SettingsAddItem(text = "지출 카테고리 추가하기") {
-                        Toast.makeText(context, "구현 예정", Toast.LENGTH_SHORT).show()
+                        navController.navigate(ADD_SPENDING) {
+                            navController.graph.startDestinationRoute?.let {
+                                popUpTo(it) { saveState = true }
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
+                    LightDivider()
                 }
 
                 item {
-                    SettingsHeader(header = "수입 카테고리")
+                    HeaderTextView(header = "수입 카테고리")
                 }
                 items(
                     items = income,
                     itemContent = {
-                        SettingsItemWithCategory(it.name)
+                        SettingsItemWithCategory(it.name, incomeColors[it.color])
                     }
                 )
                 item {
                     SettingsAddItem(text = "수입 카테고리 추가하기") {
-                        Toast.makeText(context, "구현 예정", Toast.LENGTH_SHORT).show()
+                        navController.navigate(ADD_INCOME) {
+                            navController.graph.startDestinationRoute?.let {
+                                popUpTo(it) { saveState = true }
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
+                    LightDivider()
                 }
             }
         }

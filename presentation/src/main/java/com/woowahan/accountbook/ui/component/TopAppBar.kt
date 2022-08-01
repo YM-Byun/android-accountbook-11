@@ -30,7 +30,9 @@ fun TopAppBar(
     ) {
         Box(Modifier.fillMaxSize()) {
             Row(
-                Modifier.fillMaxSize(),
+                Modifier
+                    .fillMaxSize()
+                    .padding(10.dp, 0.dp, 0.dp, 0.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 btn1Image?.let {
@@ -64,7 +66,9 @@ fun TopAppBar(
             }
 
             Row(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp, 0.dp, 10.dp, 0.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {

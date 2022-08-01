@@ -9,5 +9,8 @@ sealed class BottomNavItem(
     object Calendar : BottomNavItem("달력", R.drawable.ic_calendar_month, CALENDAR)
     object Analysis : BottomNavItem("통계", R.drawable.ic_graph, ANALYSIS)
     object Settings : BottomNavItem("설정", R.drawable.ic_settings, SETTINGS)
-    object AddItem : BottomNavItem("내역 등록", 0, ADD_ITEM)
+    object AddRecordItem : BottomNavItem("내역 등록", 0, ADD_ITEM)
+    object AddPayments : BottomNavItem("결제 수단 추가하기", 0, ADD_PAYMENTS)
+    object AddIncome : BottomNavItem("수입 카테고리 추기", 0, ADD_INCOME)
+    object AddSpending : BottomNavItem("지출 카테고리 추가", 0, ADD_SPENDING)
 }
