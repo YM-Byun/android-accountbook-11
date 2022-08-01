@@ -27,6 +27,7 @@ import com.woowahan.accountbook.ui.navigate.ADD_ITEM
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.model.Record
+import kotlinx.coroutines.launch
 import java.time.Month
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -37,6 +38,7 @@ fun RecordListScreen(
     recordViewModel: RecordViewModel
 ) {
     val title by mainViewModel.currentScreen.observeAsState("")
+    val coroutineScope = rememberCoroutineScope()
 
     val leftClicked = recordViewModel.leftBtnOnClick.observeAsState().value!!
     val rightClicked = recordViewModel.rightBtnOnClick.observeAsState().value!!
@@ -76,7 +78,12 @@ fun RecordListScreen(
                     },
                     btn2Image = R.drawable.ic_trash,
                     btn2OnClick = {
-
+                        coroutineScope.launch {
+                            recordViewModel.deleteItems(selectedItems)
+                            recordViewModel.getRecords(title)
+                            selectedItems.clear()
+                            selectMode = false
+                        }
                     }
                 )
             } else {

@@ -35,4 +35,8 @@ class AccountRepositoryImpl(
     override suspend fun getRecordsByMonth(year: Int, month: Int): List<Record> {
         return dataSource.getRecords(year, month)
     }
+
+    override suspend fun deleteRecords(records: List<Record>) {
+        return dataSource.deleteRecords(records)
+    }
 }

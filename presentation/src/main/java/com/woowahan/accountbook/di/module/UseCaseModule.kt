@@ -64,4 +64,10 @@ object UseCaseModule {
     fun provideGetRecordsByMonthUseCase(repository: AccountRepository): GetRecordsByMonthUseCase {
         return GetRecordsByMonthUseCase(repository)
     }
+
+    @Singleton
+    @Provides
+    fun provideDeleteRecordsUseCase(repository: AccountRepository): DeleteRecordsUseCase {
+        return DeleteRecordsUseCase(repository)
+    }
 }

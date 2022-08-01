@@ -14,4 +14,6 @@ interface AccountRepository {
 
     suspend fun addRecord(mode: String, record: Record)
     suspend fun getRecordsByMonth(year: Int, month: Int): List<Record>
+
+    suspend fun deleteRecords(records: List<Record>)
 }

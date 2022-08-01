@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.woowahan.domain.accountUseCase.DeleteRecordsUseCase
 import com.woowahan.domain.accountUseCase.GetRecordsByMonthUseCase
 import com.woowahan.domain.model.Record
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecordViewModel @Inject constructor(
-    private val getRecordsByMonthUseCase: GetRecordsByMonthUseCase
+    private val getRecordsByMonthUseCase: GetRecordsByMonthUseCase,
+    private val deleteRecordsUseCase: DeleteRecordsUseCase
 ) : ViewModel() {
     private val _records = MutableLiveData<List<Record>>(emptyList())
     val records: LiveData<List<Record>>
@@ -33,5 +35,10 @@ class RecordViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    suspend fun deleteItems(records: List<Record>) {
+        deleteRecordsUseCase.execute(records)
+
     }
 }
