@@ -13,10 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.woowahan.accountbook.R
-import com.woowahan.accountbook.ui.component.HeaderTextView
-import com.woowahan.accountbook.ui.component.LargeButton
-import com.woowahan.accountbook.ui.component.LightDivider
-import com.woowahan.accountbook.ui.component.TopAppBar
+import com.woowahan.accountbook.ui.component.*
 import com.woowahan.accountbook.ui.itemList.InputTextItem
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
@@ -59,11 +56,10 @@ fun SettingAddScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            LazyColumn(
-                modifier = Modifier.padding(16.dp)
-            ) {
+            Spacer(modifier = Modifier.height(20.dp))
+            LazyColumn {
                 item {
-                    InputTextItem(title = "이름", content = viewModel.name)
+                    InputTextItem(title = "이름", content = viewModel.name, padding = 16)
                     LightDivider(16)
                     if (mode != ADD_PAYMENTS) {
                         Spacer(modifier = Modifier.height(10.dp))
@@ -82,9 +78,9 @@ fun SettingAddScreen(
                                 }
                         ) {
                             val size = if (selectedColor == colors.indexOf(it)) {
-                                24
+                                22
                             } else {
-                                20
+                                18
                             }
 
                             Spacer(
@@ -94,6 +90,10 @@ fun SettingAddScreen(
                                     .background(it)
                             )
                         }
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        BoldDivider()
                     }
                 }
             }
@@ -141,6 +141,7 @@ fun LazyListScope.colorPalette(
 
     items(rows) { rowIdx ->
         Row(
+            modifier = Modifier.padding(horizontal = 10.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {

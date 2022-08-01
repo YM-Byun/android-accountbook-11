@@ -269,12 +269,12 @@ fun FilterButton(
 }
 
 @Composable
-fun InputTextItem(title: String, content: MutableState<String>) {
+fun InputTextItem(title: String, content: MutableState<String>, padding: Int = 0) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(40.dp)
-            .padding(vertical = 7.dp),
+            .padding(vertical = 7.dp, horizontal = padding.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
