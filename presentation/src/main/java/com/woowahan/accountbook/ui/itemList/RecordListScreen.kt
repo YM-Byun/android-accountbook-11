@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -16,10 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.woowahan.accountbook.R
+import com.woowahan.accountbook.ui.component.BoldDivider
+import com.woowahan.accountbook.ui.component.HeaderTextView
 import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_ITEM
+import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.model.Record
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -109,43 +113,78 @@ fun RecordListScreen(
                     Text(text = "내역이 없습니다", fontSize = 12.sp, textAlign = TextAlign.Center)
                 } else {
                     LazyColumn {
-                        items(
-                            items = records,
-                            itemContent = {
-                                RecordItem(
-                                    recordType = it.type,
-                                    paymentType = it.payment.name,
-                                    content = it.content,
-                                    price = it.price,
-                                    category = it.category,
-                                    onClick = {
-                                        if (selectMode) {
-                                            if (selectedItems.contains(it)) {
-                                                selectedItems.remove(it)
+                        records.groupBy { it.day }.forEach { entry ->
+                            val month = entry.value.first().month
+                            val day = entry.value.first().day
+                            val total = getTotalIncomeSpending(entry.value)
+                            var idx = 0
 
-                                                if (selectedItems.isEmpty()) {
-                                                    selectMode = false
-                                                }
-                                            } else {
-                                                selectedItems.add(it)
-                                            }
-                                        }
-                                    },
-                                    onLongClick = {
-                                        selectMode = true
-                                        if (!selectedItems.contains(it)) {
-                                            selectedItems.add(it)
-                                        }
-                                    },
-                                    isSelected = selectedItems.contains(it),
+                            item {
+                                BoldDivider()
+
+                                idx += 1
+
+                                RecordHeader(
+                                    header = "${month}월 ${day}일",
+                                    income = total.first,
+                                    spending = total.second
                                 )
 
-                                LightDivider(16)
+                                LightDivider(padding = 16)
                             }
-                        )
+                            items(
+                                items = entry.value,
+                                itemContent = {
+                                    RecordItem(
+                                        recordType = it.type,
+                                        paymentType = it.payment.name,
+                                        content = it.content,
+                                        price = it.price,
+                                        category = it.category,
+                                        onClick = {
+                                            if (selectMode) {
+                                                if (selectedItems.contains(it)) {
+                                                    selectedItems.remove(it)
+
+                                                    if (selectedItems.isEmpty()) {
+                                                        selectMode = false
+                                                    }
+                                                } else {
+                                                    selectedItems.add(it)
+                                                }
+                                            }
+                                        },
+                                        onLongClick = {
+                                            selectMode = true
+                                            if (!selectedItems.contains(it)) {
+                                                selectedItems.add(it)
+                                            }
+                                        },
+                                        isSelected = selectedItems.contains(it),
+                                    )
+
+                                    LightDivider(16)
+                                }
+                            )
+                        }
                     }
                 }
             }
         }
     }
+}
+
+fun getTotalIncomeSpending(records: List<Record>): Pair<Long, Long> {
+    var income = 0L
+    var spending = 0L
+
+    records.forEach {
+        if (it.type == DBHelper.SPENDING) {
+            spending += (it.price * -1)
+        } else {
+            income += it.price
+        }
+    }
+
+    return Pair(income, spending)
 }

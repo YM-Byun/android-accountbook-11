@@ -33,7 +33,7 @@ fun RecordHeader(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 15.dp, 0.dp, 5.dp),
+            .padding(16.dp, 20.dp, 16.dp, 5.dp),
         verticalAlignment = Alignment.Bottom
     ) {
         Text(
@@ -64,7 +64,7 @@ fun RecordHeader(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "23424",
+                text = String.format("%,d", spending),
                 color = LightPurple,
                 fontSize = 10.sp
             )
