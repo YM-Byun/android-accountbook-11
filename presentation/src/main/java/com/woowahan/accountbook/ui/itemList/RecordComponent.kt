@@ -273,15 +273,16 @@ fun InputTextItem(title: String, content: MutableState<String>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(40.dp)
             .padding(vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.width(80.dp),
             text = title,
             fontSize = 14.sp,
             color = Purple
         )
-        Spacer(modifier = Modifier.width(30.dp))
         BasicTextField(
             value = content.value,
             onValueChange = { content.value = it },
@@ -291,7 +292,7 @@ fun InputTextItem(title: String, content: MutableState<String>) {
                         text = "선택하세요",
                         fontSize = 14.sp,
                         color = LightPurple,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
                     )
                 }
                 it()
@@ -316,15 +317,16 @@ fun InputPaymentSpinnerItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(40.dp)
             .padding(vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.width(80.dp),
             text = title,
             fontSize = 14.sp,
             color = Purple
         )
-        Spacer(modifier = Modifier.width(30.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -398,15 +400,16 @@ fun InputCategorySpinnerItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(40.dp)
             .padding(vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.width(80.dp),
             text = title,
             fontSize = 14.sp,
             color = Purple
         )
-        Spacer(modifier = Modifier.width(30.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()

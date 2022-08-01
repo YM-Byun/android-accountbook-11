@@ -41,15 +41,16 @@ fun InputPriceItem(title: String, price: MutableState<String>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(40.dp)
             .padding(vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.width(80.dp),
             text = title,
             fontSize = 14.sp,
             color = Purple
         )
-        Spacer(modifier = Modifier.width(30.dp))
         BasicTextField(
             value = price.value,
             onValueChange = { price.value = it },
@@ -80,15 +81,16 @@ fun InputDateItem(title: String, text: MutableState<String>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(40.dp)
             .padding(vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = Modifier.width(80.dp),
             text = title,
             fontSize = 14.sp,
             color = Purple
         )
-        Spacer(modifier = Modifier.width(30.dp))
         Text(
             modifier = Modifier
                 .fillMaxWidth()
@@ -111,7 +113,8 @@ fun InputDateItem(title: String, text: MutableState<String>) {
                 FontWeight.Normal
             } else {
                 FontWeight.Bold
-            }
+            },
+            fontSize = 14.sp
         )
     }
 }
