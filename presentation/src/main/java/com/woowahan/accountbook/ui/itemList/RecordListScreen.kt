@@ -34,11 +34,25 @@ fun RecordListScreen(
     recordViewModel: RecordViewModel
 ) {
     val title by mainViewModel.currentScreen.observeAsState("")
-    val records = recordViewModel.records.observeAsState().value
+
     val leftClicked = recordViewModel.leftBtnOnClick.observeAsState().value!!
     val rightClicked = recordViewModel.rightBtnOnClick.observeAsState().value!!
     var selectMode by remember { mutableStateOf(false) }
     val selectedItems = remember { mutableStateListOf<Record>() }
+    val records: List<Record> =
+        if (leftClicked && rightClicked) {
+            recordViewModel.records.observeAsState().value!!
+        } else if (leftClicked) {
+            recordViewModel.records.observeAsState().value!!.filter {
+                it.type == DBHelper.INCOME
+            }
+        } else if (rightClicked) {
+            recordViewModel.records.observeAsState().value!!.filter {
+                it.type == DBHelper.SPENDING
+            }
+        } else {
+            emptyList()
+        }
 
     recordViewModel.getRecords(title)
 
@@ -91,13 +105,11 @@ fun RecordListScreen(
             var totalIncome = 0L
             var totalSpending = 0L
 
-            records?.let { records ->
-                records.forEach { record ->
-                    if (record.type == DBHelper.INCOME) {
-                        totalIncome += record.price
-                    } else {
-                        totalSpending += (record.price * -1)
-                    }
+            records.forEach { record ->
+                if (record.type == DBHelper.INCOME) {
+                    totalIncome += record.price
+                } else {
+                    totalSpending += (record.price * -1)
                 }
             }
 
@@ -116,70 +128,63 @@ fun RecordListScreen(
                 }
             )
 
-            if (records == null) {
-                Text(
-                    modifier = Modifier.fillMaxSize(),
-                    text = "내역이 없습니다", fontSize = 12.sp, textAlign = TextAlign.Center
-                )
+            if (records.isEmpty()) {
+                Text(text = "내역이 없습니다", fontSize = 12.sp, textAlign = TextAlign.Center)
             } else {
-                if (records.isEmpty()) {
-                    Text(text = "내역이 없습니다", fontSize = 12.sp, textAlign = TextAlign.Center)
-                } else {
-                    LazyColumn {
-                        records.groupBy { it.day }.forEach { entry ->
-                            val month = entry.value.first().month
-                            val day = entry.value.first().day
-                            val total = getTotalIncomeSpending(entry.value)
-                            var idx = 0
+                LazyColumn {
+                    records.groupBy { it.day }.forEach { entry ->
+                        val month = entry.value.first().month
+                        val day = entry.value.first().day
+                        val total = getTotalIncomeSpending(entry.value)
+                        var idx = 0
 
-                            item {
-                                BoldDivider()
+                        item {
+                            BoldDivider()
 
-                                idx += 1
+                            idx += 1
 
-                                RecordHeader(
-                                    header = "${month}월 ${day}일",
-                                    income = total.first,
-                                    spending = total.second
-                                )
+                            RecordHeader(
+                                header = "${month}월 ${day}일",
+                                income = total.first,
+                                spending = total.second
+                            )
 
-                                LightDivider(padding = 16)
-                            }
-                            items(
-                                items = entry.value,
-                                itemContent = {
-                                    RecordItem(
-                                        recordType = it.type,
-                                        paymentType = it.payment.name,
-                                        content = it.content,
-                                        price = it.price,
-                                        category = it.category,
-                                        onClick = {
-                                            if (selectMode) {
-                                                if (selectedItems.contains(it)) {
-                                                    selectedItems.remove(it)
+                            LightDivider(padding = 16)
+                        }
+                        items(
+                            items = entry.value,
+                            itemContent = {
+                                RecordItem(
+                                    recordType = it.type,
+                                    paymentType = it.payment.name,
+                                    content = it.content,
+                                    price = it.price,
+                                    category = it.category,
+                                    onClick = {
+                                        if (selectMode) {
+                                            if (selectedItems.contains(it)) {
+                                                selectedItems.remove(it)
 
-                                                    if (selectedItems.isEmpty()) {
-                                                        selectMode = false
-                                                    }
-                                                } else {
-                                                    selectedItems.add(it)
+                                                if (selectedItems.isEmpty()) {
+                                                    selectMode = false
                                                 }
-                                            }
-                                        },
-                                        onLongClick = {
-                                            selectMode = true
-                                            if (!selectedItems.contains(it)) {
+                                            } else {
                                                 selectedItems.add(it)
                                             }
-                                        },
-                                        isSelected = selectedItems.contains(it),
-                                    )
+                                        }
+                                    },
+                                    onLongClick = {
+                                        selectMode = true
+                                        if (!selectedItems.contains(it)) {
+                                            selectedItems.add(it)
+                                        }
+                                    },
+                                    isSelected = selectedItems.contains(it),
+                                )
 
-                                    LightDivider(16)
-                                }
-                            )
-                        }
+                                LightDivider(16)
+                            }
+                        )
                     }
                 }
             }
