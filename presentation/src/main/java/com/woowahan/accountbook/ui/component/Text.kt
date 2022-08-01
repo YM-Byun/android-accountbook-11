@@ -14,20 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.ui.theme.LightPurple
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.accountbook.ui.theme.Purple40
 
+@Preview
 @Composable
-fun HeaderTextView(header: String) {
+fun HeaderTextView(header: String = "test") {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 10.dp, 0.dp, 0.dp)
+            .padding(16.dp, 20.dp, 16.dp, 5.dp)
     ) {
-        Spacer(modifier = Modifier.height(10.dp))
         Text(
             fontSize = 16.sp,
             text = header,
