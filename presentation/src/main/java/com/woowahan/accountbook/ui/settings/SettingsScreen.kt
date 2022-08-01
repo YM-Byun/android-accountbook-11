@@ -12,7 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.woowahan.accountbook.ui.component.HeaderTextView
-import com.woowahan.accountbook.ui.component.Purple40Divider
+import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
@@ -70,7 +70,7 @@ fun SettingsScreen(
                             restoreState = true
                         }
                     }
-                    Purple40Divider()
+                    LightDivider()
                 }
 
                 item {
@@ -92,7 +92,7 @@ fun SettingsScreen(
                             restoreState = true
                         }
                     }
-                    Purple40Divider()
+                    LightDivider()
                 }
 
                 item {
@@ -114,7 +114,7 @@ fun SettingsScreen(
                             restoreState = true
                         }
                     }
-                    Purple40Divider()
+                    LightDivider()
                 }
             }
         }

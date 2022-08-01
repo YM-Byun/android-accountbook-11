@@ -14,7 +14,7 @@ import com.woowahan.accountbook.ui.theme.Purple40
 
 @Preview(showBackground = true)
 @Composable
-fun Purple40Divider() {
+fun LightDivider() {
     Column(modifier = Modifier.fillMaxWidth()) {
         Divider(
             modifier = Modifier
@@ -26,7 +26,7 @@ fun Purple40Divider() {
 
 @Preview(showBackground = true)
 @Composable
-fun LightPurpleDivider() {
+fun BoldDivider() {
     Column(modifier = Modifier.fillMaxWidth()) {
         Divider(
             modifier = Modifier
