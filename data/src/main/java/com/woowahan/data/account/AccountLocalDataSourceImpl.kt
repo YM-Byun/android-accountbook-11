@@ -80,7 +80,19 @@ class AccountLocalDataSourceImpl(
         dbHelper.wriable.insert("record", null, values)
     }
 
+    @SuppressLint("Range")
     override suspend fun getRecords(): List<Record> {
-        TODO("Not yet implemented")
+        val query = "select * from record" +
+                "inner join category on record.`category` = category.`name`"
+        val record = ArrayList<Record>()
+
+        val cursor = dbHelper.readable.rawQuery(query, null)
+
+        while (cursor.moveToNext()) {
+            val name = cursor.getString(cursor.getColumnIndex("price"))
+            print(name)
+        }
+
+        return record
     }
 }
