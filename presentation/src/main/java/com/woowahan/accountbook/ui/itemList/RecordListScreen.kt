@@ -1,6 +1,8 @@
 package com.woowahan.accountbook.ui.itemList
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,7 +13,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +27,7 @@ import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_ITEM
+import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.model.Record
 
@@ -129,7 +134,18 @@ fun RecordListScreen(
             )
 
             if (records.isEmpty()) {
-                Text(text = "내역이 없습니다", fontSize = 12.sp, textAlign = TextAlign.Center)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = "내역이 없습니다",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        color = Purple
+                    )
+                }
             } else {
                 LazyColumn {
                     records.groupBy { it.day }.forEach { entry ->
