@@ -88,12 +88,25 @@ fun RecordListScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
+            var totalIncome = 0L
+            var totalSpending = 0L
+
+            records?.let { records ->
+                records.forEach { record ->
+                    if (record.type == DBHelper.INCOME) {
+                        totalIncome += record.price
+                    } else {
+                        totalSpending += (record.price * -1)
+                    }
+                }
+            }
+
             FilterButton(
                 showCheckBox = true,
                 isLeftChecked = leftClicked,
                 isRightChecked = rightClicked,
-                leftText = "수입 1,000원",
-                rightText = "지출 29,000원",
+                leftText = "수입 ${String.format("%,d", totalIncome)}",
+                rightText = "지출 ${String.format("%,d", totalSpending)}",
                 modifier = Modifier.padding(16.dp),
                 leftOnClick = {
                     recordViewModel.leftBtnOnClick.postValue(!recordViewModel.leftBtnOnClick.value!!)
