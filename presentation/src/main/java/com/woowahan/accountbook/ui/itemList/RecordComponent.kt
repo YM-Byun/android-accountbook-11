@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,18 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
-import com.woowahan.accountbook.ui.component.DatePicker
+import com.woowahan.accountbook.ui.component.RoundText
 import com.woowahan.accountbook.ui.theme.*
+import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.model.Category
-import com.woowahan.domain.model.Payment
 
 @Composable
 fun RecordHeader(
@@ -80,8 +77,9 @@ fun RecordHeader(
 fun RecordItem(
     recordType: String,
     paymentType: String,
-    title: String,
-    amount: String,
+    content: String,
+    price: String,
+    category: Category,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     isSelected: Boolean
@@ -121,16 +119,12 @@ fun RecordItem(
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        modifier = Modifier
-                            .width(56.dp)
-                            .clip(CircleShape)
-                            .background(Yellow4)
-                            .padding(10.dp, 5.dp, 10.dp, 5.dp),
-                        text = recordType,
-                        textAlign = TextAlign.Center,
-                        fontSize = 10.sp
-                    )
+                    val color = if (recordType == DBHelper.INCOME) {
+                        incomeColors[category.color]
+                    } else {
+                        spendingColors[category.color]
+                    }
+                    RoundText(text = category.name, color = color)
 
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
@@ -150,18 +144,18 @@ fun RecordItem(
                         fontSize = 14.sp,
                         color = Purple,
                         fontWeight = FontWeight.Bold,
-                        text = title
+                        text = content
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         fontSize = 14.sp,
-                        color = if (amount.startsWith("-")) {
+                        color = if (price.startsWith("-")) {
                             Red
                         } else {
                             Green6
                         },
                         fontWeight = FontWeight.Bold,
-                        text = amount
+                        text = String.format("%,d", price) + "원"
                     )
                 }
             }

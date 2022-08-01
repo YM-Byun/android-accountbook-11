@@ -9,6 +9,7 @@ import com.woowahan.data.entity.PaymentData
 import com.woowahan.data.entity.toModel
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Payment
+import com.woowahan.domain.model.Record
 
 
 class AccountLocalDataSourceImpl(
@@ -65,5 +66,21 @@ class AccountLocalDataSourceImpl(
         }
 
         return payments
+    }
+
+    override suspend fun addRecord(mode: String, record: Record) {
+        val values = ContentValues()
+        values.put("date", record.date)
+        values.put("price", record.price)
+        values.put("content", record.content)
+        values.put("payments", record.payment.name)
+        values.put("category", record.category.name)
+        values.put("record_type", mode)
+
+        dbHelper.wriable.insert("record", null, values)
+    }
+
+    override suspend fun getRecords(): List<Record> {
+        TODO("Not yet implemented")
     }
 }
