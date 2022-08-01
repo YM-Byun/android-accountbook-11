@@ -21,7 +21,9 @@ import com.woowahan.accountbook.ui.analysis.AnalysisScreen
 import com.woowahan.accountbook.ui.calendar.CalendarScreen
 import com.woowahan.accountbook.ui.component.BottomNaviBar
 import com.woowahan.accountbook.ui.itemList.RecordAddScreen
+import com.woowahan.accountbook.ui.itemList.RecordAddViewModel
 import com.woowahan.accountbook.ui.itemList.RecordListScreen
+import com.woowahan.accountbook.ui.itemList.RecordViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
@@ -39,6 +41,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel = MainViewModel()
 
+    private val recordViewModel by viewModels<RecordViewModel>()
+    private val recordAddViewModel by viewModels<RecordAddViewModel>()
     private val settingsViewModel by viewModels<SettingsViewModel>()
     private val settingAddViewModel by viewModels<SettingsAddViewModel>()
 
@@ -48,6 +52,7 @@ class MainActivity : ComponentActivity() {
             MainScreen(viewModel)
         }
 
+        recordViewModel.getRecords()
         settingsViewModel.getSettings()
     }
 
@@ -65,7 +70,7 @@ class MainActivity : ComponentActivity() {
             startDestination = BottomNavItem.ItemList.screenRoute
         ) {
             composable(BottomNavItem.ItemList.screenRoute) {
-                RecordListScreen(navController, viewModel)
+                RecordListScreen(navController, viewModel, recordViewModel)
             }
             composable(BottomNavItem.Calendar.screenRoute) {
                 CalendarScreen(viewModel)
@@ -77,7 +82,7 @@ class MainActivity : ComponentActivity() {
                 SettingsScreen(navController = navController, settingsViewModel)
             }
             composable(BottomNavItem.AddRecordItem.screenRoute) {
-                RecordAddScreen(navController = navController)
+                RecordAddScreen(navController = navController, recordAddViewModel)
             }
             composable(BottomNavItem.AddPayments.screenRoute) {
                 SettingAddScreen(navController = navController, ADD_PAYMENTS, settingAddViewModel)

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,16 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
-import com.woowahan.accountbook.ui.component.DatePicker
+import com.woowahan.accountbook.ui.component.RoundText
 import com.woowahan.accountbook.ui.theme.*
+import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Payment
 
@@ -80,8 +78,9 @@ fun RecordHeader(
 fun RecordItem(
     recordType: String,
     paymentType: String,
-    title: String,
-    amount: String,
+    content: String,
+    price: Long,
+    category: Category,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     isSelected: Boolean
@@ -121,16 +120,12 @@ fun RecordItem(
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        modifier = Modifier
-                            .width(56.dp)
-                            .clip(CircleShape)
-                            .background(Yellow4)
-                            .padding(10.dp, 5.dp, 10.dp, 5.dp),
-                        text = recordType,
-                        textAlign = TextAlign.Center,
-                        fontSize = 10.sp
-                    )
+                    val color = if (recordType == DBHelper.INCOME) {
+                        incomeColors[category.color]
+                    } else {
+                        spendingColors[category.color]
+                    }
+                    RoundText(text = category.name, color = color)
 
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
@@ -150,18 +145,18 @@ fun RecordItem(
                         fontSize = 14.sp,
                         color = Purple,
                         fontWeight = FontWeight.Bold,
-                        text = title
+                        text = content
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         fontSize = 14.sp,
-                        color = if (amount.startsWith("-")) {
+                        color = if (price < 0) {
                             Red
                         } else {
                             Green6
                         },
                         fontWeight = FontWeight.Bold,
-                        text = amount
+                        text = String.format("%,d", price) + "원"
                     )
                 }
             }
@@ -318,10 +313,10 @@ fun InputTextItem(title: String, content: MutableState<String>) {
 }
 
 @Composable
-fun InputSpinnerItem(
+fun InputPaymentSpinnerItem(
     title: String,
-    list: List<String>,
-    mutableState: MutableState<String>
+    list: List<Payment>,
+    onValueSelected: (Payment) -> Unit
 ) {
     val isClicked = remember { mutableStateOf(false) }
     val currentItem = remember { mutableStateOf(-1) }
@@ -353,10 +348,10 @@ fun InputSpinnerItem(
                     fontSize = 14.sp,
                 )
             } else {
-                mutableState.value = list[currentItem.value]
+                onValueSelected(list[currentItem.value])
                 Text(
                     modifier = Modifier.align(Alignment.CenterStart),
-                    text = list[currentItem.value],
+                    text = list[currentItem.value].name,
                     color = Purple,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
@@ -387,7 +382,89 @@ fun InputSpinnerItem(
                             currentItem.value = list.indexOf(it)
                         }) {
                             Text(
-                                text = it,
+                                text = it.name,
+                                fontSize = 12.sp,
+                                color = Purple
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun InputCategorySpinnerItem(
+    title: String,
+    list: List<Category>,
+    onValueSelected: (Category) -> Unit
+) {
+    val isClicked = remember { mutableStateOf(false) }
+    val currentItem = remember { mutableStateOf(-1) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 7.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            fontSize = 14.sp,
+            color = Purple
+        )
+        Spacer(modifier = Modifier.width(30.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    isClicked.value = !(isClicked.value)
+                }
+        ) {
+            if (currentItem.value == -1) {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    text = "선택하세요",
+                    color = LightPurple,
+                    fontSize = 14.sp,
+                )
+            } else {
+                onValueSelected(list[currentItem.value])
+                Text(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    text = list[currentItem.value].name,
+                    color = Purple,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Icon(
+                modifier = (if (isClicked.value) {
+                    Modifier.rotate(180F)
+                } else {
+                    Modifier.rotate(0F)
+                }).align(Alignment.CenterEnd),
+                painter = painterResource(id = R.drawable.ic_variant13),
+                contentDescription = "more",
+                tint = LightPurple,
+            )
+
+            MaterialTheme(
+                shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(16.dp)),
+            ) {
+                DropdownMenu(
+                    modifier = Modifier.border(1.dp, Purple, RoundedCornerShape(16.dp)),
+                    expanded = isClicked.value,
+                    onDismissRequest = { isClicked.value = false },
+                ) {
+                    list.forEach {
+                        DropdownMenuItem(onClick = {
+                            isClicked.value = false
+                            currentItem.value = list.indexOf(it)
+                        }) {
+                            Text(
+                                text = it.name,
                                 fontSize = 12.sp,
                                 color = Purple
                             )

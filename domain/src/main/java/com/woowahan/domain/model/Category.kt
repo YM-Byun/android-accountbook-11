@@ -1,6 +1,6 @@
 package com.woowahan.domain.model
 
 data class Category(
-    val name: String,
-    val color: Int
+    var name: String,
+    var color: Int
 )

@@ -3,28 +3,27 @@ package com.woowahan.accountbook.ui.itemList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.woowahan.domain.model.RecordItem
+import androidx.lifecycle.viewModelScope
+import com.woowahan.domain.accountUseCase.GetRecordsUseCase
+import com.woowahan.domain.model.Record
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecordViewModel : ViewModel() {
-    private val _records = MutableLiveData<List<RecordItem>>()
-    val records: LiveData<List<RecordItem>>
+@HiltViewModel
+class RecordViewModel @Inject constructor(
+    private val getRecordsUseCase: GetRecordsUseCase
+) : ViewModel() {
+    private val _records = MutableLiveData<List<Record>>()
+    val records: LiveData<List<Record>>
         get() = _records
 
     val leftBtnOnClick = MutableLiveData(true)
     val rightBtnOnClick = MutableLiveData(true)
 
-    init {
-        val list = ArrayList<RecordItem>()
-
-        for (i in 0..10) {
-            if (i % 2 == 0) {
-                val dummy = RecordItem(i, "type", "title", "payment", "-10,000")
-                list.add(dummy)
-            } else {
-                val dummy = RecordItem(i, "type", "title", "payment", "10,000")
-                list.add(dummy)
-            }
+    fun getRecords() {
+        viewModelScope.launch {
+            _records.postValue(getRecordsUseCase.execute())
         }
-        _records.value = list
     }
 }
