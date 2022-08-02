@@ -111,7 +111,8 @@ fun CalendarItem(calendar: Calendar) {
                 if (
                     !(calendar.income == "0" &&
                             calendar.spending == "0" &&
-                            calendar.total == "0")
+                            calendar.total == "0") &&
+                    calendar.isCurrentMonth
                 )
                     Text(text = calendar.total, fontSize = 8.sp, color = Purple)
             }
