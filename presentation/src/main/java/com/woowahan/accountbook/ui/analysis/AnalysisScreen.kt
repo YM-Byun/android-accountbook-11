@@ -3,6 +3,8 @@ package com.woowahan.accountbook.ui.analysis
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,10 +22,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.BoldDivider
+import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.accountbook.ui.theme.Red
+import com.woowahan.accountbook.ui.theme.spendingColors
 
 @Composable
 fun AnalysisScreen(
@@ -32,8 +36,9 @@ fun AnalysisScreen(
 ) {
     val title by mainViewModel.appBarTitle.observeAsState("")
     analysisViewModel.getRecords(title)
-    val pair = analysisViewModel.parseRecord()
-    val totalSpend by analysisViewModel.totalSpend.observeAsState(0L)!!
+    val totalSpend by analysisViewModel.totalSpend.observeAsState(0L)
+    val categoryList by analysisViewModel.categoryList.observeAsState()
+    val ratioList by analysisViewModel.ratioList.observeAsState()
 
     Scaffold(
         topBar = {
@@ -71,22 +76,38 @@ fun AnalysisScreen(
                 )
             }
             BoldDivider()
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(40.dp))
             AnimatedCircle(
-                proportions = pair.first,
-                colors = pair.second,
+                proportions = ratioList!!.map { it.second },
+                colors = categoryList!!.map { spendingColors[it.color] },
                 modifier = Modifier
                     .size(254.dp)
                     .padding(20.dp)
                     .align(Alignment.CenterHorizontally)
             )
+            Spacer(modifier = Modifier.height(40.dp))
+            LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+                item {
+                    categoryList!!.forEachIndexed { index, category ->
+                        AnalysisCategoryText(
+                            category = category,
+                            amount = ratioList!![index].first,
+                            ratio = ratioList!![index].second
+                        )
+                        if (index != categoryList!!.lastIndex) {
+                            LightDivider(padding = 16)
+                        }
+                    }
+                    BoldDivider()
+                }
+            }
         }
     }
 }
 
 @Composable
 fun AnimatedCircle(
-    proportions: List<Float>,
+    proportions: List<Int>,
     colors: List<Color>,
     modifier: Modifier = Modifier
 ) {
