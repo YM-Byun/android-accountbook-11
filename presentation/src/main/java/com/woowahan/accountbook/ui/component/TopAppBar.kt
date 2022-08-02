@@ -98,7 +98,7 @@ fun TopAppBar(
                 modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.Bottom
             ) {
-                Divider(color = Purple, thickness = 1.dp)
+                BoldDivider()
             }
         }
     }
