@@ -23,7 +23,6 @@ import com.woowahan.accountbook.ui.component.BottomNaviBar
 import com.woowahan.accountbook.ui.itemList.RecordAddScreen
 import com.woowahan.accountbook.ui.itemList.RecordAddViewModel
 import com.woowahan.accountbook.ui.itemList.RecordListScreen
-import com.woowahan.accountbook.ui.itemList.RecordViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
@@ -33,7 +32,6 @@ import com.woowahan.accountbook.ui.settings.SettingsAddViewModel
 import com.woowahan.accountbook.ui.settings.SettingsScreen
 import com.woowahan.accountbook.ui.settings.SettingsViewModel
 import com.woowahan.accountbook.ui.theme.AccountBookTheme
-import com.woowahan.data.entity.DBHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -72,7 +70,7 @@ class MainActivity : ComponentActivity() {
                 RecordListScreen(navController, viewModel, recordViewModel)
             }
             composable(BottomNavItem.Calendar.screenRoute) {
-                CalendarScreen(viewModel)
+                CalendarScreen(viewModel, recordViewModel)
             }
             composable(BottomNavItem.Analysis.screenRoute) {
                 AnalysisScreen(viewModel)

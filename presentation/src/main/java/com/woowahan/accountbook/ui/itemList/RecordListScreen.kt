@@ -18,8 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.woowahan.accountbook.R
+import com.woowahan.accountbook.extenstion.month
+import com.woowahan.accountbook.extenstion.year
 import com.woowahan.accountbook.ui.component.*
 import com.woowahan.accountbook.ui.main.MainViewModel
+import com.woowahan.accountbook.ui.main.RecordViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_ITEM
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.data.entity.DBHelper
@@ -57,7 +60,6 @@ fun RecordListScreen(
             emptyList()
         }
 
-    val dateTokens = title.replace("년", "").replace("월", "").replace("일", "").split(" ")
     var showPicker by remember { mutableStateOf(false) }
 
     recordViewModel.getRecords(title)
@@ -118,8 +120,8 @@ fun RecordListScreen(
         ) {
             if (showPicker) {
                 MonthPicker(
-                    initYear = dateTokens[0].toInt(),
-                    initMonth = dateTokens[1].toInt(),
+                    initYear = title.year(),
+                    initMonth = title.month(),
                     onDismissRequest = { showPicker = false }) { nYear, nMonth ->
                     mainViewModel.onDatePicked(nYear, nMonth)
                     showPicker = false
