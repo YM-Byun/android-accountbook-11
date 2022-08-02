@@ -118,8 +118,8 @@ fun RecordListScreen(
         ) {
             if (showPicker) {
                 MonthPicker(
-                    currentYear = dateTokens[0].toInt(),
-                    currentMonth = dateTokens[1].toInt(),
+                    initYear = dateTokens[0].toInt(),
+                    initMonth = dateTokens[1].toInt(),
                     onDismissRequest = { showPicker = false }) { nYear, nMonth ->
                     mainViewModel.onDatePicked(nYear, nMonth)
                     showPicker = false
