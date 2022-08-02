@@ -18,7 +18,7 @@ class RecordListViewModel @Inject constructor(
     private val getRecordsByMonthUseCase: GetRecordsByMonthUseCase,
     private val deleteRecordsUseCase: DeleteRecordsUseCase
 ) : ViewModel() {
-    private val _records = MutableLiveData<List<Record>>()
+    private val _records = MutableLiveData<List<Record>>(emptyList())
     val records: LiveData<List<Record>>
         get() = _records
 
