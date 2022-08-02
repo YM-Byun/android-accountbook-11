@@ -46,13 +46,13 @@ fun RecordListScreen(
 
     val records: List<Record> =
         if (leftClicked && rightClicked) {
-            mainViewModel.records.observeAsState().value!!
+            recordViewModel.records.observeAsState().value!!
         } else if (leftClicked) {
-            mainViewModel.records.observeAsState().value!!.filter {
+            recordViewModel.records.observeAsState().value!!.filter {
                 it.type == DBHelper.INCOME
             }
         } else if (rightClicked) {
-            mainViewModel.records.observeAsState().value!!.filter {
+            recordViewModel.records.observeAsState().value!!.filter {
                 it.type == DBHelper.SPENDING
             }
         } else {

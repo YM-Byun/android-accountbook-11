@@ -27,11 +27,6 @@ class MainViewModel: ViewModel() {
     val appBarTitle: LiveData<String>
         get() = _appBarTitle
 
-    private val _records = MutableLiveData<List<Record>>(emptyList())
-    val records: LiveData<List<Record>>
-        get() = _records
-
-
     fun onScreenChange(type: String) {
         when (type) {
             "prev" -> {
