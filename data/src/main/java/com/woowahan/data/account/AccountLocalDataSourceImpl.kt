@@ -113,10 +113,8 @@ class AccountLocalDataSourceImpl(
     }
 
     override suspend fun deleteRecords(records: List<Record>) {
-        val idList = records.map {
-            it.id.toString()
-        }.toTypedArray()
-
-        dbHelper.wriable.delete("record", "id=?", idList)
+        for (record in records) {
+            dbHelper.wriable.delete("record", "id=?", arrayOf(record.id.toString()))
+        }
     }
 }
