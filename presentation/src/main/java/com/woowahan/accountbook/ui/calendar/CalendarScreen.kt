@@ -22,18 +22,16 @@ import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
-import com.woowahan.accountbook.ui.main.RecordViewModel
 import com.woowahan.accountbook.ui.theme.*
 import com.woowahan.domain.model.Calendar
 
 @Composable
 fun CalendarScreen(
     mainViewModel: MainViewModel,
-    recordViewModel: RecordViewModel
 ) {
     val title by mainViewModel.appBarTitle.observeAsState("")
     val calendarViewModel = remember { CalendarViewModel() }
-    calendarViewModel.parseCalendar(title, recordViewModel.records.value!!)
+    calendarViewModel.parseCalendar(title, mainViewModel.records.value!!)
 
     Scaffold(
         topBar = {

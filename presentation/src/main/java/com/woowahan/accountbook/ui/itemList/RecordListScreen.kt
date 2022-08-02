@@ -22,7 +22,6 @@ import com.woowahan.accountbook.extenstion.month
 import com.woowahan.accountbook.extenstion.year
 import com.woowahan.accountbook.ui.component.*
 import com.woowahan.accountbook.ui.main.MainViewModel
-import com.woowahan.accountbook.ui.main.RecordViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_ITEM
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.data.entity.DBHelper
@@ -34,7 +33,7 @@ import kotlinx.coroutines.launch
 fun RecordListScreen(
     navController: NavController,
     mainViewModel: MainViewModel,
-    recordViewModel: RecordViewModel
+    recordViewModel: RecordListViewModel
 ) {
     val title by mainViewModel.appBarTitle.observeAsState("")
     val coroutineScope = rememberCoroutineScope()
@@ -47,13 +46,13 @@ fun RecordListScreen(
 
     val records: List<Record> =
         if (leftClicked && rightClicked) {
-            recordViewModel.records.observeAsState().value!!
+            mainViewModel.records.observeAsState().value!!
         } else if (leftClicked) {
-            recordViewModel.records.observeAsState().value!!.filter {
+            mainViewModel.records.observeAsState().value!!.filter {
                 it.type == DBHelper.INCOME
             }
         } else if (rightClicked) {
-            recordViewModel.records.observeAsState().value!!.filter {
+            mainViewModel.records.observeAsState().value!!.filter {
                 it.type == DBHelper.SPENDING
             }
         } else {
@@ -62,7 +61,7 @@ fun RecordListScreen(
 
     var showPicker by remember { mutableStateOf(false) }
 
-    recordViewModel.getRecords(title)
+    mainViewModel.getRecords(title)
 
     Scaffold(
         topBar = {
@@ -78,7 +77,7 @@ fun RecordListScreen(
                     btn2OnClick = {
                         coroutineScope.launch {
                             recordViewModel.deleteItems(selectedItems)
-                            recordViewModel.getRecords(title)
+                            mainViewModel.getRecords(title)
                             selectedItems.clear()
                             selectMode = false
                         }
