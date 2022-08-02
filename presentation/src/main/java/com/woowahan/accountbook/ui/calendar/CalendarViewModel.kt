@@ -29,6 +29,15 @@ class CalendarViewModel @Inject constructor(
     val calendarData: LiveData<List<com.woowahan.domain.model.Calendar>>
         get() = _calendarData
 
+    private var _totalIncome = 0L
+    private var _totalSpending = 0L
+    val totalIncome: Long
+        get() = _totalIncome
+    val totalSpending: Long
+        get() = _totalSpending
+    val totalAmount: Long
+        get() = totalIncome + totalSpending
+
     fun parseCalendar(
         date: String,
         records: List<Record>
@@ -38,6 +47,9 @@ class CalendarViewModel @Inject constructor(
         if (date.isEmpty()) {
             return
         }
+
+        _totalIncome = 0L
+        _totalSpending = 0L
 
         val year = date.year()
         val month = date.month() - 1
@@ -107,8 +119,10 @@ class CalendarViewModel @Inject constructor(
                 recordsGroup[newDay]?.forEach {
                     if (it.type == DBHelper.INCOME) {
                         income += it.price
+                        _totalIncome += it.price
                     } else {
                         spending += it.price
+                        _totalSpending += it.price
                     }
                 }
 
@@ -158,8 +172,10 @@ class CalendarViewModel @Inject constructor(
                 recordsGroup[day]?.forEach {
                     if (it.type == DBHelper.INCOME) {
                         income += it.price
+                        _totalIncome += it.price
                     } else {
                         spending += it.price
+                        _totalSpending += it.price
                     }
                 }
 

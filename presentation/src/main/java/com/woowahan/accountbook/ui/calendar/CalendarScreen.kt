@@ -20,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
+import com.woowahan.accountbook.ui.component.BoldDivider
+import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.theme.*
@@ -48,7 +50,7 @@ fun CalendarScreen(
             )
         },
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
@@ -61,6 +63,38 @@ fun CalendarScreen(
                     CalendarItem(it)
                 }
             }
+            Spacer(modifier = Modifier.height(20.dp))
+            Row(modifier = Modifier.padding(16.dp, 7.dp, 16.dp, 7.dp)) {
+                Text(text = "수입", color = Purple, fontSize = 16.sp)
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = String.format("%,d", calendarViewModel.totalIncome),
+                    color = Green6,
+                    fontSize = 16.sp
+                )
+            }
+            LightDivider(padding = 16)
+            Row(modifier = Modifier.padding(16.dp, 7.dp, 16.dp, 7.dp)) {
+                Text(text = "지출", color = Red, fontSize = 16.sp)
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = String.format("%,d", calendarViewModel.totalSpending),
+                    color = Red,
+                    fontSize = 16.sp
+                )
+            }
+            LightDivider(padding = 16)
+            Row(modifier = Modifier.padding(16.dp, 7.dp, 16.dp, 7.dp)) {
+                Text(text = "총합", color = Purple, fontSize = 16.sp)
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = String.format("%,d", calendarViewModel.totalAmount),
+                    color = Purple,
+                    fontSize = 16.sp
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            BoldDivider()
         }
     }
 }
