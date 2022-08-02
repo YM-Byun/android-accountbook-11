@@ -15,10 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.RoundText
+import com.woowahan.accountbook.ui.settings.SettingsAddItem
 import com.woowahan.accountbook.ui.theme.*
 import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.model.Category
@@ -309,7 +311,8 @@ fun InputTextItem(title: String, content: MutableState<String>, padding: Int = 0
 fun InputPaymentSpinnerItem(
     title: String,
     list: List<Payment>,
-    onValueSelected: (Payment) -> Unit
+    onValueSelected: (Payment) -> Unit,
+    onAddItemListener: () -> Unit
 ) {
     val isClicked = remember { mutableStateOf(false) }
     val currentItem = remember { mutableStateOf(-1) }
@@ -366,7 +369,8 @@ fun InputPaymentSpinnerItem(
                 shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(16.dp)),
             ) {
                 DropdownMenu(
-                    modifier = Modifier.border(1.dp, Purple, RoundedCornerShape(16.dp)),
+                    modifier = Modifier
+                        .border(1.dp, Purple, RoundedCornerShape(16.dp)),
                     expanded = isClicked.value,
                     onDismissRequest = { isClicked.value = false },
                 ) {
@@ -376,12 +380,14 @@ fun InputPaymentSpinnerItem(
                             currentItem.value = list.indexOf(it)
                         }) {
                             Text(
+                                modifier = Modifier.width(200.dp),
                                 text = it.name,
                                 fontSize = 12.sp,
                                 color = Purple
                             )
                         }
                     }
+                    AddTextItem(onAddItemListener)
                 }
             }
         }
@@ -392,7 +398,8 @@ fun InputPaymentSpinnerItem(
 fun InputCategorySpinnerItem(
     title: String,
     list: List<Category>,
-    onValueSelected: (Category) -> Unit
+    onValueSelected: (Category) -> Unit,
+    onAddItemListener: () -> Unit
 ) {
     val isClicked = remember { mutableStateOf(false) }
     val currentItem = remember { mutableStateOf(-1) }
@@ -459,14 +466,48 @@ fun InputCategorySpinnerItem(
                             currentItem.value = list.indexOf(it)
                         }) {
                             Text(
+                                modifier = Modifier.width(200.dp),
                                 text = it.name,
                                 fontSize = 12.sp,
                                 color = Purple
                             )
                         }
                     }
+                    AddTextItem(onAddItemListener)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun AddTextItem(onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp, 10.dp, 16.dp, 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "추가하기",
+                color = Purple,
+                fontSize = 12.sp
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Icon(
+                modifier = Modifier.size(20.dp),
+                painter = painterResource(id = R.drawable.ic_plus),
+                contentDescription = "Add icon",
+                tint = Purple
+            )
         }
     }
 }
