@@ -2,9 +2,9 @@ package com.woowahan.accountbook.ui.analysis
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -15,11 +15,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
+import com.woowahan.accountbook.ui.component.BoldDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
-import com.woowahan.accountbook.ui.theme.Yellow4
+import com.woowahan.accountbook.ui.theme.Purple
+import com.woowahan.accountbook.ui.theme.Red
 
 @Composable
 fun AnalysisScreen(
@@ -29,6 +33,7 @@ fun AnalysisScreen(
     val title by mainViewModel.appBarTitle.observeAsState("")
     analysisViewModel.getRecords(title)
     val pair = analysisViewModel.parseRecord()
+    val totalSpend by analysisViewModel.totalSpend.observeAsState(0L)!!
 
     Scaffold(
         topBar = {
@@ -50,6 +55,23 @@ fun AnalysisScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
+            Row(modifier = Modifier.padding(16.dp, 10.dp, 16.dp, 10.dp)) {
+                Text(
+                    text = "이번 달 총 지출 금액",
+                    fontSize = 14.sp,
+                    color = Purple,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = String.format("%,d", totalSpend),
+                    fontSize = 14.sp,
+                    color = Red,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            BoldDivider()
+            Spacer(modifier = Modifier.height(20.dp))
             AnimatedCircle(
                 proportions = pair.first,
                 colors = pair.second,

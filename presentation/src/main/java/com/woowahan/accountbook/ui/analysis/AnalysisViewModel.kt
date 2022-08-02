@@ -23,6 +23,10 @@ class AnalysisViewModel @Inject constructor(
     val records: LiveData<List<Record>>
         get() = _records
 
+    private val _totalSpend = MutableLiveData(0L)
+    val totalSpend: LiveData<Long>
+        get() = _totalSpend
+
     fun getRecords(date: String) {
         if (date.isNotEmpty()) {
             viewModelScope.launch {
@@ -39,6 +43,7 @@ class AnalysisViewModel @Inject constructor(
 
     fun parseRecord(): Pair<List<Float>, ArrayList<Color>> {
         val spendingRecord = _records.value!!.filter { it.type == DBHelper.SPENDING }
+        _totalSpend.value = (spendingRecord.sumOf { it.price } * -1)
         val spendingGroup = spendingRecord.groupBy { it.category }
         val properties = LongArray(spendingGroup.size) { i -> 0 }
         val colors = ArrayList<Color>()
