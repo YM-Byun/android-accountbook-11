@@ -37,7 +37,7 @@ fun RecordListScreen(
     mainViewModel: MainViewModel,
     recordViewModel: RecordViewModel
 ) {
-    val title by mainViewModel.currentScreen.observeAsState("")
+    val title by mainViewModel.appBarTitle.observeAsState("")
     val coroutineScope = rememberCoroutineScope()
 
     val leftClicked = recordViewModel.leftBtnOnClick.observeAsState().value!!
