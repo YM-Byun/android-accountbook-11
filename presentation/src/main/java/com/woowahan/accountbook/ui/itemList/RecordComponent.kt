@@ -427,7 +427,7 @@ fun InputCategorySpinnerItem(
             if (currentItem.value == -1) {
                 Text(
                     modifier = Modifier.align(Alignment.CenterStart),
-                    text = "미분류",
+                    text = "선택하세요",
                     color = LightPurple,
                     fontSize = 14.sp,
                 )
