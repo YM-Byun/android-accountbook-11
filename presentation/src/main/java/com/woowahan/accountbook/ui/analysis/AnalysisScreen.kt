@@ -21,7 +21,7 @@ import com.woowahan.accountbook.ui.theme.Yellow4
 
 @Composable
 fun AnalysisScreen(viewModel: MainViewModel) {
-    val title by viewModel.currentScreen.observeAsState("")
+    val title by viewModel.appBarTitle.observeAsState("")
 
     Scaffold(
         topBar = {

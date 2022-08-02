@@ -13,16 +13,20 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.chargemap.compose.numberpicker.NumberPicker
 import com.woowahan.accountbook.ui.theme.White
+import java.util.*
 
 @Composable
 fun MonthPicker(
-    currentYear: Int,
-    currentMonth: Int,
+    initYear: Int,
+    initMonth: Int,
     onDismissRequest: () -> Unit,
     onSelected: (Int, Int) -> Unit
 ) {
-    var year by remember { mutableStateOf(currentYear) }
-    var month by remember { mutableStateOf(currentMonth) }
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+    val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
+
+    var year by remember { mutableStateOf(initYear) }
+    var month by remember { mutableStateOf(initMonth) }
     var endMonth = if (year == currentYear) {
         currentMonth
     } else {

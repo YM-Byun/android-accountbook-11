@@ -18,10 +18,13 @@ fun DatePicker(
 
     calendar.time = Date()
 
-    DatePickerDialog(
+    val dialog = DatePickerDialog(
         context,
         { _: DatePicker?, pYear: Int, pMonth: Int, pDay: Int ->
             func(pYear, pMonth, pDay)
         }, year, month, day
-    ).show()
+    )
+
+    dialog.datePicker.maxDate = System.currentTimeMillis()
+    dialog.show()
 }

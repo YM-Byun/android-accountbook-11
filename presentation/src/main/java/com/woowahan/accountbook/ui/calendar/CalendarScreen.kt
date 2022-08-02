@@ -21,7 +21,7 @@ import com.woowahan.accountbook.ui.theme.Green4
 
 @Composable
 fun CalendarScreen(viewModel: MainViewModel) {
-    val title by viewModel.currentScreen.observeAsState("")
+    val title by viewModel.appBarTitle.observeAsState("")
     Scaffold(
         topBar = {
             TopAppBar(

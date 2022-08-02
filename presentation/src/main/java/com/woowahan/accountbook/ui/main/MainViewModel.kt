@@ -15,31 +15,39 @@ class MainViewModel : ViewModel() {
     private val year
         get() = calendar.get(Calendar.YEAR)
 
-    private val _currentScreen = MutableLiveData("${year}년 ${month + 1}월")
-    val currentScreen: LiveData<String>
-        get() = _currentScreen
+    private val _appBarTitle = MutableLiveData("${year}년 ${month + 1}월")
+    val appBarTitle: LiveData<String>
+        get() = _appBarTitle
 
 
     fun onScreenChange(type: String) {
         when (type) {
             "prev" -> {
                 calendar.add(Calendar.MONTH, -1)
-                _currentScreen.value = "${year}년 ${month + 1}월"
+                _appBarTitle.value = "${year}년 ${month + 1}월"
             }
             "next" -> {
-                calendar.add(Calendar.MONTH, 1)
-                _currentScreen.value = "${year}년 ${month + 1}월"
+                if (!isSameMonth(year, month)) {
+                    calendar.add(Calendar.MONTH, 1)
+                    _appBarTitle.value = "${year}년 ${month + 1}월"
+                }
             }
             SETTINGS -> {
-                _currentScreen.value = "설정"
+                _appBarTitle.value = "설정"
             }
             ITEM_LIST -> {
-                _currentScreen.value = "${year}년 ${month + 1}월"
+                _appBarTitle.value = "${year}년 ${month + 1}월"
             }
         }
     }
 
+    private fun isSameMonth(year: Int, month: Int): Boolean {
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+        return currentYear == year && currentMonth == month
+    }
+
     fun onDatePicked(newYear: Int, newMonth: Int) {
-        _currentScreen.value = "${newYear}년 ${newMonth}월"
+        _appBarTitle.value = "${newYear}년 ${newMonth}월"
     }
 }
