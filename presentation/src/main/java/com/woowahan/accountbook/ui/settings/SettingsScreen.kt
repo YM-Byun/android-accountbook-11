@@ -65,9 +65,7 @@ fun SettingsScreen(
                 item {
                     SettingsAddItem(text = "결제수단 추가하기") {
                         navController.navigate(ADD_PAYMENTS) {
-                            navController.graph.startDestinationRoute?.let {
-                                popUpTo(it) { saveState = true }
-                            }
+                            navController.graph.startDestinationRoute
                             launchSingleTop = true
                             restoreState = true
                         }
@@ -88,9 +86,7 @@ fun SettingsScreen(
                 item {
                     SettingsAddItem(text = "지출 카테고리 추가하기") {
                         navController.navigate(ADD_SPENDING) {
-                            navController.graph.startDestinationRoute?.let {
-                                popUpTo(it) { saveState = true }
-                            }
+                            navController.graph.startDestinationRoute
                             launchSingleTop = true
                             restoreState = true
                         }
@@ -111,9 +107,7 @@ fun SettingsScreen(
                 item {
                     SettingsAddItem(text = "수입 카테고리 추가하기") {
                         navController.navigate(ADD_INCOME) {
-                            navController.graph.startDestinationRoute?.let {
-                                popUpTo(it) { saveState = true }
-                            }
+                            navController.graph.startDestinationRoute
                             launchSingleTop = true
                             restoreState = true
                         }
