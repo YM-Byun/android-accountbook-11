@@ -13,6 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.*
+import com.woowahan.accountbook.ui.navigate.ADD_INCOME
+import com.woowahan.accountbook.ui.navigate.ADD_ITEM
+import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
+import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
 import com.woowahan.accountbook.ui.theme.LightPurple
 import kotlinx.coroutines.launch
 
@@ -76,10 +80,18 @@ fun RecordAddScreen(
                     if (!isIncomeClicked) {
                         InputPaymentSpinnerItem(
                             title = "결제수단",
-                            list = viewModel.payments.value!!
-                        ) {
-                            viewModel.payment.value = it
-                        }
+                            list = viewModel.payments.value!!,
+                            onValueSelected = {
+                                viewModel.payment.value = it
+                            },
+                            onAddItemListener = {
+                                navController.navigate(ADD_PAYMENTS) {
+                                    navController.graph.startDestinationRoute
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
+                        )
 
                         LightDivider(padding = 0)
                     }
@@ -90,10 +102,23 @@ fun RecordAddScreen(
                             viewModel.income.value!!
                         } else {
                             viewModel.spending.value!!
+                        },
+                        onAddItemListener = {
+                            val route = if (isIncomeClicked) {
+                                ADD_INCOME
+                            } else {
+                                ADD_SPENDING
+                            }
+                            navController.navigate(route) {
+                                navController.graph.startDestinationRoute
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        onValueSelected = {
+                            viewModel.category.value = it
                         }
-                    ) {
-                        viewModel.category.value = it
-                    }
+                    )
 
                     LightDivider(padding = 0)
 
