@@ -30,7 +30,7 @@ fun CalendarScreen(
     mainViewModel: MainViewModel,
 ) {
     val title by mainViewModel.appBarTitle.observeAsState("")
-    val calendarViewModel = remember { CalendarViewModel() }
+    val calendarViewModel =  CalendarViewModel()
     calendarViewModel.parseCalendar(title, mainViewModel.records.value!!)
 
     Scaffold(
