@@ -16,10 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
-    private val getRecordsByMonthUseCase: GetRecordsByMonthUseCase
-) : ViewModel() {
+class MainViewModel: ViewModel() {
     private val calendar = Calendar.getInstance()
     private val month
         get() = calendar.get(Calendar.MONTH)
@@ -40,13 +37,11 @@ class MainViewModel @Inject constructor(
             "prev" -> {
                 calendar.add(Calendar.MONTH, -1)
                 _appBarTitle.value = "${year}년 ${month + 1}월"
-                getRecords()
             }
             "next" -> {
                 if (!isSameMonth(year, month)) {
                     calendar.add(Calendar.MONTH, 1)
                     _appBarTitle.value = "${year}년 ${month + 1}월"
-                    getRecords()
                 }
             }
             SETTINGS -> {
@@ -66,20 +61,5 @@ class MainViewModel @Inject constructor(
 
     fun onDatePicked(newYear: Int, newMonth: Int) {
         _appBarTitle.value = "${newYear}년 ${newMonth}월"
-    }
-
-    fun getRecords() {
-        appBarTitle.value?.let { date ->
-            if (date.isNotEmpty()) {
-                viewModelScope.launch {
-                    _records.postValue(
-                        getRecordsByMonthUseCase.execute(
-                            date.year(),
-                            date.month()
-                        )
-                    )
-                }
-            }
-        }
     }
 }

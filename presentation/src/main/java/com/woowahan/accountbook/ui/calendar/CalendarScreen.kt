@@ -28,10 +28,10 @@ import com.woowahan.domain.model.Calendar
 @Composable
 fun CalendarScreen(
     mainViewModel: MainViewModel,
+    calendarViewModel: CalendarViewModel
 ) {
     val title by mainViewModel.appBarTitle.observeAsState("")
-    val calendarViewModel =  CalendarViewModel()
-    calendarViewModel.parseCalendar(title, mainViewModel.records.value!!)
+    calendarViewModel.getCalendarData(title)
 
     Scaffold(
         topBar = {

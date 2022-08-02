@@ -3,14 +3,22 @@ package com.woowahan.accountbook.ui.calendar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.woowahan.accountbook.extenstion.month
 import com.woowahan.accountbook.extenstion.year
 import com.woowahan.data.entity.DBHelper
+import com.woowahan.domain.accountUseCase.GetRecordsByMonthUseCase
 import com.woowahan.domain.model.Record
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 import kotlin.math.ceil
 
-class CalendarViewModel : ViewModel() {
+@HiltViewModel
+class CalendarViewModel @Inject constructor(
+    private val getRecordsByMonthUseCase: GetRecordsByMonthUseCase
+) : ViewModel() {
     private val current = Calendar.getInstance()
     private val currentYear = current.get(Calendar.YEAR)
     private val currentMonth = current.get(Calendar.MONTH)
@@ -22,17 +30,17 @@ class CalendarViewModel : ViewModel() {
         get() = _calendarData
 
     fun parseCalendar(
-        title: String,
+        date: String,
         records: List<Record>
     ) {
         val list = ArrayList<com.woowahan.domain.model.Calendar>()
 
-        if (title.isEmpty()) {
+        if (date.isEmpty()) {
             return
         }
 
-        val year = title.year()
-        val month = title.month() - 1
+        val year = date.year()
+        val month = date.month() - 1
 
         val lastDayOfLastMonth = getLastDayOfMonth(year, month - 1)
         val lastDayOfThisMonth = getLastDayOfMonth(year, month)
@@ -178,5 +186,19 @@ class CalendarViewModel : ViewModel() {
         val firstDay = Calendar.getInstance().clone() as Calendar
         firstDay.set(year, month, 1)
         return firstDay.get(Calendar.DAY_OF_WEEK) - 1
+    }
+
+    fun getCalendarData(date: String) {
+        if (date.isNotEmpty()) {
+            viewModelScope.launch {
+                parseCalendar(
+                    date,
+                    getRecordsByMonthUseCase.execute(
+                        date.year(),
+                        date.month()
+                    )
+                )
+            }
+        }
     }
 }

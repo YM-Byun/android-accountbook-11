@@ -61,7 +61,7 @@ fun RecordListScreen(
 
     var showPicker by remember { mutableStateOf(false) }
 
-    mainViewModel.getRecords()
+    recordViewModel.getRecords(title)
 
     Scaffold(
         topBar = {
@@ -77,7 +77,7 @@ fun RecordListScreen(
                     btn2OnClick = {
                         coroutineScope.launch {
                             recordViewModel.deleteItems(selectedItems)
-                            mainViewModel.getRecords()
+                            recordViewModel.getRecords(title)
                             selectedItems.clear()
                             selectMode = false
                         }
