@@ -79,8 +79,10 @@ fun SettingsScreen(
                 items(
                     items = spending,
                     itemContent = {
-                        SettingsItemWithCategory(it.name, spendingColors[it.color])
-                        LightDivider(padding = 16)
+                        if (it.name != "미분류") {
+                            SettingsItemWithCategory(it.name, spendingColors[it.color])
+                            LightDivider(padding = 16)
+                        }
                     }
                 )
                 item {
@@ -100,8 +102,10 @@ fun SettingsScreen(
                 items(
                     items = income,
                     itemContent = {
-                        SettingsItemWithCategory(it.name, incomeColors[it.color])
-                        LightDivider(padding = 16)
+                        if (it.name != "미분류") {
+                            SettingsItemWithCategory(it.name, incomeColors[it.color])
+                            LightDivider(padding = 16)
+                        }
                     }
                 )
                 item {

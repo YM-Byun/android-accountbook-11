@@ -427,7 +427,7 @@ fun InputCategorySpinnerItem(
             if (currentItem.value == -1) {
                 Text(
                     modifier = Modifier.align(Alignment.CenterStart),
-                    text = "선택하세요",
+                    text = "미분류",
                     color = LightPurple,
                     fontSize = 14.sp,
                 )
@@ -465,12 +465,14 @@ fun InputCategorySpinnerItem(
                             isClicked.value = false
                             currentItem.value = list.indexOf(it)
                         }) {
-                            Text(
-                                modifier = Modifier.width(200.dp),
-                                text = it.name,
-                                fontSize = 12.sp,
-                                color = Purple
-                            )
+                            if (it.name != "미분류") {
+                                Text(
+                                    modifier = Modifier.width(200.dp),
+                                    text = it.name,
+                                    fontSize = 12.sp,
+                                    color = Purple
+                                )
+                            }
                         }
                     }
                     AddTextItem(onAddItemListener)
