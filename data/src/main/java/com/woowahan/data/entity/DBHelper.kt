@@ -1,5 +1,6 @@
 package com.woowahan.data.entity
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -37,6 +38,18 @@ class DBHelper(
                 "primary key(`name`, `record_type`)" +
                 ")"
         db?.execSQL(createCategoryTable)
+
+        val incomeDefault = ContentValues()
+        incomeDefault.put("name", "미분류")
+        incomeDefault.put("color", 0)
+        incomeDefault.put("record_type", INCOME)
+
+        val spendingDefault = ContentValues()
+        spendingDefault.put("name", "미분류")
+        spendingDefault.put("color", 0)
+        spendingDefault.put("record_type", SPENDING)
+        db?.insert("category", null, incomeDefault)
+        db?.insert("category", null, spendingDefault)
 
         val createRecordTable = "create table record(" +
                 "id integer primary key autoincrement," +

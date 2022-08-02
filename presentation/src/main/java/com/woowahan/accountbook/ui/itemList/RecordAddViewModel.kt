@@ -50,7 +50,7 @@ class RecordAddViewModel @Inject constructor(
     }
 
     fun isValid(incomeClicked: Boolean): Boolean {
-        if (date.value.isNotEmpty() && price.value.isNotEmpty()) {
+        if (date.value.trim().isNotEmpty() && price.value.trim().isNotEmpty()) {
             if (!incomeClicked) {
                 return payment.value.name.isNotEmpty()
             }
@@ -95,6 +95,10 @@ class RecordAddViewModel @Inject constructor(
             price.value.toLong()
         } else {
             (price.value.toLong()) * -1
+        }
+
+        if (category.value.name.isEmpty()) {
+            category.value.name = "미분류"
         }
         return Record(
             0,

@@ -461,16 +461,18 @@ fun InputCategorySpinnerItem(
                     onDismissRequest = { isClicked.value = false },
                 ) {
                     list.forEach {
-                        DropdownMenuItem(onClick = {
-                            isClicked.value = false
-                            currentItem.value = list.indexOf(it)
-                        }) {
-                            Text(
-                                modifier = Modifier.width(200.dp),
-                                text = it.name,
-                                fontSize = 12.sp,
-                                color = Purple
-                            )
+                        if (it.name != "미분류") {
+                            DropdownMenuItem(onClick = {
+                                isClicked.value = false
+                                currentItem.value = list.indexOf(it)
+                            }) {
+                                Text(
+                                    modifier = Modifier.width(200.dp),
+                                    text = it.name,
+                                    fontSize = 12.sp,
+                                    color = Purple
+                                )
+                            }
                         }
                     }
                     AddTextItem(onAddItemListener)
