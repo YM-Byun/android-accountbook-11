@@ -42,7 +42,7 @@ class SettingsAddViewModel @Inject constructor(
     }
 
     fun isValid(): Boolean {
-        return name.value.isNotEmpty()
+        return (name.value.trim().isNotEmpty() || name.value.trim() != "미분류")
     }
 
     fun init() {
