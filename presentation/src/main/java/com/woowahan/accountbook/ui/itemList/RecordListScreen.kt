@@ -1,21 +1,18 @@
 package com.woowahan.accountbook.ui.itemList
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,7 +25,6 @@ import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.model.Record
 import kotlinx.coroutines.launch
-import java.time.Month
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

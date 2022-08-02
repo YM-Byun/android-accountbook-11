@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.woowahan.accountbook.ui.navigate.ITEM_LIST
 import com.woowahan.accountbook.ui.navigate.SETTINGS
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainViewModel : ViewModel() {
@@ -26,8 +27,10 @@ class MainViewModel : ViewModel() {
                 _appBarTitle.value = "${year}년 ${month + 1}월"
             }
             "next" -> {
-                calendar.add(Calendar.MONTH, 1)
-                _appBarTitle.value = "${year}년 ${month + 1}월"
+                if (!isSameMonth(year, month)) {
+                    calendar.add(Calendar.MONTH, 1)
+                    _appBarTitle.value = "${year}년 ${month + 1}월"
+                }
             }
             SETTINGS -> {
                 _appBarTitle.value = "설정"
@@ -36,6 +39,12 @@ class MainViewModel : ViewModel() {
                 _appBarTitle.value = "${year}년 ${month + 1}월"
             }
         }
+    }
+
+    private fun isSameMonth(year: Int, month: Int): Boolean {
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+        return currentYear == year && currentMonth == month
     }
 
     fun onDatePicked(newYear: Int, newMonth: Int) {
