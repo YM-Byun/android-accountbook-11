@@ -1,9 +1,11 @@
-package com.woowahan.accountbook.ui.itemList
+package com.woowahan.accountbook.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.woowahan.accountbook.extenstion.month
+import com.woowahan.accountbook.extenstion.year
 import com.woowahan.domain.accountUseCase.DeleteRecordsUseCase
 import com.woowahan.domain.accountUseCase.GetRecordsByMonthUseCase
 import com.woowahan.domain.model.Record
@@ -25,12 +27,11 @@ class RecordViewModel @Inject constructor(
 
     fun getRecords(date: String) {
         if (date.isNotEmpty()) {
-            val token = date.replace("년", "").replace("월", "").replace("일", "").split(" ")
             viewModelScope.launch {
                 _records.postValue(
                     getRecordsByMonthUseCase.execute(
-                        token[0].toInt(),
-                        token[1].toInt()
+                        date.year(),
+                        date.month()
                     )
                 )
             }
