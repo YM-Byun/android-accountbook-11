@@ -87,17 +87,18 @@ fun RecordItem(
     onLongClick: () -> Unit,
     isSelected: Boolean
 ) {
+    val color = if (isSelected) {
+        White
+    } else {
+        Color.Transparent
+    }
     val backgroundModifier = Modifier
         .fillMaxWidth()
+        .background(color)
         .combinedClickable(
             onClick = onClick,
             onLongClick = onLongClick
         )
-
-    if (isSelected) {
-        backgroundModifier.background(White)
-    }
-
     Column(
         modifier = backgroundModifier
     ) {
