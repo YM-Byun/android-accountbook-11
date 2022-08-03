@@ -49,12 +49,14 @@ class MainViewModel @Inject constructor(
         if (!isSameMonth(year, month)) {
             calendar.add(Calendar.MONTH, 1)
             _appBarTitle.value = generateTitle(year, month + 1)
+            getRecords()
         }
     }
 
     fun onPrevClicked() {
         calendar.add(Calendar.MONTH, -1)
         _appBarTitle.value = generateTitle(year, month + 1)
+        getRecords()
     }
 
     private fun generateTitle(year: Int, month: Int): String {
@@ -73,11 +75,12 @@ class MainViewModel @Inject constructor(
 
     fun getRecords() {
         viewModelScope.launch {
-            val recordList = getRecordsByMonthUseCase.execute(year, month + 1)
+            var recordList = getRecordsByMonthUseCase.execute(year, month + 1)
 
             _totalIncome = recordList.filter { it.type == DBHelper.INCOME }.sumOf { it.price }
             _totalSpending =
                 recordList.filter { it.type == DBHelper.SPENDING }.sumOf { -it.price }
+
             _records.postValue(recordList)
         }
     }
