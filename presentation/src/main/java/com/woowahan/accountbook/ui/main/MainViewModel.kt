@@ -71,6 +71,8 @@ class MainViewModel @Inject constructor(
 
     fun onDatePicked(newYear: Int, newMonth: Int) {
         _appBarTitle.value = generateTitle(newYear, newMonth)
+        calendar.set(newYear, newMonth - 1, calendar.get(Calendar.DAY_OF_MONTH))
+        getRecords()
     }
 
     fun getRecords() {
