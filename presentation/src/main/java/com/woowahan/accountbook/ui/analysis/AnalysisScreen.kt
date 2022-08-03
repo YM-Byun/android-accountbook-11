@@ -48,11 +48,11 @@ fun AnalysisScreen(
                 title = title,
                 btn1Image = R.drawable.ic_left,
                 btn1OnClick = {
-                    mainViewModel.onScreenChange("prev")
+                    mainViewModel.onPrevClicked()
                 },
                 btn2Image = R.drawable.ic_right,
                 btn2OnClick = {
-                    mainViewModel.onScreenChange("next")
+                    mainViewModel.onNextClicked()
                 },
                 titleOnClick = {
                     showPicker = true

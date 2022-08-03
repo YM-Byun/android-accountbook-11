@@ -16,36 +16,32 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
     private val calendar = Calendar.getInstance()
-    private val month
-        get() = calendar.get(Calendar.MONTH)
-    private val year
-        get() = calendar.get(Calendar.YEAR)
 
     private val _appBarTitle = MutableLiveData("${year}년 ${month + 1}월")
     val appBarTitle: LiveData<String>
         get() = _appBarTitle
 
-    fun onScreenChange(type: String) {
-        when (type) {
-            "prev" -> {
-                calendar.add(Calendar.MONTH, -1)
-                _appBarTitle.value = "${year}년 ${month + 1}월"
-            }
-            "next" -> {
-                if (!isSameMonth(year, month)) {
-                    calendar.add(Calendar.MONTH, 1)
-                    _appBarTitle.value = "${year}년 ${month + 1}월"
-                }
-            }
-            SETTINGS -> {
-                _appBarTitle.value = "설정"
-            }
-            ITEM_LIST -> {
-                _appBarTitle.value = "${year}년 ${month + 1}월"
-            }
+    private val month
+        get() = calendar.get(Calendar.MONTH)
+    private val year
+        get() = calendar.get(Calendar.YEAR)
+
+    fun onNextClicked() {
+        if (!isSameMonth(year, month)) {
+            calendar.add(Calendar.MONTH, 1)
+            _appBarTitle.value = generateTitle(year, month + 1)
         }
+    }
+
+    fun onPrevClicked() {
+        calendar.add(Calendar.MONTH, -1)
+        _appBarTitle.value = generateTitle(year, month + 1)
+    }
+
+    private fun generateTitle(year: Int, month: Int): String {
+        return "${year}년 ${month}월"
     }
 
     private fun isSameMonth(year: Int, month: Int): Boolean {
@@ -55,6 +51,6 @@ class MainViewModel: ViewModel() {
     }
 
     fun onDatePicked(newYear: Int, newMonth: Int) {
-        _appBarTitle.value = "${newYear}년 ${newMonth}월"
+        _appBarTitle.value = generateTitle(newYear, newMonth)
     }
 }
