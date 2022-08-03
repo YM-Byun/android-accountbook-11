@@ -14,23 +14,15 @@ class AccountLocalDataSourceImpl(
 ) :
     AccountLocalDataSource {
     override suspend fun addPayment(name: String) {
-        val sqlInsertPayment = "insert into payments(`name`) values('$name')"
+        val sqlInsertPayment = "insert into payment(`name`) values('$name')"
         dbHelper.wriable.execSQL(sqlInsertPayment)
     }
 
-    override suspend fun addIncomeCategory(name: String, color: Int) {
+    override suspend fun addCategory(name: String, color: Int, mode: String) {
         val values = ContentValues()
         values.put("name", name)
         values.put("color", color)
-        values.put("record_type", DBHelper.INCOME)
-        dbHelper.wriable.insert("category", null, values)
-    }
-
-    override suspend fun addSpendingCategory(name: String, color: Int) {
-        val values = ContentValues()
-        values.put("name", name)
-        values.put("color", color)
-        values.put("record_type", DBHelper.SPENDING)
+        values.put("record_type", mode)
         dbHelper.wriable.insert("category", null, values)
     }
 
@@ -42,9 +34,11 @@ class AccountLocalDataSourceImpl(
         val cursor = dbHelper.readable.rawQuery(query, null)
 
         while (cursor.moveToNext()) {
+            val id = cursor.getInt(cursor.getColumnIndex("id"))
             val name = cursor.getString(cursor.getColumnIndex("name"))
             val color = cursor.getInt(cursor.getColumnIndex("color"))
-            categories.add(CategoryData(name, color).toModel())
+
+            categories.add(CategoryData(id, name, color).toModel())
         }
 
         return categories
@@ -52,14 +46,18 @@ class AccountLocalDataSourceImpl(
 
     @SuppressLint("Range")
     override suspend fun getPayments(): List<Payment> {
-        val query = "select * from payments"
+        val query = "select * from payment"
         val payments = ArrayList<Payment>()
 
         val cursor = dbHelper.readable.rawQuery(query, null)
 
         while (cursor.moveToNext()) {
+            val id = cursor.getInt(cursor.getColumnIndex("id"))
             val name = cursor.getString(cursor.getColumnIndex("name"))
-            payments.add(PaymentData(name).toModel())
+
+            if (name.isNotEmpty()) {
+                payments.add(PaymentData(id, name).toModel())
+            }
         }
 
         return payments
@@ -78,18 +76,18 @@ class AccountLocalDataSourceImpl(
         )
         values.put("price", record.price)
         values.put("content", record.content)
-        values.put("payments", record.payment.name)
-        values.put("category", record.category.name)
-        values.put("record_type", mode)
+        values.put("payment_id", record.payment.id)
+        values.put("category_id", record.category.id)
 
         dbHelper.wriable.insert("record", null, values)
     }
 
     @SuppressLint("Range")
     override suspend fun getRecords(year: Int, month: Int): List<Record> {
-        val query = "select * from record " +
-                "inner join category on record.`category` = category.`name` " +
-                "and record.`record_type` = category.`record_type`" +
+        val query = "select *, payment.`name` as `payment`, category.`name` as `category` " +
+                " from record " +
+                "inner join category on record.`category_id` = category.`id` " +
+                "inner join payment on record.`payment_id` = payment.`id` " +
                 "where strftime('%m', date) = '${String.format("%02d", month)}' " +
                 "and strftime('%Y', date) = '$year'"
         val records = ArrayList<Record>()
@@ -101,16 +99,62 @@ class AccountLocalDataSourceImpl(
             val date = cursor.getString(cursor.getColumnIndex("date"))
             val price = cursor.getLong(cursor.getColumnIndex("price"))
             val content = cursor.getString(cursor.getColumnIndex("content"))
-            val payment = cursor.getString(cursor.getColumnIndex("payments"))
+            val paymentId = cursor.getInt(cursor.getColumnIndex("payment_id"))
+            val payment = cursor.getString(cursor.getColumnIndex("payment"))
+            val categoryId = cursor.getInt(cursor.getColumnIndex("category_id"))
             val category = cursor.getString(cursor.getColumnIndex("category"))
             val recordType = cursor.getString(cursor.getColumnIndex("record_type"))
             val color = cursor.getInt(cursor.getColumnIndex("color"))
 
-            val record = RecordData(id, date, price, content, payment, category, recordType, color)
+            val record =
+                RecordData(
+                    id,
+                    date,
+                    price,
+                    content,
+                    paymentId,
+                    payment,
+                    categoryId,
+                    category,
+                    recordType,
+                    color
+                )
             records.add(record.toModel())
         }
 
         return records
+    }
+
+    override suspend fun updateRecord(record: Record) {
+        val values = ContentValues()
+        values.put(
+            "date",
+            "${record.year}-${String.format("%02d", record.month)}-${
+                String.format(
+                    "%02d",
+                    record.day
+                )
+            }"
+        )
+        values.put("price", record.price)
+        values.put("content", record.content)
+        values.put("payment_id", record.payment.id)
+        values.put("category_id", record.category.id)
+
+        dbHelper.wriable.update("record", values, "id=?", arrayOf(record.id.toString()))
+    }
+
+    override suspend fun updatePayment(payment: Payment) {
+        val values = ContentValues()
+        values.put("name", payment.name)
+        dbHelper.wriable.update("payment", values, "id=?", arrayOf(payment.id.toString()))
+    }
+
+    override suspend fun updateCategory(category: Category) {
+        val values = ContentValues()
+        values.put("name", category.name)
+        values.put("color", category.color)
+        dbHelper.wriable.update("category", values, "id=?", arrayOf(category.id.toString()))
     }
 
     override suspend fun deleteRecords(records: List<Record>) {

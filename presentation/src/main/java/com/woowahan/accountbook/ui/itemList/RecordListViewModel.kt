@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.woowahan.accountbook.extenstion.month
 import com.woowahan.accountbook.extenstion.year
+import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.accountUseCase.DeleteRecordsUseCase
 import com.woowahan.domain.accountUseCase.GetRecordsByMonthUseCase
 import com.woowahan.domain.model.Record
@@ -23,17 +24,28 @@ class RecordListViewModel @Inject constructor(
         get() = _records
 
     val leftBtnOnClick = MutableLiveData(true)
-    val rightBtnOnClick = MutableLiveData(true)
+    val rightBtnOnClick = MutableLiveData(false)
+
+    private var _totalIncome = 0L
+    val totalIncome: Long
+        get() = _totalIncome
+
+    private var _totalSpending = 0L
+    val totalSpending: Long
+        get() = _totalSpending
 
     fun getRecords(date: String) {
         if (date.isNotEmpty()) {
             viewModelScope.launch {
-                _records.postValue(
-                    getRecordsByMonthUseCase.execute(
-                        date.year(),
-                        date.month()
-                    )
+                val recordList = getRecordsByMonthUseCase.execute(
+                    date.year(),
+                    date.month()
                 )
+
+                _totalIncome = recordList.filter { it.type == DBHelper.INCOME }.sumOf { it.price }
+                _totalSpending =
+                    recordList.filter { it.type == DBHelper.SPENDING }.sumOf { -it.price }
+                _records.postValue(recordList)
             }
         }
     }

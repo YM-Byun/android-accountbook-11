@@ -12,12 +12,8 @@ class AccountRepositoryImpl(
         return dataSource.addPayment(name)
     }
 
-    override suspend fun addIncomeCategory(name: String, color: Int) {
-        return dataSource.addIncomeCategory(name, color)
-    }
-
-    override suspend fun addSpendingCategory(name: String, color: Int) {
-        return dataSource.addSpendingCategory(name, color)
+    override suspend fun addCategory(name: String, color: Int, mode: String) {
+        return dataSource.addCategory(name, color, mode)
     }
 
     override suspend fun getCategory(mode: String): List<Category> {
@@ -34,6 +30,18 @@ class AccountRepositoryImpl(
 
     override suspend fun getRecordsByMonth(year: Int, month: Int): List<Record> {
         return dataSource.getRecords(year, month)
+    }
+
+    override suspend fun updateCategory(category: Category) {
+        return dataSource.updateCategory(category)
+    }
+
+    override suspend fun updatePayment(payment: Payment) {
+        return dataSource.updatePayment(payment)
+    }
+
+    override suspend fun updateRecord(record: Record) {
+        return dataSource.updateRecord(record)
     }
 
     override suspend fun deleteRecords(records: List<Record>) {

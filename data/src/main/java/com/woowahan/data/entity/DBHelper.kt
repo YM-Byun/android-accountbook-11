@@ -20,10 +20,15 @@ class DBHelper(
     val wriable = writableDatabase
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val createPaymentsTable = "create table payments (" +
-                "name varchar(40) primary key" +
+        val createPaymentsTable = "create table payment (" +
+                "id integer primary key autoincrement," +
+                "name varchar(40)" +
                 ")"
         db?.execSQL(createPaymentsTable)
+        val paymentDefault = ContentValues()
+        paymentDefault.put("id", 0)
+        paymentDefault.put("name", "")
+        db?.insert("payment", null, paymentDefault)
 
         val createRecordTypeTable = "create table record_type(" +
                 "name varchar(20) primary key" +
@@ -31,11 +36,11 @@ class DBHelper(
         db?.execSQL(createRecordTypeTable)
 
         val createCategoryTable = "create table category(" +
+                "id integer primary key autoincrement," +
                 "name varchar(40)," +
                 "record_type varchar(20)," +
                 "color integer," +
-                "foreign key (`record_type`) references `record_type` (`name`)," +
-                "primary key(`name`, `record_type`)" +
+                "foreign key (`record_type`) references `record_type` (`name`)" +
                 ")"
         db?.execSQL(createCategoryTable)
 
@@ -56,11 +61,10 @@ class DBHelper(
                 "date date," +
                 "price bigint," +
                 "content varchar(100)," +
-                "payments varchar(40)," +
-                "category varchar(40)," +
-                "record_type varchar(20)," +
-                "foreign key(`payments`) references `payments`(`name`)," +
-                "foreign key(`category`, `record_type`) references `category`(`name`, `record_type`)" +
+                "payment_id varchar(40)," +
+                "category_id varchar(40)," +
+                "foreign key(`payment_id`) references `payment`(`id`)," +
+                "foreign key(`category_id`) references `category`(`id`)" +
                 ")"
         db?.execSQL(createRecordTable)
 

@@ -9,7 +9,9 @@ data class RecordData(
     val date: String,
     val price: Long,
     val content: String,
+    val payment_id: Int,
     val payment: String,
+    val category_id: Int,
     val category: String,
     val recordType: String,
     val color: Int
@@ -25,8 +27,8 @@ fun RecordData.toModel(): Record {
         tokens[2].toInt(),
         this.price,
         this.recordType,
-        Payment(this.payment),
+        Payment(this.payment_id, this.payment),
         this.content,
-        Category(this.category, this.color)
+        Category(this.category_id, this.category, this.color)
     )
 }

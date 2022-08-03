@@ -127,23 +127,12 @@ fun RecordListScreen(
                 }
             }
             Column {
-                var totalIncome = 0L
-                var totalSpending = 0L
-
-                records.forEach { record ->
-                    if (record.type == DBHelper.INCOME) {
-                        totalIncome += record.price
-                    } else {
-                        totalSpending += (record.price * -1)
-                    }
-                }
-
                 FilterButton(
                     showCheckBox = true,
                     isLeftChecked = leftClicked,
                     isRightChecked = rightClicked,
-                    leftText = "수입 ${String.format("%,d", totalIncome)}",
-                    rightText = "지출 ${String.format("%,d", totalSpending)}",
+                    leftText = "수입 ${String.format("%,d", recordViewModel.totalIncome)}",
+                    rightText = "지출 ${String.format("%,d", recordViewModel.totalSpending)}",
                     modifier = Modifier.padding(16.dp),
                     leftOnClick = {
                         recordViewModel.leftBtnOnClick.postValue(!recordViewModel.leftBtnOnClick.value!!)
@@ -172,13 +161,8 @@ fun RecordListScreen(
                             val month = entry.value.first().month
                             val day = entry.value.first().day
                             val total = getTotalIncomeSpending(entry.value)
-                            var idx = 0
 
                             item {
-                                BoldDivider()
-
-                                idx += 1
-
                                 RecordHeader(
                                     header = "${month}월 ${day}일",
                                     income = total.first,
@@ -187,9 +171,8 @@ fun RecordListScreen(
 
                                 LightDivider(padding = 16)
                             }
-                            items(
-                                items = entry.value,
-                                itemContent = {
+                            item {
+                                entry.value.forEachIndexed { index, it ->
                                     RecordItem(
                                         recordType = it.type,
                                         paymentType = it.payment.name,
@@ -218,9 +201,13 @@ fun RecordListScreen(
                                         isSelected = selectedItems.contains(it),
                                     )
 
-                                    LightDivider(16)
+                                    if (index == entry.value.lastIndex) {
+                                        BoldDivider()
+                                    } else {
+                                        LightDivider(16)
+                                    }
                                 }
-                            )
+                            }
                         }
                     }
                 }

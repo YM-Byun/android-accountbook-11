@@ -25,8 +25,8 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideAddSpendingUseCase(repository: AccountRepository): AddSpendingUseCase {
-        return AddSpendingUseCase(repository)
+    fun provideAddSpendingUseCase(repository: AccountRepository): AddSpendingCategoryUseCase {
+        return AddSpendingCategoryUseCase(repository)
     }
 
     @Singleton
@@ -63,6 +63,24 @@ object UseCaseModule {
     @Provides
     fun provideGetRecordsByMonthUseCase(repository: AccountRepository): GetRecordsByMonthUseCase {
         return GetRecordsByMonthUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUpdateCategoryUseCase(repository: AccountRepository): UpdateCategoryUseCase {
+        return UpdateCategoryUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUpdatePaymentUseCase(repository: AccountRepository): UpdatePaymentUseCase {
+        return UpdatePaymentUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUpdateRecordUseCase(repository: AccountRepository): UpdateRecordUseCase {
+        return UpdateRecordUseCase(repository)
     }
 
     @Singleton
