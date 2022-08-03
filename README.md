@@ -9,4 +9,4 @@
 
 
 ## ERD 
-![AccountBookERD](https://user-images.githubusercontent.com/29909314/182032160-2bb9681e-5cd9-4d62-820e-f1b1d71d4839.png)
+![ERD](https://user-images.githubusercontent.com/29909314/182544141-dac5054f-11ec-4b6f-b8e6-34054b790b1c.png)
