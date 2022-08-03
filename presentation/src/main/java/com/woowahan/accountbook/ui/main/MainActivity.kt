@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen(mainViewModel)
+            MainScreen()
         }
 
         mainViewModel.getRecords()
@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
-        MainScreen(mainViewModel)
+        MainScreen()
     }
 
     @Composable
@@ -104,7 +104,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun MainScreen(viewModel: MainViewModel) {
+    private fun MainScreen() {
         val navController = rememberNavController()
 
         AccountBookTheme {
