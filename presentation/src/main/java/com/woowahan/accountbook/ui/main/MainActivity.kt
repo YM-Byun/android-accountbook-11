@@ -40,7 +40,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val mainViewModel = MainViewModel()
+    private val mainViewModel by viewModels<MainViewModel>()
 
     private val recordListViewModel by viewModels<RecordListViewModel>()
     private val recordAddViewModel by viewModels<RecordAddViewModel>()
@@ -55,6 +55,7 @@ class MainActivity : ComponentActivity() {
             MainScreen(mainViewModel)
         }
 
+        mainViewModel.getRecords()
         settingsViewModel.getSettings()
     }
 
@@ -72,7 +73,11 @@ class MainActivity : ComponentActivity() {
             startDestination = BottomNavItem.ItemList.screenRoute
         ) {
             composable(BottomNavItem.ItemList.screenRoute) {
-                RecordListScreen(navController, mainViewModel, recordListViewModel)
+                RecordListScreen(
+                    navController,
+                    mainViewModel,
+                    recordListViewModel
+                )
             }
             composable(BottomNavItem.Calendar.screenRoute) {
                 CalendarScreen(mainViewModel, calendarViewModel)

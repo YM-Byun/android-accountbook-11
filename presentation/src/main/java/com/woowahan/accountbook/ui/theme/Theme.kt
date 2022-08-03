@@ -15,10 +15,9 @@ private val DarkColorPalette = darkColors(
 private val LightColorPalette = lightColors(
     primary = Purple500,
     primaryVariant = Purple700,
-    secondary = Teal200
-
+    secondary = Teal200,
+    background = OffWhite,
     /* Other default colors to override
-    background = Color.White,
     surface = Color.White,
     onPrimary = Color.White,
     onSecondary = Color.Black,
@@ -27,12 +26,12 @@ private val LightColorPalette = lightColors(
     */
 )
 
-val spendingColors = listOf(
+val SpendingColors = listOf(
     Blue1, Blue2, Blue3, Blue4, Blue5, Green1, Green2, Green3, Green4, Green5,
     Purple1, Purple2, Purple3, Purple4, Purple5, Pink1, Pink2, Pink3, Pink4, Pink5
 )
 
-val incomeColors = listOf(
+val IncomeColors = listOf(
     Olive1, Olive2, Olive3, Olive4, Olive5, Yellow1, Yellow2, Yellow3, Yellow4, Yellow5
 )
 

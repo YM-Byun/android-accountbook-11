@@ -7,18 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.woowahan.accountbook.extenstion.month
 import com.woowahan.accountbook.extenstion.year
 import com.woowahan.data.entity.DBHelper
-import com.woowahan.domain.accountUseCase.GetRecordsByMonthUseCase
 import com.woowahan.domain.model.Record
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Inject
 import kotlin.math.ceil
 
-@HiltViewModel
-class CalendarViewModel @Inject constructor(
-    private val getRecordsByMonthUseCase: GetRecordsByMonthUseCase
-) : ViewModel() {
+class CalendarViewModel : ViewModel() {
     private val current = Calendar.getInstance()
     private val currentYear = current.get(Calendar.YEAR)
     private val currentMonth = current.get(Calendar.MONTH)
@@ -29,15 +23,6 @@ class CalendarViewModel @Inject constructor(
     val calendarData: LiveData<List<com.woowahan.domain.model.Calendar>>
         get() = _calendarData
 
-    private var _totalIncome = 0L
-    private var _totalSpending = 0L
-    val totalIncome: Long
-        get() = _totalIncome
-    val totalSpending: Long
-        get() = _totalSpending
-    val totalAmount: Long
-        get() = totalIncome + totalSpending
-
     fun parseCalendar(
         date: String,
         records: List<Record>
@@ -47,9 +32,6 @@ class CalendarViewModel @Inject constructor(
         if (date.isEmpty()) {
             return
         }
-
-        _totalIncome = 0L
-        _totalSpending = 0L
 
         val year = date.year()
         val month = date.month() - 1
@@ -82,7 +64,6 @@ class CalendarViewModel @Inject constructor(
             year,
             month
         )
-
         _calendarData.postValue(list)
     }
 
@@ -113,30 +94,13 @@ class CalendarViewModel @Inject constructor(
                 )
                 list.add(calendar)
             } else {
-                var income = 0L
-                var spending = 0L
-
-                recordsGroup[newDay]?.forEach {
-                    if (it.type == DBHelper.INCOME) {
-                        income += it.price
-                        _totalIncome += it.price
-                    } else {
-                        spending += it.price
-                        _totalSpending += it.price
-                    }
-                }
-
-                val calendar = com.woowahan.domain.model.Calendar(
-                    newDay,
-                    String.format("%,d", income),
-                    String.format("%,d", spending),
-                    String.format("%,d", income + spending),
-                    isToday = isToday(selectYear, selectMonth, newDay),
-                    isCurrentMonth = true
+                list.add(
+                    recordToCalendar(
+                        newDay,
+                        isToday(selectYear, selectMonth, newDay),
+                        recordsGroup
+                    )
                 )
-
-                list.add(calendar)
-
                 newDay += 1
             }
         }
@@ -166,29 +130,7 @@ class CalendarViewModel @Inject constructor(
                 )
                 list.add(calendar)
             } else {
-                var income = 0L
-                var spending = 0L
-
-                recordsGroup[day]?.forEach {
-                    if (it.type == DBHelper.INCOME) {
-                        income += it.price
-                        _totalIncome += it.price
-                    } else {
-                        spending += it.price
-                        _totalSpending += it.price
-                    }
-                }
-
-                val calendar = com.woowahan.domain.model.Calendar(
-                    day,
-                    String.format("%,d", income),
-                    String.format("%,d", spending),
-                    String.format("%,d", income + spending),
-                    isToday = isToday(year, month, day),
-                    isCurrentMonth = true
-                )
-
-                list.add(calendar)
+                list.add(recordToCalendar(day, isToday(year, month, day), recordsGroup))
             }
             day += 1
         }
@@ -204,16 +146,36 @@ class CalendarViewModel @Inject constructor(
         return firstDay.get(Calendar.DAY_OF_WEEK) - 1
     }
 
-    fun getCalendarData(date: String) {
+    private fun recordToCalendar(
+        newDay: Int,
+        isToday: Boolean,
+        recordsGroup: Map<Int, List<Record>>,
+    ): com.woowahan.domain.model.Calendar {
+        var income = 0L
+        var spending = 0L
+
+        recordsGroup[newDay]?.forEach {
+            if (it.type == DBHelper.INCOME) {
+                income += it.price
+            } else {
+                spending += it.price
+            }
+        }
+
+        return com.woowahan.domain.model.Calendar(
+            newDay,
+            String.format("%,d", income),
+            String.format("%,d", spending),
+            String.format("%,d", income + spending),
+            isToday = isToday,
+            isCurrentMonth = true
+        )
+    }
+
+    fun getCalendarData(date: String, records: List<Record>) {
         if (date.isNotEmpty()) {
             viewModelScope.launch {
-                parseCalendar(
-                    date,
-                    getRecordsByMonthUseCase.execute(
-                        date.year(),
-                        date.month()
-                    )
-                )
+                parseCalendar(date, records)
             }
         }
     }

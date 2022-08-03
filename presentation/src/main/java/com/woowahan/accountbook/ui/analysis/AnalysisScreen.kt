@@ -4,7 +4,6 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -28,7 +27,7 @@ import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.accountbook.ui.theme.Red
-import com.woowahan.accountbook.ui.theme.spendingColors
+import com.woowahan.accountbook.ui.theme.SpendingColors
 
 @Composable
 fun AnalysisScreen(
@@ -36,10 +35,13 @@ fun AnalysisScreen(
     analysisViewModel: AnalysisViewModel
 ) {
     val title by mainViewModel.appBarTitle.observeAsState("")
-    analysisViewModel.getRecords(title)
-    val totalSpend by analysisViewModel.totalSpend.observeAsState(0L)
+
+    val originRecords = mainViewModel.records.observeAsState().value!!
+    analysisViewModel.getAnalysisResult(originRecords)
+
     val categoryList by analysisViewModel.categoryList.observeAsState()
     val ratioList by analysisViewModel.ratioList.observeAsState()
+
     var showPicker by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -48,11 +50,11 @@ fun AnalysisScreen(
                 title = title,
                 btn1Image = R.drawable.ic_left,
                 btn1OnClick = {
-                    mainViewModel.onScreenChange("prev")
+                    mainViewModel.onPrevClicked()
                 },
                 btn2Image = R.drawable.ic_right,
                 btn2OnClick = {
-                    mainViewModel.onScreenChange("next")
+                    mainViewModel.onNextClicked()
                 },
                 titleOnClick = {
                     showPicker = true
@@ -84,7 +86,7 @@ fun AnalysisScreen(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = String.format("%,d", totalSpend),
+                        text = String.format("%,d", mainViewModel.totalSpending),
                         fontSize = 14.sp,
                         color = Red,
                         fontWeight = FontWeight.Bold
@@ -94,7 +96,7 @@ fun AnalysisScreen(
                 Spacer(modifier = Modifier.height(40.dp))
                 AnimatedCircle(
                     proportions = ratioList!!.map { it.second },
-                    colors = categoryList!!.map { spendingColors[it.color] },
+                    colors = categoryList!!.map { SpendingColors[it.color] },
                     modifier = Modifier
                         .size(254.dp)
                         .padding(20.dp)

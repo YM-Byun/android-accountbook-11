@@ -35,9 +35,9 @@ class SettingsAddViewModel @Inject constructor(
 
     fun getColors(mode: String): List<Color> {
         return if (mode == ADD_SPENDING) {
-            spendingColors
+            SpendingColors
         } else {
-            incomeColors
+            IncomeColors
         }
     }
 

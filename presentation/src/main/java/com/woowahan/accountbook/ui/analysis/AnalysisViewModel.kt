@@ -1,29 +1,13 @@
 package com.woowahan.accountbook.ui.analysis
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.woowahan.accountbook.extenstion.month
-import com.woowahan.accountbook.extenstion.year
-import com.woowahan.accountbook.ui.theme.spendingColors
 import com.woowahan.data.entity.DBHelper
-import com.woowahan.domain.accountUseCase.GetRecordsByMonthUseCase
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Record
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AnalysisViewModel @Inject constructor(
-    private val getRecordsByMonthUseCase: GetRecordsByMonthUseCase,
-) : ViewModel() {
-    private val _totalSpend = MutableLiveData(0L)
-    val totalSpend: LiveData<Long>
-        get() = _totalSpend
-
+class AnalysisViewModel : ViewModel() {
     private val _ratioList = MutableLiveData<List<Pair<Long, Float>>>(emptyList())
     val ratioList: LiveData<List<Pair<Long, Float>>>
         get() = _ratioList
@@ -32,22 +16,9 @@ class AnalysisViewModel @Inject constructor(
     val categoryList: LiveData<List<Category>>
         get() = _categoryList
 
-    fun getRecords(date: String) {
-        if (date.isNotEmpty()) {
-            viewModelScope.launch {
-                parseRecord(
-                    getRecordsByMonthUseCase.execute(
-                        date.year(),
-                        date.month()
-                    )
-                )
-            }
-        }
-    }
 
-    fun parseRecord(records: List<Record>) {
+    fun getAnalysisResult(records: List<Record>) {
         val spendingRecord = records.filter { it.type == DBHelper.SPENDING }
-        _totalSpend.value = (spendingRecord.sumOf { it.price } * -1)
         val spendingRecordGroupByCategory = spendingRecord.groupBy { it.category }
 
         val properties = LongArray(spendingRecordGroupByCategory.size) { i -> 0 }
