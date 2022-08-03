@@ -27,7 +27,7 @@ class DBHelper(
         db?.execSQL(createPaymentsTable)
         val paymentDefault = ContentValues()
         paymentDefault.put("id", 0)
-        paymentDefault.put("name", "미분류")
+        paymentDefault.put("name", "")
         db?.insert("payment", null, paymentDefault)
 
         val createRecordTypeTable = "create table record_type(" +
