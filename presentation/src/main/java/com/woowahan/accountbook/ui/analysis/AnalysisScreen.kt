@@ -36,10 +36,13 @@ fun AnalysisScreen(
     analysisViewModel: AnalysisViewModel
 ) {
     val title by mainViewModel.appBarTitle.observeAsState("")
-    analysisViewModel.getRecords(title)
-    val totalSpend by analysisViewModel.totalSpend.observeAsState(0L)
+
+    val originRecords = mainViewModel.records.observeAsState().value!!
+    analysisViewModel.getAnalysisResult(originRecords)
+
     val categoryList by analysisViewModel.categoryList.observeAsState()
     val ratioList by analysisViewModel.ratioList.observeAsState()
+
     var showPicker by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -84,7 +87,7 @@ fun AnalysisScreen(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = String.format("%,d", totalSpend),
+                        text = String.format("%,d", mainViewModel.totalSpending),
                         fontSize = 14.sp,
                         color = Red,
                         fontWeight = FontWeight.Bold
