@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.woowahan.accountbook.ui.analysis.AnalysisScreen
+import com.woowahan.accountbook.ui.analysis.AnalysisViewModel
 import com.woowahan.accountbook.ui.calendar.CalendarScreen
 import com.woowahan.accountbook.ui.calendar.CalendarViewModel
 import com.woowahan.accountbook.ui.component.BottomNaviBar
@@ -43,6 +44,7 @@ class MainActivity : ComponentActivity() {
 
     private val recordListViewModel by viewModels<RecordListViewModel>()
     private val recordAddViewModel by viewModels<RecordAddViewModel>()
+    private val analysisViewModel by viewModels<AnalysisViewModel>()
     private val calendarViewModel by viewModels<CalendarViewModel>()
     private val settingsViewModel by viewModels<SettingsViewModel>()
     private val settingAddViewModel by viewModels<SettingsAddViewModel>()
@@ -76,7 +78,7 @@ class MainActivity : ComponentActivity() {
                 CalendarScreen(mainViewModel, calendarViewModel)
             }
             composable(BottomNavItem.Analysis.screenRoute) {
-                AnalysisScreen(mainViewModel)
+                AnalysisScreen(mainViewModel, analysisViewModel)
             }
             composable(BottomNavItem.Settings.screenRoute) {
                 SettingsScreen(navController = navController, settingsViewModel)
