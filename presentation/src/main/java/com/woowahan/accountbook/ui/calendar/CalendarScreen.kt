@@ -34,7 +34,8 @@ fun CalendarScreen(
     calendarViewModel: CalendarViewModel
 ) {
     val title by mainViewModel.appBarTitle.observeAsState("")
-    calendarViewModel.getCalendarData(title)
+    val records = mainViewModel.records.observeAsState().value!!
+    calendarViewModel.getCalendarData(title, records)
 
     var showPicker by remember { mutableStateOf(false) }
 
@@ -84,7 +85,7 @@ fun CalendarScreen(
                     Text(text = "수입", color = Purple, fontSize = 16.sp)
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = String.format("%,d", calendarViewModel.totalIncome),
+                        text = String.format("%,d", mainViewModel.totalIncome),
                         color = Green6,
                         fontSize = 16.sp
                     )
@@ -94,7 +95,7 @@ fun CalendarScreen(
                     Text(text = "지출", color = Red, fontSize = 16.sp)
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = String.format("%,d", calendarViewModel.totalSpending),
+                        text = String.format("%,d", mainViewModel.totalSpending),
                         color = Red,
                         fontSize = 16.sp
                     )
@@ -104,7 +105,7 @@ fun CalendarScreen(
                     Text(text = "총합", color = Purple, fontSize = 16.sp)
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = String.format("%,d", calendarViewModel.totalAmount),
+                        text = String.format("%,d", mainViewModel.totalAmount),
                         color = Purple,
                         fontSize = 16.sp
                     )
@@ -114,6 +115,11 @@ fun CalendarScreen(
             }
         }
     }
+}
+
+@Composable
+fun Calender() {
+
 }
 
 @Composable
