@@ -64,7 +64,6 @@ class CalendarViewModel : ViewModel() {
             year,
             month
         )
-
         _calendarData.postValue(list)
     }
 

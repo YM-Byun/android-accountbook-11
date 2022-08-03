@@ -36,6 +36,7 @@ fun CalendarScreen(
     val title by mainViewModel.appBarTitle.observeAsState("")
     val records = mainViewModel.records.observeAsState().value!!
     calendarViewModel.getCalendarData(title, records)
+    val calendarData = calendarViewModel.calendarData.observeAsState().value!!
 
     var showPicker by remember { mutableStateOf(false) }
 
@@ -75,7 +76,7 @@ fun CalendarScreen(
 
                 LazyVerticalGrid(columns = GridCells.Fixed(7)) {
                     items(
-                        items = calendarViewModel.calendarData.value!!
+                        items = calendarData
                     ) {
                         CalendarItem(it)
                     }
