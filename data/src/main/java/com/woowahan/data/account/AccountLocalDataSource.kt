@@ -6,8 +6,7 @@ import com.woowahan.domain.model.Record
 
 interface AccountLocalDataSource {
     suspend fun addPayment(name: String)
-    suspend fun addIncomeCategory(name: String, color: Int)
-    suspend fun addSpendingCategory(name: String, color: Int)
+    suspend fun addCategory(name: String, color: Int, mode: String)
     suspend fun getCategory(mode: String): List<Category>
     suspend fun getPayments(): List<Payment>
 

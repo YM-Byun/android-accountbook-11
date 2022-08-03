@@ -18,19 +18,11 @@ class AccountLocalDataSourceImpl(
         dbHelper.wriable.execSQL(sqlInsertPayment)
     }
 
-    override suspend fun addIncomeCategory(name: String, color: Int) {
+    override suspend fun addCategory(name: String, color: Int, mode: String) {
         val values = ContentValues()
         values.put("name", name)
         values.put("color", color)
-        values.put("record_type", DBHelper.INCOME)
-        dbHelper.wriable.insert("category", null, values)
-    }
-
-    override suspend fun addSpendingCategory(name: String, color: Int) {
-        val values = ContentValues()
-        values.put("name", name)
-        values.put("color", color)
-        values.put("record_type", DBHelper.SPENDING)
+        values.put("record_type", mode)
         dbHelper.wriable.insert("category", null, values)
     }
 

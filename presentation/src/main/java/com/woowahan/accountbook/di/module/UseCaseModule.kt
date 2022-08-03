@@ -25,8 +25,8 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideAddSpendingUseCase(repository: AccountRepository): AddSpendingUseCase {
-        return AddSpendingUseCase(repository)
+    fun provideAddSpendingUseCase(repository: AccountRepository): AddSpendingCategoryUseCase {
+        return AddSpendingCategoryUseCase(repository)
     }
 
     @Singleton

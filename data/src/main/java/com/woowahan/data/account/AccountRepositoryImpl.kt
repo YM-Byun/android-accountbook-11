@@ -12,12 +12,8 @@ class AccountRepositoryImpl(
         return dataSource.addPayment(name)
     }
 
-    override suspend fun addIncomeCategory(name: String, color: Int) {
-        return dataSource.addIncomeCategory(name, color)
-    }
-
-    override suspend fun addSpendingCategory(name: String, color: Int) {
-        return dataSource.addSpendingCategory(name, color)
+    override suspend fun addCategory(name: String, color: Int, mode: String) {
+        return dataSource.addCategory(name, color, mode)
     }
 
     override suspend fun getCategory(mode: String): List<Category> {

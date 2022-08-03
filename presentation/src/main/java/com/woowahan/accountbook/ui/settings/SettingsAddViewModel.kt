@@ -13,7 +13,7 @@ import javax.inject.Inject
 class SettingsAddViewModel @Inject constructor(
     private val addPaymentUseCase: AddPaymentUseCase,
     private val addIncomeCategoryUseCase: AddIncomeCategoryUseCase,
-    private val addSpendingUseCase: AddSpendingUseCase
+    private val addSpendingUseCase: AddSpendingCategoryUseCase
 ) : ViewModel() {
     var name = mutableStateOf("")
     var selectedColorIdx = mutableStateOf(0)
