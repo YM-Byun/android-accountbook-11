@@ -14,7 +14,7 @@ class AccountLocalDataSourceImpl(
 ) :
     AccountLocalDataSource {
     override suspend fun addPayment(name: String) {
-        val sqlInsertPayment = "insert into payments(`name`) values('$name')"
+        val sqlInsertPayment = "insert into payment(`name`) values('$name')"
         dbHelper.wriable.execSQL(sqlInsertPayment)
     }
 
@@ -42,9 +42,10 @@ class AccountLocalDataSourceImpl(
         val cursor = dbHelper.readable.rawQuery(query, null)
 
         while (cursor.moveToNext()) {
+            val id = cursor.getInt(cursor.getColumnIndex("id"))
             val name = cursor.getString(cursor.getColumnIndex("name"))
             val color = cursor.getInt(cursor.getColumnIndex("color"))
-            categories.add(CategoryData(name, color).toModel())
+            categories.add(CategoryData(id, name, color).toModel())
         }
 
         return categories
@@ -52,14 +53,15 @@ class AccountLocalDataSourceImpl(
 
     @SuppressLint("Range")
     override suspend fun getPayments(): List<Payment> {
-        val query = "select * from payments"
+        val query = "select * from payment"
         val payments = ArrayList<Payment>()
 
         val cursor = dbHelper.readable.rawQuery(query, null)
 
         while (cursor.moveToNext()) {
+            val id = cursor.getInt(cursor.getColumnIndex("id"))
             val name = cursor.getString(cursor.getColumnIndex("name"))
-            payments.add(PaymentData(name).toModel())
+            payments.add(PaymentData(id, name).toModel())
         }
 
         return payments
@@ -78,18 +80,18 @@ class AccountLocalDataSourceImpl(
         )
         values.put("price", record.price)
         values.put("content", record.content)
-        values.put("payments", record.payment.name)
-        values.put("category", record.category.name)
-        values.put("record_type", mode)
+        values.put("payment_id", record.payment.id)
+        values.put("category_id", record.category.id)
 
         dbHelper.wriable.insert("record", null, values)
     }
 
     @SuppressLint("Range")
     override suspend fun getRecords(year: Int, month: Int): List<Record> {
-        val query = "select * from record " +
-                "inner join category on record.`category` = category.`name` " +
-                "and record.`record_type` = category.`record_type`" +
+        val query = "select *, payment.`name` as `payment`, category.`name` as `category` " +
+                " from record " +
+                "inner join category on record.`category_id` = category.`id` " +
+                "inner join payment on record.`payment_id` = payment.`id` " +
                 "where strftime('%m', date) = '${String.format("%02d", month)}' " +
                 "and strftime('%Y', date) = '$year'"
         val records = ArrayList<Record>()
@@ -101,12 +103,13 @@ class AccountLocalDataSourceImpl(
             val date = cursor.getString(cursor.getColumnIndex("date"))
             val price = cursor.getLong(cursor.getColumnIndex("price"))
             val content = cursor.getString(cursor.getColumnIndex("content"))
-            val payment = cursor.getString(cursor.getColumnIndex("payments"))
+            val payment = cursor.getString(cursor.getColumnIndex("payment_id"))
             val category = cursor.getString(cursor.getColumnIndex("category"))
             val recordType = cursor.getString(cursor.getColumnIndex("record_type"))
             val color = cursor.getInt(cursor.getColumnIndex("color"))
 
-            val record = RecordData(id, date, price, content, payment, category, recordType, color)
+            val record =
+                RecordData(id, date, price, content, 0, payment, 0, category, recordType, color)
             records.add(record.toModel())
         }
 

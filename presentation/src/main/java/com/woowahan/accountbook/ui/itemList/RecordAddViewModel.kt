@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.woowahan.accountbook.extenstion.day
+import com.woowahan.accountbook.extenstion.month
+import com.woowahan.accountbook.extenstion.year
 import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.accountUseCase.*
 import com.woowahan.domain.model.Category
@@ -24,8 +27,8 @@ class RecordAddViewModel @Inject constructor(
 ) : ViewModel() {
     var date = mutableStateOf("")
     var price = mutableStateOf("")
-    var payment = mutableStateOf(Payment(""))
-    var category = mutableStateOf(Category("", 0))
+    var payment = mutableStateOf(Payment(0, ""))
+    var category = mutableStateOf(Category(0, "", 0))
     var content = mutableStateOf("")
 
     private val _payments = MutableLiveData<List<Payment>>(emptyList())
@@ -90,7 +93,6 @@ class RecordAddViewModel @Inject constructor(
     }
 
     private fun getNewRecord(mode: String): Record {
-        val tokens = date.value.replace("년", "").replace("월", "").replace("일", "").split(" ")
         val amount = if (mode == DBHelper.INCOME) {
             price.value.toLong()
         } else {
@@ -98,13 +100,18 @@ class RecordAddViewModel @Inject constructor(
         }
 
         if (category.value.name.isEmpty()) {
+            if (mode == DBHelper.INCOME) {
+                category.value.id = 1
+            } else {
+                category.value.id = 2
+            }
             category.value.name = "미분류"
         }
         return Record(
             0,
-            tokens[0].toInt(),
-            tokens[1].toInt(),
-            tokens[2].toInt(),
+            date.value.year(),
+            date.value.month(),
+            date.value.day(),
             amount,
             mode,
             payment.value,
