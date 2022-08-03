@@ -17,8 +17,8 @@ import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
-import com.woowahan.accountbook.ui.theme.incomeColors
-import com.woowahan.accountbook.ui.theme.spendingColors
+import com.woowahan.accountbook.ui.theme.IncomeColors
+import com.woowahan.accountbook.ui.theme.SpendingColors
 import com.woowahan.domain.model.Category
 import com.woowahan.domain.model.Payment
 
@@ -80,7 +80,7 @@ fun SettingsScreen(
                     items = spending,
                     itemContent = {
                         if (it.name != "미분류") {
-                            SettingsItemWithCategory(it.name, spendingColors[it.color])
+                            SettingsItemWithCategory(it.name, SpendingColors[it.color])
                             LightDivider(padding = 16)
                         }
                     }
@@ -103,7 +103,7 @@ fun SettingsScreen(
                     items = income,
                     itemContent = {
                         if (it.name != "미분류") {
-                            SettingsItemWithCategory(it.name, incomeColors[it.color])
+                            SettingsItemWithCategory(it.name, IncomeColors[it.color])
                             LightDivider(padding = 16)
                         }
                     }

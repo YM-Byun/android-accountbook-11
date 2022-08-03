@@ -4,7 +4,6 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -28,7 +27,7 @@ import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.accountbook.ui.theme.Red
-import com.woowahan.accountbook.ui.theme.spendingColors
+import com.woowahan.accountbook.ui.theme.SpendingColors
 
 @Composable
 fun AnalysisScreen(
@@ -97,7 +96,7 @@ fun AnalysisScreen(
                 Spacer(modifier = Modifier.height(40.dp))
                 AnimatedCircle(
                     proportions = ratioList!!.map { it.second },
-                    colors = categoryList!!.map { spendingColors[it.color] },
+                    colors = categoryList!!.map { SpendingColors[it.color] },
                     modifier = Modifier
                         .size(254.dp)
                         .padding(20.dp)
