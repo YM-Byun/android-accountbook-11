@@ -92,22 +92,23 @@ fun AnalysisScreen(
                         AnalysisCategoryText(
                             category = category,
                             amount = ratioList!![index].first,
-                            ratio = ratioList!![index].second
+                            ratio = (ratioList!![index].second * 100).toInt()
                         )
                         if (index != categoryList!!.lastIndex) {
                             LightDivider(padding = 16)
                         }
                     }
-                    BoldDivider()
                 }
             }
+
+            BoldDivider()
         }
     }
 }
 
 @Composable
 fun AnimatedCircle(
-    proportions: List<Int>,
+    proportions: List<Float>,
     colors: List<Color>,
     modifier: Modifier = Modifier
 ) {

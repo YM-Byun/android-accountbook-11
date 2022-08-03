@@ -24,8 +24,8 @@ class AnalysisViewModel @Inject constructor(
     val totalSpend: LiveData<Long>
         get() = _totalSpend
 
-    private val _ratioList = MutableLiveData<List<Pair<Long, Int>>>(emptyList())
-    val ratioList: LiveData<List<Pair<Long, Int>>>
+    private val _ratioList = MutableLiveData<List<Pair<Long, Float>>>(emptyList())
+    val ratioList: LiveData<List<Pair<Long, Float>>>
         get() = _ratioList
 
     private val _categoryList = MutableLiveData<List<Category>>(emptyList())
@@ -52,7 +52,7 @@ class AnalysisViewModel @Inject constructor(
 
         val properties = LongArray(spendingRecordGroupByCategory.size) { i -> 0 }
         val categories = ArrayList<Category>()
-        val avg = IntArray(spendingRecordGroupByCategory.size) { i -> 0 }
+        val avg = FloatArray(spendingRecordGroupByCategory.size) { i -> 0f }
 
         spendingRecordGroupByCategory.onEachIndexed { index, entry ->
             for (record in entry.value) {
@@ -63,10 +63,10 @@ class AnalysisViewModel @Inject constructor(
 
         val total = properties.sum()
         for (idx in properties.indices) {
-            avg[idx] = ((properties[idx] / total) * 100).toInt()
+            avg[idx] = properties[idx] / total.toFloat()
         }
 
-        val ratio = ArrayList<Pair<Long, Int>>()
+        val ratio = ArrayList<Pair<Long, Float>>()
         for (idx in properties.indices) {
             ratio.add(Pair(properties[idx], avg[idx]))
         }
