@@ -7,10 +7,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -20,8 +18,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
+import com.woowahan.accountbook.extenstion.month
+import com.woowahan.accountbook.extenstion.year
 import com.woowahan.accountbook.ui.component.BoldDivider
 import com.woowahan.accountbook.ui.component.LightDivider
+import com.woowahan.accountbook.ui.component.MonthPicker
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.theme.*
@@ -35,6 +36,8 @@ fun CalendarScreen(
     val title by mainViewModel.appBarTitle.observeAsState("")
     calendarViewModel.getCalendarData(title)
 
+    var showPicker by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -46,55 +49,69 @@ fun CalendarScreen(
                 btn2Image = R.drawable.ic_right,
                 btn2OnClick = {
                     mainViewModel.onScreenChange("next")
+                },
+                titleOnClick = {
+                    showPicker = true
                 }
             )
         },
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-        ) {
-
-            LazyVerticalGrid(columns = GridCells.Fixed(7)) {
-                items(
-                    items = calendarViewModel.calendarData.value!!
-                ) {
-                    CalendarItem(it)
+        Box {
+            if (showPicker) {
+                MonthPicker(
+                    initYear = title.year(),
+                    initMonth = title.month(),
+                    onDismissRequest = { showPicker = false }) { nYear, nMonth ->
+                    mainViewModel.onDatePicked(nYear, nMonth)
+                    showPicker = false
                 }
             }
-            Spacer(modifier = Modifier.height(20.dp))
-            Row(modifier = Modifier.padding(16.dp, 7.dp, 16.dp, 7.dp)) {
-                Text(text = "수입", color = Purple, fontSize = 16.sp)
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = String.format("%,d", calendarViewModel.totalIncome),
-                    color = Green6,
-                    fontSize = 16.sp
-                )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
+            ) {
+
+                LazyVerticalGrid(columns = GridCells.Fixed(7)) {
+                    items(
+                        items = calendarViewModel.calendarData.value!!
+                    ) {
+                        CalendarItem(it)
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Row(modifier = Modifier.padding(16.dp, 7.dp, 16.dp, 7.dp)) {
+                    Text(text = "수입", color = Purple, fontSize = 16.sp)
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = String.format("%,d", calendarViewModel.totalIncome),
+                        color = Green6,
+                        fontSize = 16.sp
+                    )
+                }
+                LightDivider(padding = 16)
+                Row(modifier = Modifier.padding(16.dp, 7.dp, 16.dp, 7.dp)) {
+                    Text(text = "지출", color = Red, fontSize = 16.sp)
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = String.format("%,d", calendarViewModel.totalSpending),
+                        color = Red,
+                        fontSize = 16.sp
+                    )
+                }
+                LightDivider(padding = 16)
+                Row(modifier = Modifier.padding(16.dp, 7.dp, 16.dp, 7.dp)) {
+                    Text(text = "총합", color = Purple, fontSize = 16.sp)
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = String.format("%,d", calendarViewModel.totalAmount),
+                        color = Purple,
+                        fontSize = 16.sp
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                BoldDivider()
             }
-            LightDivider(padding = 16)
-            Row(modifier = Modifier.padding(16.dp, 7.dp, 16.dp, 7.dp)) {
-                Text(text = "지출", color = Red, fontSize = 16.sp)
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = String.format("%,d", calendarViewModel.totalSpending),
-                    color = Red,
-                    fontSize = 16.sp
-                )
-            }
-            LightDivider(padding = 16)
-            Row(modifier = Modifier.padding(16.dp, 7.dp, 16.dp, 7.dp)) {
-                Text(text = "총합", color = Purple, fontSize = 16.sp)
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = String.format("%,d", calendarViewModel.totalAmount),
-                    color = Purple,
-                    fontSize = 16.sp
-                )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            BoldDivider()
         }
     }
 }

@@ -7,10 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -21,8 +19,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.woowahan.accountbook.R
+import com.woowahan.accountbook.extenstion.month
+import com.woowahan.accountbook.extenstion.year
 import com.woowahan.accountbook.ui.component.BoldDivider
 import com.woowahan.accountbook.ui.component.LightDivider
+import com.woowahan.accountbook.ui.component.MonthPicker
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.MainViewModel
 import com.woowahan.accountbook.ui.theme.Purple
@@ -39,6 +40,7 @@ fun AnalysisScreen(
     val totalSpend by analysisViewModel.totalSpend.observeAsState(0L)
     val categoryList by analysisViewModel.categoryList.observeAsState()
     val ratioList by analysisViewModel.ratioList.observeAsState()
+    var showPicker by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -51,57 +53,71 @@ fun AnalysisScreen(
                 btn2Image = R.drawable.ic_right,
                 btn2OnClick = {
                     mainViewModel.onScreenChange("next")
+                },
+                titleOnClick = {
+                    showPicker = true
                 }
             )
         }
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-        ) {
-            Row(modifier = Modifier.padding(16.dp, 10.dp, 16.dp, 10.dp)) {
-                Text(
-                    text = "이번 달 총 지출 금액",
-                    fontSize = 14.sp,
-                    color = Purple,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = String.format("%,d", totalSpend),
-                    fontSize = 14.sp,
-                    color = Red,
-                    fontWeight = FontWeight.Bold
-                )
+        Box {
+            if (showPicker) {
+                MonthPicker(
+                    initYear = title.year(),
+                    initMonth = title.month(),
+                    onDismissRequest = { showPicker = false }) { nYear, nMonth ->
+                    mainViewModel.onDatePicked(nYear, nMonth)
+                    showPicker = false
+                }
             }
-            BoldDivider()
-            Spacer(modifier = Modifier.height(40.dp))
-            AnimatedCircle(
-                proportions = ratioList!!.map { it.second },
-                colors = categoryList!!.map { spendingColors[it.color] },
+            Column(
                 modifier = Modifier
-                    .size(254.dp)
-                    .padding(20.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-            Spacer(modifier = Modifier.height(40.dp))
-            LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
-                item {
-                    categoryList!!.forEachIndexed { index, category ->
-                        AnalysisCategoryText(
-                            category = category,
-                            amount = ratioList!![index].first,
-                            ratio = (ratioList!![index].second * 100).toInt()
-                        )
-                        if (index != categoryList!!.lastIndex) {
-                            LightDivider(padding = 16)
+                    .fillMaxSize()
+                    .padding(it)
+            ) {
+                Row(modifier = Modifier.padding(16.dp, 10.dp, 16.dp, 10.dp)) {
+                    Text(
+                        text = "이번 달 총 지출 금액",
+                        fontSize = 14.sp,
+                        color = Purple,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = String.format("%,d", totalSpend),
+                        fontSize = 14.sp,
+                        color = Red,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                BoldDivider()
+                Spacer(modifier = Modifier.height(40.dp))
+                AnimatedCircle(
+                    proportions = ratioList!!.map { it.second },
+                    colors = categoryList!!.map { spendingColors[it.color] },
+                    modifier = Modifier
+                        .size(254.dp)
+                        .padding(20.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+                Spacer(modifier = Modifier.height(40.dp))
+                LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    item {
+                        categoryList!!.forEachIndexed { index, category ->
+                            AnalysisCategoryText(
+                                category = category,
+                                amount = ratioList!![index].first,
+                                ratio = (ratioList!![index].second * 100).toInt()
+                            )
+                            if (index != categoryList!!.lastIndex) {
+                                LightDivider(padding = 16)
+                            }
                         }
                     }
                 }
-            }
 
-            BoldDivider()
+                BoldDivider()
+            }
         }
     }
 }
