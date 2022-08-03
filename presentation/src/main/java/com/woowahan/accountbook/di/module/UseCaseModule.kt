@@ -67,6 +67,24 @@ object UseCaseModule {
 
     @Singleton
     @Provides
+    fun provideUpdateCategoryUseCase(repository: AccountRepository): UpdateCategoryUseCase {
+        return UpdateCategoryUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUpdatePaymentUseCase(repository: AccountRepository): UpdatePaymentUseCase {
+        return UpdatePaymentUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUpdateRecordUseCase(repository: AccountRepository): UpdateRecordUseCase {
+        return UpdateRecordUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
     fun provideDeleteRecordsUseCase(repository: AccountRepository): DeleteRecordsUseCase {
         return DeleteRecordsUseCase(repository)
     }

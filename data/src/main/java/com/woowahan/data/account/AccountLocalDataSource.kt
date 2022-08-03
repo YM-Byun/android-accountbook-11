@@ -13,5 +13,9 @@ interface AccountLocalDataSource {
     suspend fun addRecord(mode: String, record: Record)
     suspend fun getRecords(year: Int, month: Int): List<Record>
 
+    suspend fun updateRecord(record: Record)
+    suspend fun updateCategory(category: Category)
+    suspend fun updatePayment(payment: Payment)
+
     suspend fun deleteRecords(records: List<Record>)
 }

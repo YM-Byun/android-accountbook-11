@@ -125,6 +125,38 @@ class AccountLocalDataSourceImpl(
         return records
     }
 
+    override suspend fun updateRecord(record: Record) {
+        val values = ContentValues()
+        values.put(
+            "date",
+            "${record.year}-${String.format("%02d", record.month)}-${
+                String.format(
+                    "%02d",
+                    record.day
+                )
+            }"
+        )
+        values.put("price", record.price)
+        values.put("content", record.content)
+        values.put("payment_id", record.payment.id)
+        values.put("category_id", record.category.id)
+
+        dbHelper.wriable.update("record", values, "id=?", arrayOf(record.id.toString()))
+    }
+
+    override suspend fun updatePayment(payment: Payment) {
+        val values = ContentValues()
+        values.put("name", payment.name)
+        dbHelper.wriable.update("payment", values, "id=?", arrayOf(payment.id.toString()))
+    }
+
+    override suspend fun updateCategory(category: Category) {
+        val values = ContentValues()
+        values.put("name", category.name)
+        values.put("color", category.color)
+        dbHelper.wriable.update("category", values, "id=?", arrayOf(category.id.toString()))
+    }
+
     override suspend fun deleteRecords(records: List<Record>) {
         for (record in records) {
             dbHelper.wriable.delete("record", "id=?", arrayOf(record.id.toString()))

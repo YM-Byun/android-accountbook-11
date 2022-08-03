@@ -32,6 +32,18 @@ class AccountRepositoryImpl(
         return dataSource.getRecords(year, month)
     }
 
+    override suspend fun updateCategory(category: Category) {
+        return dataSource.updateCategory(category)
+    }
+
+    override suspend fun updatePayment(payment: Payment) {
+        return dataSource.updatePayment(payment)
+    }
+
+    override suspend fun updateRecord(record: Record) {
+        return dataSource.updateRecord(record)
+    }
+
     override suspend fun deleteRecords(records: List<Record>) {
         return dataSource.deleteRecords(records)
     }
