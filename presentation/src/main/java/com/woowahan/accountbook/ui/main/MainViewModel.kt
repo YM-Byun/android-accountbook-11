@@ -4,21 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.woowahan.accountbook.extenstion.month
-import com.woowahan.accountbook.extenstion.year
-import com.woowahan.accountbook.ui.navigate.ITEM_LIST
-import com.woowahan.accountbook.ui.navigate.SETTINGS
+import com.woowahan.data.entity.DBHelper
 import com.woowahan.domain.accountUseCase.GetRecordsByMonthUseCase
 import com.woowahan.domain.model.Record
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val getRecordsByMonthUseCase: GetRecordsByMonthUseCase,
+) : ViewModel() {
     private val calendar = Calendar.getInstance()
 
+    /** Variable for date and title */
     private val _appBarTitle = MutableLiveData("${year}년 ${month + 1}월")
     val appBarTitle: LiveData<String>
         get() = _appBarTitle
@@ -27,6 +27,23 @@ class MainViewModel : ViewModel() {
         get() = calendar.get(Calendar.MONTH)
     private val year
         get() = calendar.get(Calendar.YEAR)
+
+
+    /** Variable for records */
+    private val _records = MutableLiveData<List<Record>>()
+    val records: LiveData<List<Record>>
+        get() = _records
+
+    private var _totalIncome = 0L
+    val totalIncome: Long
+        get() = _totalIncome
+
+    private var _totalSpending = 0L
+    val totalSpending: Long
+        get() = _totalSpending
+
+    val totalAmount: Long
+        get() = totalIncome + totalSpending
 
     fun onNextClicked() {
         if (!isSameMonth(year, month)) {
@@ -52,5 +69,16 @@ class MainViewModel : ViewModel() {
 
     fun onDatePicked(newYear: Int, newMonth: Int) {
         _appBarTitle.value = generateTitle(newYear, newMonth)
+    }
+
+    fun getRecords() {
+        viewModelScope.launch {
+            val recordList = getRecordsByMonthUseCase.execute(year, month + 1)
+
+            _totalIncome = recordList.filter { it.type == DBHelper.INCOME }.sumOf { it.price }
+            _totalSpending =
+                recordList.filter { it.type == DBHelper.SPENDING }.sumOf { -it.price }
+            _records.postValue(recordList)
+        }
     }
 }
