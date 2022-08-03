@@ -161,13 +161,8 @@ fun RecordListScreen(
                             val month = entry.value.first().month
                             val day = entry.value.first().day
                             val total = getTotalIncomeSpending(entry.value)
-                            var idx = 0
 
                             item {
-                                BoldDivider()
-
-                                idx += 1
-
                                 RecordHeader(
                                     header = "${month}월 ${day}일",
                                     income = total.first,
@@ -176,9 +171,8 @@ fun RecordListScreen(
 
                                 LightDivider(padding = 16)
                             }
-                            items(
-                                items = entry.value,
-                                itemContent = {
+                            item {
+                                entry.value.forEachIndexed { index, it ->
                                     RecordItem(
                                         recordType = it.type,
                                         paymentType = it.payment.name,
@@ -207,9 +201,13 @@ fun RecordListScreen(
                                         isSelected = selectedItems.contains(it),
                                     )
 
-                                    LightDivider(16)
+                                    if (index == entry.value.lastIndex) {
+                                        BoldDivider()
+                                    } else {
+                                        LightDivider(16)
+                                    }
                                 }
-                            )
+                            }
                         }
                     }
                 }
