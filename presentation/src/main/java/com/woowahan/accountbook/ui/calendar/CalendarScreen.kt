@@ -118,21 +118,11 @@ fun CalendarScreen(
 }
 
 @Composable
-fun Calender() {
-
-}
-
-@Composable
 fun CalendarItem(calendar: Calendar) {
-    val color = if (calendar.isToday) {
-        White
-    } else {
-        Color.Transparent
-    }
     val modifier = Modifier
         .fillMaxWidth()
         .height(60.dp)
-        .background(color)
+        .background(if (calendar.isToday) White else Color.Transparent)
         .drawBehind {
             drawLine(
                 LightPurple,
