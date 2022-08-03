@@ -127,23 +127,12 @@ fun RecordListScreen(
                 }
             }
             Column {
-                var totalIncome = 0L
-                var totalSpending = 0L
-
-                records.forEach { record ->
-                    if (record.type == DBHelper.INCOME) {
-                        totalIncome += record.price
-                    } else {
-                        totalSpending += (record.price * -1)
-                    }
-                }
-
                 FilterButton(
                     showCheckBox = true,
                     isLeftChecked = leftClicked,
                     isRightChecked = rightClicked,
-                    leftText = "수입 ${String.format("%,d", totalIncome)}",
-                    rightText = "지출 ${String.format("%,d", totalSpending)}",
+                    leftText = "수입 ${String.format("%,d", recordViewModel.totalIncome)}",
+                    rightText = "지출 ${String.format("%,d", recordViewModel.totalSpending)}",
                     modifier = Modifier.padding(16.dp),
                     leftOnClick = {
                         recordViewModel.leftBtnOnClick.postValue(!recordViewModel.leftBtnOnClick.value!!)
