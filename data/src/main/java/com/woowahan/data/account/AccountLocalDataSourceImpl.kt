@@ -37,6 +37,7 @@ class AccountLocalDataSourceImpl(
             val id = cursor.getInt(cursor.getColumnIndex("id"))
             val name = cursor.getString(cursor.getColumnIndex("name"))
             val color = cursor.getInt(cursor.getColumnIndex("color"))
+
             categories.add(CategoryData(id, name, color).toModel())
         }
 
@@ -53,7 +54,10 @@ class AccountLocalDataSourceImpl(
         while (cursor.moveToNext()) {
             val id = cursor.getInt(cursor.getColumnIndex("id"))
             val name = cursor.getString(cursor.getColumnIndex("name"))
-            payments.add(PaymentData(id, name).toModel())
+
+            if (name.isNotEmpty()) {
+                payments.add(PaymentData(id, name).toModel())
+            }
         }
 
         return payments
@@ -95,13 +99,26 @@ class AccountLocalDataSourceImpl(
             val date = cursor.getString(cursor.getColumnIndex("date"))
             val price = cursor.getLong(cursor.getColumnIndex("price"))
             val content = cursor.getString(cursor.getColumnIndex("content"))
-            val payment = cursor.getString(cursor.getColumnIndex("payment_id"))
+            val paymentId = cursor.getInt(cursor.getColumnIndex("payment_id"))
+            val payment = cursor.getString(cursor.getColumnIndex("payment"))
+            val categoryId = cursor.getInt(cursor.getColumnIndex("category_id"))
             val category = cursor.getString(cursor.getColumnIndex("category"))
             val recordType = cursor.getString(cursor.getColumnIndex("record_type"))
             val color = cursor.getInt(cursor.getColumnIndex("color"))
 
             val record =
-                RecordData(id, date, price, content, 0, payment, 0, category, recordType, color)
+                RecordData(
+                    id,
+                    date,
+                    price,
+                    content,
+                    paymentId,
+                    payment,
+                    categoryId,
+                    category,
+                    recordType,
+                    color
+                )
             records.add(record.toModel())
         }
 
