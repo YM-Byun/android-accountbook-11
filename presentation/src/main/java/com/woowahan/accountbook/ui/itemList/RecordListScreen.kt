@@ -46,8 +46,9 @@ fun RecordListScreen(
     var selectMode by remember { mutableStateOf(false) }
     val selectedItems = remember { mutableStateListOf<Record>() }
 
+    val originRecords = mainViewModel.records.observeAsState().value!!
     val records =
-        getRecordsFilterBy(mainViewModel.records.value!!, isIncomeClicked, isSpendingClicked)
+        getRecordsFilterBy(originRecords, isIncomeClicked, isSpendingClicked)
 
     var showPicker by remember { mutableStateOf(false) }
 
