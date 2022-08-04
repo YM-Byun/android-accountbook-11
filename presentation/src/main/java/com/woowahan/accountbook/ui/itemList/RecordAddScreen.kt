@@ -24,7 +24,8 @@ import kotlinx.coroutines.launch
 fun RecordAddScreen(
     navController: NavController,
     recordAddViewModel: RecordAddViewModel,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    refreshRecord: () -> Unit
 ) {
     var isIncomeClicked by remember { mutableStateOf(true) }
     var isUpdateMode by remember { mutableStateOf(false) }
@@ -162,13 +163,20 @@ fun RecordAddScreen(
                 enabled = viewModel.isValid(isIncomeClicked),
                 text = if (isUpdateMode) "수정하기" else "등록하기"
             ) {
-                if (isIncomeClicked) {
+                if (isUpdateMode) {
                     coroutineScope.launch {
-                        viewModel.addIncomeRecord()
+                        viewModel.updateRecord()
+                        refreshRecord()
                     }
                 } else {
-                    coroutineScope.launch {
-                        viewModel.addSpendingRecord()
+                    if (isIncomeClicked) {
+                        coroutineScope.launch {
+                            viewModel.addIncomeRecord()
+                        }
+                    } else {
+                        coroutineScope.launch {
+                            viewModel.addSpendingRecord()
+                        }
                     }
                 }
                 navController.popBackStack()

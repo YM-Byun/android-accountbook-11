@@ -91,16 +91,37 @@ class MainActivity : ComponentActivity() {
                 SettingsScreen(navController = navController, settingsViewModel, sharedViewModel)
             }
             composable(BottomNavItem.AddRecordItem.screenRoute) {
-                RecordAddScreen(navController = navController, recordAddViewModel, sharedViewModel)
+                RecordAddScreen(
+                    navController = navController,
+                    recordAddViewModel,
+                    sharedViewModel
+                ) {
+                    mainViewModel.getRecords()
+                }
             }
             composable(BottomNavItem.AddPayments.screenRoute) {
-                SettingAddScreen(navController = navController, ADD_PAYMENTS, settingAddViewModel, sharedViewModel)
+                SettingAddScreen(
+                    navController = navController,
+                    ADD_PAYMENTS,
+                    settingAddViewModel,
+                    sharedViewModel
+                )
             }
             composable(BottomNavItem.AddIncome.screenRoute) {
-                SettingAddScreen(navController = navController, ADD_INCOME, settingAddViewModel, sharedViewModel)
+                SettingAddScreen(
+                    navController = navController,
+                    ADD_INCOME,
+                    settingAddViewModel,
+                    sharedViewModel
+                )
             }
             composable(BottomNavItem.AddSpending.screenRoute) {
-                SettingAddScreen(navController = navController, ADD_SPENDING, settingAddViewModel, sharedViewModel)
+                SettingAddScreen(
+                    navController = navController,
+                    ADD_SPENDING,
+                    settingAddViewModel,
+                    sharedViewModel
+                )
             }
         }
     }

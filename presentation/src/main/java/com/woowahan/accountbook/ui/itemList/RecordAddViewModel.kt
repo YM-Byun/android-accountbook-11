@@ -23,11 +23,15 @@ import javax.inject.Inject
 class RecordAddViewModel @Inject constructor(
     private val addIncomeRecordUseCase: AddIncomeRecordUseCase,
     private val addSpendingRecordUseCase: AddSpendingRecordUseCase,
+
     private val getPaymentsUseCase: GetPaymentsUseCase,
     private val getSpendingCategoryUseCase: GetSpendingCategoryUseCase,
-    private val getIncomeCategoryUseCase: GetIncomeCategoryUseCase
+    private val getIncomeCategoryUseCase: GetIncomeCategoryUseCase,
+
+    private val updateRecordUseCase: UpdateRecordUseCase
 ) : ViewModel() {
     private var id by mutableStateOf(0)
+    private var type = ""
     var date by mutableStateOf("")
     var price by mutableStateOf("")
     var payment by mutableStateOf(Payment(0, ""))
@@ -72,6 +76,11 @@ class RecordAddViewModel @Inject constructor(
 
     suspend fun addIncomeRecord() {
         addIncomeRecordUseCase.execute(getNewRecord(DBHelper.INCOME))
+        init()
+    }
+
+    suspend fun updateRecord() {
+        updateRecordUseCase.execute(getNewRecord(type))
         init()
     }
 
@@ -130,5 +139,6 @@ class RecordAddViewModel @Inject constructor(
         this.payment = record.payment.copy()
         this.category = record.category.copy()
         this.content = record.content
+        this.type = record.type
     }
 }
