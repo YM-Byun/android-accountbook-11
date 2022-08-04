@@ -39,7 +39,7 @@ fun HeaderTextView(header: String = "test") {
 }
 
 @Composable
-fun InputPriceItem(title: String, price: MutableState<String>) {
+fun InputPriceItem(title: String, price: String, onPriceChanged: (String) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -54,10 +54,10 @@ fun InputPriceItem(title: String, price: MutableState<String>) {
             color = Purple
         )
         BasicTextField(
-            value = price.value,
-            onValueChange = { price.value = it },
+            value = price,
+            onValueChange = { onPriceChanged(it) },
             decorationBox = {
-                if (price.value.isEmpty()) {
+                if (price.isEmpty()) {
                     Text(
                         text = "선택하세요",
                         fontSize = 14.sp,
@@ -77,7 +77,7 @@ fun InputPriceItem(title: String, price: MutableState<String>) {
 
 
 @Composable
-fun InputDateItem(title: String, text: MutableState<String>) {
+fun InputDateItem(title: String, text: String, onDateChanged: (String) -> Unit) {
     val context = LocalContext.current
 
     Row(
@@ -98,20 +98,20 @@ fun InputDateItem(title: String, text: MutableState<String>) {
                 .fillMaxWidth()
                 .clickable {
                     DatePicker(context) { year, month, day ->
-                        text.value = "${year}년 ${month + 1}월 ${day}일"
+                        onDateChanged("${year}년 ${month + 1}월 ${day}일")
                     }
                 },
-            text = if (text.value.isEmpty()) {
+            text = if (text.isEmpty()) {
                 "선택하세요"
             } else {
-                text.value
+                text
             },
-            color = if (text.value.isEmpty()) {
+            color = if (text.isEmpty()) {
                 LightPurple
             } else {
                 Purple
             },
-            fontWeight = if (text.value.isEmpty()) {
+            fontWeight = if (text.isEmpty()) {
                 FontWeight.Normal
             } else {
                 FontWeight.Bold

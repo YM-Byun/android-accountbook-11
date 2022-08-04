@@ -61,7 +61,9 @@ fun SettingAddScreen(
             Spacer(modifier = Modifier.height(20.dp))
             LazyColumn {
                 item {
-                    InputTextItem(title = "이름", content = viewModel.name, padding = 16)
+                    InputTextItem(title = "이름", content = viewModel.name, padding = 16) {
+                        viewModel.name = it
+                    }
                     LightDivider(16)
                     if (mode != ADD_PAYMENTS) {
                         Spacer(modifier = Modifier.height(10.dp))
@@ -109,19 +111,19 @@ fun SettingAddScreen(
                 when (mode) {
                     ADD_PAYMENTS ->
                         coroutineScope.launch {
-                            viewModel.addPayment(viewModel.name.value)
+                            viewModel.addPayment(viewModel.name)
                         }
                     ADD_INCOME ->
                         coroutineScope.launch {
                             viewModel.addIncomeCategory(
-                                viewModel.name.value,
+                                viewModel.name,
                                 viewModel.selectedColorIdx.value
                             )
                         }
                     ADD_SPENDING ->
                         coroutineScope.launch {
                             viewModel.addSpendingCategory(
-                                viewModel.name.value,
+                                viewModel.name,
                                 viewModel.selectedColorIdx.value
                             )
                         }

@@ -24,12 +24,17 @@ class SharedViewModel : ViewModel() {
         }
     }
 
+    fun init() {
+        _sharedRecord.clear()
+        _sharedCategory.clear()
+        _sharedPayment.clear()
+    }
+
     fun sharingRecord(record: Record) = baseSharingItem(record, _sharedRecord)
     fun getSharedRecord(): Record? = baseGetSharedItem(_sharedRecord)
 
     fun sharingPayment(payment: Payment) = baseSharingItem(payment, _sharedPayment)
     fun getSharedPayment(): Payment? = baseGetSharedItem(_sharedPayment)
-
 
     fun sharingCategory(category: Category) = baseSharingItem(category, _sharedCategory)
     fun getSharedCategory(): Category? = baseGetSharedItem(_sharedCategory)

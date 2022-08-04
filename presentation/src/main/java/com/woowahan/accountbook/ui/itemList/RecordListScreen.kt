@@ -144,6 +144,15 @@ fun RecordListScreen(
                             } else {
                                 selectedItems.add(it)
                             }
+                        } else {
+                            sharedViewModel.sharingRecord(it)
+                            navController.navigate(ADD_ITEM) {
+                                navController.graph.startDestinationRoute?.let {
+                                    popUpTo(it) { saveState = true }
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                     },
                     onLongClick = {

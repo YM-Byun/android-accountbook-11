@@ -261,7 +261,12 @@ fun FilterButton(
 }
 
 @Composable
-fun InputTextItem(title: String, content: MutableState<String>, padding: Int = 0) {
+fun InputTextItem(
+    title: String,
+    content: String,
+    padding: Int = 0,
+    onTextChanged: (String) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -276,10 +281,12 @@ fun InputTextItem(title: String, content: MutableState<String>, padding: Int = 0
             color = Purple
         )
         BasicTextField(
-            value = content.value,
-            onValueChange = { content.value = it },
+            value = content,
+            onValueChange = {
+                onTextChanged(it)
+            },
             decorationBox = {
-                if (content.value.isEmpty()) {
+                if (content.isEmpty()) {
                     Text(
                         text = "선택하세요",
                         fontSize = 14.sp,
@@ -302,10 +309,10 @@ fun InputPaymentSpinnerItem(
     title: String,
     list: List<Payment>,
     onValueSelected: (Payment) -> Unit,
-    onAddItemListener: () -> Unit
+    onAddItemListener: () -> Unit,
+    defaultPayment: Payment
 ) {
     val isClicked = remember { mutableStateOf(false) }
-    val currentItem = remember { mutableStateOf(-1) }
 
     Row(
         modifier = Modifier
@@ -327,21 +334,20 @@ fun InputPaymentSpinnerItem(
                     isClicked.value = !(isClicked.value)
                 }
         ) {
-            if (currentItem.value == -1) {
+            if (defaultPayment.name.isNotEmpty()) {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    text = defaultPayment.name,
+                    color = Purple,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            } else {
                 Text(
                     modifier = Modifier.align(Alignment.CenterStart),
                     text = "선택하세요",
                     color = LightPurple,
                     fontSize = 14.sp,
-                )
-            } else {
-                onValueSelected(list[currentItem.value])
-                Text(
-                    modifier = Modifier.align(Alignment.CenterStart),
-                    text = list[currentItem.value].name,
-                    color = Purple,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
                 )
             }
             Icon(
@@ -367,7 +373,7 @@ fun InputPaymentSpinnerItem(
                     list.forEach {
                         DropdownMenuItem(onClick = {
                             isClicked.value = false
-                            currentItem.value = list.indexOf(it)
+                            onValueSelected(list[list.indexOf(it)])
                         }) {
                             Text(
                                 modifier = Modifier.width(200.dp),
@@ -389,10 +395,10 @@ fun InputCategorySpinnerItem(
     title: String,
     list: List<Category>,
     onValueSelected: (Category) -> Unit,
-    onAddItemListener: () -> Unit
+    onAddItemListener: () -> Unit,
+    defaultCategory: Category
 ) {
     val isClicked = remember { mutableStateOf(false) }
-    val currentItem = remember { mutableStateOf(-1) }
 
     Row(
         modifier = Modifier
@@ -414,21 +420,20 @@ fun InputCategorySpinnerItem(
                     isClicked.value = !(isClicked.value)
                 }
         ) {
-            if (currentItem.value == -1) {
+            if (defaultCategory.name.isNotEmpty() && defaultCategory.name != "미분류") {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    text = defaultCategory.name,
+                    color = Purple,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            } else {
                 Text(
                     modifier = Modifier.align(Alignment.CenterStart),
                     text = "선택하세요",
                     color = LightPurple,
                     fontSize = 14.sp,
-                )
-            } else {
-                onValueSelected(list[currentItem.value])
-                Text(
-                    modifier = Modifier.align(Alignment.CenterStart),
-                    text = list[currentItem.value].name,
-                    color = Purple,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
                 )
             }
             Icon(
@@ -454,7 +459,7 @@ fun InputCategorySpinnerItem(
                         if (it.name != "미분류") {
                             DropdownMenuItem(onClick = {
                                 isClicked.value = false
-                                currentItem.value = list.indexOf(it)
+                                onValueSelected(list[list.indexOf(it)])
                             }) {
                                 Text(
                                     modifier = Modifier.width(200.dp),
