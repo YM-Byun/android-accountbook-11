@@ -105,7 +105,10 @@ class MainActivity : ComponentActivity() {
                     ADD_PAYMENTS,
                     settingAddViewModel,
                     sharedViewModel
-                )
+                ) {
+                    mainViewModel.getRecords()
+                    settingsViewModel.getSettings()
+                }
             }
             composable(BottomNavItem.AddIncome.screenRoute) {
                 SettingAddScreen(
@@ -113,7 +116,10 @@ class MainActivity : ComponentActivity() {
                     ADD_INCOME,
                     settingAddViewModel,
                     sharedViewModel
-                )
+                ) {
+                    mainViewModel.getRecords()
+                    settingsViewModel.getSettings()
+                }
             }
             composable(BottomNavItem.AddSpending.screenRoute) {
                 SettingAddScreen(
@@ -121,7 +127,10 @@ class MainActivity : ComponentActivity() {
                     ADD_SPENDING,
                     settingAddViewModel,
                     sharedViewModel
-                )
+                ) {
+                    mainViewModel.getRecords()
+                    settingsViewModel.getSettings()
+                }
             }
         }
     }

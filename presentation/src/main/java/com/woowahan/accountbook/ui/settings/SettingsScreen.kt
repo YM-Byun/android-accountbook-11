@@ -16,6 +16,7 @@ import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
 import com.woowahan.accountbook.ui.main.SharedViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
+import com.woowahan.accountbook.ui.navigate.ADD_ITEM
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
 import com.woowahan.accountbook.ui.theme.IncomeColors
@@ -60,7 +61,16 @@ fun SettingsScreen(
                 items(
                     items = payments,
                     itemContent = {
-                        SettingsItemWithNoCategory(text = it.name)
+                        SettingsItemWithNoCategory(text = it.name) {
+                            sharedViewModel.sharingPayment(it)
+                            navController.navigate(ADD_PAYMENTS) {
+                                navController.graph.startDestinationRoute?.let {
+                                    popUpTo(it) { saveState = true }
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
                         LightDivider(padding = 16)
                     }
                 )
@@ -82,7 +92,16 @@ fun SettingsScreen(
                     items = spending,
                     itemContent = {
                         if (it.name != "미분류") {
-                            SettingsItemWithCategory(it.name, SpendingColors[it.color])
+                            SettingsItemWithCategory(it.name, SpendingColors[it.color]) {
+                                sharedViewModel.sharingCategory(it)
+                                navController.navigate(ADD_SPENDING) {
+                                    navController.graph.startDestinationRoute?.let {
+                                        popUpTo(it) { saveState = true }
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
                             LightDivider(padding = 16)
                         }
                     }
@@ -105,7 +124,16 @@ fun SettingsScreen(
                     items = income,
                     itemContent = {
                         if (it.name != "미분류") {
-                            SettingsItemWithCategory(it.name, IncomeColors[it.color])
+                            SettingsItemWithCategory(it.name, IncomeColors[it.color]) {
+                                sharedViewModel.sharingCategory(it)
+                                navController.navigate(ADD_INCOME) {
+                                    navController.graph.startDestinationRoute?.let {
+                                        popUpTo(it) { saveState = true }
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
                             LightDivider(padding = 16)
                         }
                     }
