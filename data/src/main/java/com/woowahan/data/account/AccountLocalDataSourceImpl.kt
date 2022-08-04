@@ -86,11 +86,12 @@ class AccountLocalDataSourceImpl(
     override suspend fun getRecords(year: Int, month: Int): List<Record> {
         val query =
             "select *, payment.`name` as `payment`, category.`name` as `category`, record.`id` as `record_id` " +
-                    " from record " +
+                    "from record " +
                     "inner join category on record.`category_id` = category.`id` " +
                     "inner join payment on record.`payment_id` = payment.`id` " +
                     "where strftime('%m', date) = '${String.format("%02d", month)}' " +
-                    "and strftime('%Y', date) = '$year'"
+                    "and strftime('%Y', date) = '$year' " +
+                    "order by `date` desc"
         val records = ArrayList<Record>()
 
         val cursor = dbHelper.readable.rawQuery(query, null)
