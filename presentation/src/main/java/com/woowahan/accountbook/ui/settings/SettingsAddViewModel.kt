@@ -17,14 +17,28 @@ import javax.inject.Inject
 class SettingsAddViewModel @Inject constructor(
     private val addPaymentUseCase: AddPaymentUseCase,
     private val addIncomeCategoryUseCase: AddIncomeCategoryUseCase,
-    private val addSpendingUseCase: AddSpendingCategoryUseCase
+    private val addSpendingUseCase: AddSpendingCategoryUseCase,
+
+    private val updatePaymentUseCase: UpdatePaymentUseCase,
+    private val updateCategoryUseCase: UpdateCategoryUseCase
 ) : ViewModel() {
     private var id by mutableStateOf(0)
+    private var type = ""
     var name by mutableStateOf("")
     var selectedColorIdx by mutableStateOf(0)
 
     suspend fun addPayment(name: String) {
         addPaymentUseCase.execute(name)
+        init()
+    }
+
+    suspend fun updatePayment(name: String) {
+        updatePaymentUseCase.execute(Payment(id, name))
+        init()
+    }
+
+    suspend fun updateCategory(name: String, color: Int) {
+        updateCategoryUseCase.execute(Category(id, name, color))
         init()
     }
 
@@ -65,5 +79,6 @@ class SettingsAddViewModel @Inject constructor(
         id = 0
         name = ""
         selectedColorIdx = 0
+        type = ""
     }
 }

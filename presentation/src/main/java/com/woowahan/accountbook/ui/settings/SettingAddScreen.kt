@@ -1,5 +1,6 @@
 package com.woowahan.accountbook.ui.settings
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,7 @@ import com.woowahan.accountbook.ui.main.SharedViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
+import com.woowahan.data.entity.DBHelper
 import kotlinx.coroutines.launch
 
 @Composable
@@ -29,9 +31,29 @@ fun SettingAddScreen(
     sharedViewModel: SharedViewModel,
     refreshMethod: () -> Unit
 ) {
-    var viewModel = remember { settingsAddViewModel }
-    val colors = viewModel.getColors(mode)
+    val colors = settingsAddViewModel.getColors(mode)
     val coroutineScope = rememberCoroutineScope()
+    var isUpdateMode by remember { mutableStateOf(false) }
+
+    sharedViewModel.getSharedCategory()?.let {
+        settingsAddViewModel.loadCategory(it)
+        isUpdateMode = true
+    }
+
+    sharedViewModel.getSharedPayment()?.let {
+        settingsAddViewModel.loadPayment(it)
+        isUpdateMode = true
+    }
+
+    val backPressed = {
+        settingsAddViewModel.init()
+        sharedViewModel.init()
+        navController.popBackStack()
+    }
+
+    BackHandler {
+        backPressed()
+    }
 
     Scaffold(
         topBar = {
@@ -45,8 +67,8 @@ fun SettingAddScreen(
                 },
                 btn1Image = R.drawable.ic_back,
                 btn1OnClick = {
-                    viewModel.init()
-                    navController.popBackStack()
+                    settingsAddViewModel.init()
+                    backPressed()
                 },
                 btn2Image = null,
                 btn2OnClick = {}
@@ -61,8 +83,8 @@ fun SettingAddScreen(
             Spacer(modifier = Modifier.height(20.dp))
             LazyColumn {
                 item {
-                    InputTextItem(title = "이름", content = viewModel.name, padding = 16) {
-                        viewModel.name = it
+                    InputTextItem(title = "이름", content = settingsAddViewModel.name, padding = 16) {
+                        settingsAddViewModel.name = it
                     }
                     LightDivider(16)
                     if (mode != ADD_PAYMENTS) {
@@ -78,14 +100,15 @@ fun SettingAddScreen(
                             modifier = Modifier
                                 .size(48.dp)
                                 .clickable {
-                                    viewModel.selectedColorIdx = colors.indexOf(it)
+                                    settingsAddViewModel.selectedColorIdx = colors.indexOf(it)
                                 }
                         ) {
-                            val size = if (viewModel.selectedColorIdx == colors.indexOf(it)) {
-                                22
-                            } else {
-                                18
-                            }
+                            val size =
+                                if (settingsAddViewModel.selectedColorIdx == colors.indexOf(it)) {
+                                    22
+                                } else {
+                                    18
+                                }
                             Spacer(
                                 modifier = Modifier
                                     .align(Alignment.Center)
@@ -104,29 +127,48 @@ fun SettingAddScreen(
             Spacer(modifier = Modifier.weight(1f))
             LargeButton(
                 modifier = Modifier.padding(16.dp),
-                enabled = viewModel.isValid(),
-                text = "등록하기"
+                enabled = settingsAddViewModel.isValid(),
+                text = if (isUpdateMode) "수정하기" else "등록하기"
             ) {
-                when (mode) {
-                    ADD_PAYMENTS ->
-                        coroutineScope.launch {
-                            viewModel.addPayment(viewModel.name)
+                if (isUpdateMode) {
+                    when (mode) {
+                        ADD_PAYMENTS ->
+                            coroutineScope.launch {
+                                settingsAddViewModel.updatePayment(settingsAddViewModel.name)
+                            }
+                        else -> {
+                            coroutineScope.launch {
+                                settingsAddViewModel.updateCategory(
+                                    settingsAddViewModel.name,
+                                    settingsAddViewModel.selectedColorIdx
+                                )
+                            }
                         }
-                    ADD_INCOME ->
-                        coroutineScope.launch {
-                            viewModel.addIncomeCategory(
-                                viewModel.name,
-                                viewModel.selectedColorIdx
-                            )
-                        }
-                    ADD_SPENDING ->
-                        coroutineScope.launch {
-                            viewModel.addSpendingCategory(
-                                viewModel.name,
-                                viewModel.selectedColorIdx
-                            )
-                        }
+                    }
+                    refreshMethod()
+                } else {
+                    when (mode) {
+                        ADD_PAYMENTS ->
+                            coroutineScope.launch {
+                                settingsAddViewModel.addPayment(settingsAddViewModel.name)
+                            }
+                        ADD_INCOME ->
+                            coroutineScope.launch {
+                                settingsAddViewModel.addIncomeCategory(
+                                    settingsAddViewModel.name,
+                                    settingsAddViewModel.selectedColorIdx
+                                )
+                            }
+                        ADD_SPENDING ->
+                            coroutineScope.launch {
+                                settingsAddViewModel.addSpendingCategory(
+                                    settingsAddViewModel.name,
+                                    settingsAddViewModel.selectedColorIdx
+                                )
+                            }
+                    }
                 }
+                sharedViewModel.init()
                 navController.popBackStack()
             }
         }

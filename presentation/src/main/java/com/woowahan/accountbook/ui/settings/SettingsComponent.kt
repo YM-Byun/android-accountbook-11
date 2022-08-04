@@ -21,11 +21,13 @@ import com.woowahan.accountbook.ui.theme.Purple40
 @Composable
 fun SettingsItemWithCategory(
     name: String,
-    color: Color
+    color: Color,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(16.dp, 10.dp, 16.dp, 10.dp),
         verticalArrangement = Arrangement.Center
     ) {
@@ -47,16 +49,19 @@ fun SettingsItemWithCategory(
 
 @Composable
 fun SettingsItemWithNoCategory(
-    text: String
+    text: String,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(16.dp, 10.dp, 16.dp, 10.dp),
         verticalArrangement = Arrangement.Center
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(

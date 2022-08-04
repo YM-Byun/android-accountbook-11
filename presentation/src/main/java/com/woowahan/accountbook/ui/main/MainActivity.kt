@@ -106,6 +106,7 @@ class MainActivity : ComponentActivity() {
                     settingAddViewModel,
                     sharedViewModel
                 ) {
+                    mainViewModel.getRecords()
                     settingsViewModel.getSettings()
                 }
             }
@@ -116,6 +117,7 @@ class MainActivity : ComponentActivity() {
                     settingAddViewModel,
                     sharedViewModel
                 ) {
+                    mainViewModel.getRecords()
                     settingsViewModel.getSettings()
                 }
             }
@@ -126,6 +128,7 @@ class MainActivity : ComponentActivity() {
                     settingAddViewModel,
                     sharedViewModel
                 ) {
+                    mainViewModel.getRecords()
                     settingsViewModel.getSettings()
                 }
             }
