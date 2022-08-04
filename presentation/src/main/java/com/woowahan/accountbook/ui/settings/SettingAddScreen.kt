@@ -31,7 +31,6 @@ fun SettingAddScreen(
 ) {
     var viewModel = remember { settingsAddViewModel }
     val colors = viewModel.getColors(mode)
-    var selectedColor by viewModel.selectedColorIdx
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
@@ -79,15 +78,14 @@ fun SettingAddScreen(
                             modifier = Modifier
                                 .size(48.dp)
                                 .clickable {
-                                    selectedColor = colors.indexOf(it)
+                                    viewModel.selectedColorIdx = colors.indexOf(it)
                                 }
                         ) {
-                            val size = if (selectedColor == colors.indexOf(it)) {
+                            val size = if (viewModel.selectedColorIdx == colors.indexOf(it)) {
                                 22
                             } else {
                                 18
                             }
-
                             Spacer(
                                 modifier = Modifier
                                     .align(Alignment.Center)
@@ -118,14 +116,14 @@ fun SettingAddScreen(
                         coroutineScope.launch {
                             viewModel.addIncomeCategory(
                                 viewModel.name,
-                                viewModel.selectedColorIdx.value
+                                viewModel.selectedColorIdx
                             )
                         }
                     ADD_SPENDING ->
                         coroutineScope.launch {
                             viewModel.addSpendingCategory(
                                 viewModel.name,
-                                viewModel.selectedColorIdx.value
+                                viewModel.selectedColorIdx
                             )
                         }
                 }
