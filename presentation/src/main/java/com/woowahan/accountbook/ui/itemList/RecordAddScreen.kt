@@ -1,5 +1,7 @@
 package com.woowahan.accountbook.ui.itemList
 
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -166,7 +168,6 @@ fun RecordAddScreen(
                 if (isUpdateMode) {
                     coroutineScope.launch {
                         viewModel.updateRecord()
-                        refreshRecord()
                     }
                 } else {
                     if (isIncomeClicked) {
@@ -179,6 +180,9 @@ fun RecordAddScreen(
                         }
                     }
                 }
+                Handler(Looper.getMainLooper()).postDelayed({
+                    refreshRecord()
+                }, 50)
                 navController.popBackStack()
             }
         }
