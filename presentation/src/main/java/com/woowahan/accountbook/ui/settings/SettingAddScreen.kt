@@ -1,5 +1,6 @@
 package com.woowahan.accountbook.ui.settings
 
+import android.os.Looper
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,7 +21,6 @@ import com.woowahan.accountbook.ui.main.SharedViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
-import com.woowahan.data.entity.DBHelper
 import kotlinx.coroutines.launch
 
 @Composable
@@ -145,7 +145,11 @@ fun SettingAddScreen(
                             }
                         }
                     }
-                    refreshMethod()
+                    android.os.Handler(Looper.getMainLooper()).postDelayed(
+                        {
+                            refreshMethod()
+                        }, 50
+                    )
                 } else {
                     when (mode) {
                         ADD_PAYMENTS ->
@@ -168,7 +172,6 @@ fun SettingAddScreen(
                             }
                     }
                 }
-                sharedViewModel.init()
                 navController.popBackStack()
             }
         }
