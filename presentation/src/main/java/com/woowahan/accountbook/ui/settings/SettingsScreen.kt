@@ -14,6 +14,7 @@ import com.woowahan.accountbook.ui.component.BoldDivider
 import com.woowahan.accountbook.ui.component.HeaderTextView
 import com.woowahan.accountbook.ui.component.LightDivider
 import com.woowahan.accountbook.ui.component.TopAppBar
+import com.woowahan.accountbook.ui.main.SharedViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
@@ -25,7 +26,8 @@ import com.woowahan.domain.model.Payment
 @Composable
 fun SettingsScreen(
     navController: NavController,
-    settingsViewModel: SettingsViewModel
+    settingsViewModel: SettingsViewModel,
+    sharedViewModel: SharedViewModel
 ) {
     val viewModel = remember { settingsViewModel }
 

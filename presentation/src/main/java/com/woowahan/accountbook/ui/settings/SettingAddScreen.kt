@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.*
 import com.woowahan.accountbook.ui.itemList.InputTextItem
+import com.woowahan.accountbook.ui.main.SharedViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
@@ -24,7 +25,8 @@ import kotlinx.coroutines.launch
 fun SettingAddScreen(
     navController: NavController,
     mode: String,
-    settingsAddViewModel: SettingsAddViewModel
+    settingsAddViewModel: SettingsAddViewModel,
+    sharedViewModel: SharedViewModel
 ) {
     var viewModel = remember { settingsAddViewModel }
     val colors = viewModel.getColors(mode)
