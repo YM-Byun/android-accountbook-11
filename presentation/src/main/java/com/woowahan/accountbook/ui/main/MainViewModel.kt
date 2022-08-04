@@ -1,5 +1,6 @@
 package com.woowahan.accountbook.ui.main
 
+import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,8 @@ class MainViewModel @Inject constructor(
     private val getRecordsByMonthUseCase: GetRecordsByMonthUseCase,
 ) : ViewModel() {
     private val calendar = Calendar.getInstance()
+
+    private var lastClickTime = 0L
 
     /** Variable for date and title */
     private val _appBarTitle = MutableLiveData("${year}년 ${month + 1}월")
@@ -49,17 +52,23 @@ class MainViewModel @Inject constructor(
         get() = totalIncome + totalSpending
 
     fun onNextClicked() {
-        if (!isSameMonth(year, month)) {
-            calendar.add(Calendar.MONTH, 1)
-            _appBarTitle.value = generateTitle(year, month + 1)
-            getRecords()
+        if (SystemClock.elapsedRealtime() - lastClickTime > 100) {
+            if (!isSameMonth(year, month)) {
+                calendar.add(Calendar.MONTH, 1)
+                _appBarTitle.value = generateTitle(year, month + 1)
+                getRecords()
+            }
         }
+        lastClickTime = SystemClock.elapsedRealtime()
     }
 
     fun onPrevClicked() {
-        calendar.add(Calendar.MONTH, -1)
-        _appBarTitle.value = generateTitle(year, month + 1)
-        getRecords()
+        if (SystemClock.elapsedRealtime() - lastClickTime > 100) {
+            calendar.add(Calendar.MONTH, -1)
+            _appBarTitle.value = generateTitle(year, month + 1)
+            getRecords()
+        }
+        lastClickTime = SystemClock.elapsedRealtime()
     }
 
     private fun generateTitle(year: Int, month: Int): String {
