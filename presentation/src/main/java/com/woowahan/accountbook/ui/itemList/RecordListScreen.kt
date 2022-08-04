@@ -120,7 +120,7 @@ fun RecordListScreen(
                     isLeftChecked = isIncomeClicked,
                     isRightChecked = isSpendingClicked,
                     leftText = "수입 ${String.format("%,d", mainViewModel.totalIncome)}",
-                    rightText = "지출 ${String.format("%,d", mainViewModel.totalSpending)}",
+                    rightText = "지출 ${String.format("%,d", mainViewModel.absTotalSpending)}",
                     modifier = Modifier.padding(16.dp),
                     leftOnClick = {
                         isIncomeClicked = !isIncomeClicked

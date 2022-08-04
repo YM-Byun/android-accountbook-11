@@ -86,7 +86,7 @@ fun AnalysisScreen(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = String.format("%,d", mainViewModel.totalSpending),
+                        text = String.format("%,d", mainViewModel.absTotalSpending),
                         fontSize = 14.sp,
                         color = Red,
                         fontWeight = FontWeight.Bold
@@ -108,7 +108,7 @@ fun AnalysisScreen(
                         categoryList!!.forEachIndexed { index, category ->
                             AnalysisCategoryText(
                                 category = category,
-                                amount = (ratioList!![index].first * -1),
+                                amount = ratioList!![index].first,
                                 ratio = (ratioList!![index].second * 100).toInt()
                             )
                             if (index != categoryList!!.lastIndex) {

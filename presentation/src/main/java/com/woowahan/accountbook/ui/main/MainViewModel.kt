@@ -42,6 +42,9 @@ class MainViewModel @Inject constructor(
     val totalSpending: Long
         get() = _totalSpending
 
+    val absTotalSpending: Long
+        get() = (totalSpending * -1)
+
     val totalAmount: Long
         get() = totalIncome + totalSpending
 
@@ -81,7 +84,7 @@ class MainViewModel @Inject constructor(
 
             _totalIncome = recordList.filter { it.type == DBHelper.INCOME }.sumOf { it.price }
             _totalSpending =
-                recordList.filter { it.type == DBHelper.SPENDING }.sumOf { -it.price }
+                recordList.filter { it.type == DBHelper.SPENDING }.sumOf { it.price }
 
             _records.postValue(recordList)
         }
