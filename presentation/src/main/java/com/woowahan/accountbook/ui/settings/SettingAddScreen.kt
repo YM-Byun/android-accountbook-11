@@ -26,7 +26,8 @@ fun SettingAddScreen(
     navController: NavController,
     mode: String,
     settingsAddViewModel: SettingsAddViewModel,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    refreshMethod: () -> Unit
 ) {
     var viewModel = remember { settingsAddViewModel }
     val colors = viewModel.getColors(mode)
