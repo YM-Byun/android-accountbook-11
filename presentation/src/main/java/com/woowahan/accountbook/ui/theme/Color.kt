@@ -17,6 +17,8 @@ val LightPurple = Color(0xFFA79FCB)
 val Purple40 = Color(0x66A79FCB)
 val Red = Color(0xFFE75B3F)
 
+val Undefined = Color(0xFF747474)
+
 val Blue1 = Color(0xFF4A6CC3)
 val Blue2 = Color(0xFF2E86C7)
 val Blue3 = Color(0xFF4CA1DE)
