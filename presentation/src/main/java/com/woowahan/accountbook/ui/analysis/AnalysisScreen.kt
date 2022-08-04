@@ -108,7 +108,7 @@ fun AnalysisScreen(
                         categoryList!!.forEachIndexed { index, category ->
                             AnalysisCategoryText(
                                 category = category,
-                                amount = ratioList!![index].first,
+                                amount = (ratioList!![index].first * -1),
                                 ratio = (ratioList!![index].second * 100).toInt()
                             )
                             if (index != categoryList!!.lastIndex) {
