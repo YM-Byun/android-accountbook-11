@@ -194,7 +194,7 @@ fun LazyListScope.colorPalette(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            for (colIdx in 0 until 10) {
+            for (colIdx in 1 until 11) {
                 val itemIdx = rowIdx * 10 + colIdx
 
                 if (itemIdx < colors.count()) {
