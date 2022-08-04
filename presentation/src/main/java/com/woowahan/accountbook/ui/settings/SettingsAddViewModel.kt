@@ -1,6 +1,8 @@
 package com.woowahan.accountbook.ui.settings
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
@@ -15,7 +17,7 @@ class SettingsAddViewModel @Inject constructor(
     private val addIncomeCategoryUseCase: AddIncomeCategoryUseCase,
     private val addSpendingUseCase: AddSpendingCategoryUseCase
 ) : ViewModel() {
-    var name = mutableStateOf("")
+    var name by mutableStateOf("")
     var selectedColorIdx = mutableStateOf(0)
 
     suspend fun addPayment(name: String) {
@@ -42,11 +44,11 @@ class SettingsAddViewModel @Inject constructor(
     }
 
     fun isValid(): Boolean {
-        return (name.value.trim().isNotEmpty() && name.value.trim() != "미분류")
+        return (name.trim().isNotEmpty() && name.trim() != "미분류")
     }
 
     fun init() {
-        name.value = ""
+        name = ""
         selectedColorIdx.value = 0
     }
 }

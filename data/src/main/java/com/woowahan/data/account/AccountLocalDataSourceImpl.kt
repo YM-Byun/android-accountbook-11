@@ -84,18 +84,19 @@ class AccountLocalDataSourceImpl(
 
     @SuppressLint("Range")
     override suspend fun getRecords(year: Int, month: Int): List<Record> {
-        val query = "select *, payment.`name` as `payment`, category.`name` as `category` " +
-                " from record " +
-                "inner join category on record.`category_id` = category.`id` " +
-                "inner join payment on record.`payment_id` = payment.`id` " +
-                "where strftime('%m', date) = '${String.format("%02d", month)}' " +
-                "and strftime('%Y', date) = '$year'"
+        val query =
+            "select *, payment.`name` as `payment`, category.`name` as `category`, record.`id` as `record_id` " +
+                    " from record " +
+                    "inner join category on record.`category_id` = category.`id` " +
+                    "inner join payment on record.`payment_id` = payment.`id` " +
+                    "where strftime('%m', date) = '${String.format("%02d", month)}' " +
+                    "and strftime('%Y', date) = '$year'"
         val records = ArrayList<Record>()
 
         val cursor = dbHelper.readable.rawQuery(query, null)
 
         while (cursor.moveToNext()) {
-            val id = cursor.getInt(cursor.getColumnIndex("id"))
+            val id = cursor.getInt(cursor.getColumnIndex("record_id"))
             val date = cursor.getString(cursor.getColumnIndex("date"))
             val price = cursor.getLong(cursor.getColumnIndex("price"))
             val content = cursor.getString(cursor.getColumnIndex("content"))
@@ -126,22 +127,21 @@ class AccountLocalDataSourceImpl(
     }
 
     override suspend fun updateRecord(record: Record) {
-        val values = ContentValues()
-        values.put(
-            "date",
-            "${record.year}-${String.format("%02d", record.month)}-${
-                String.format(
-                    "%02d",
-                    record.day
-                )
-            }"
-        )
-        values.put("price", record.price)
-        values.put("content", record.content)
-        values.put("payment_id", record.payment.id)
-        values.put("category_id", record.category.id)
+        val query = "update record " +
+                "set date = '${record.year}-${String.format("%02d", record.month)}-${
+                    String.format(
+                        "%02d",
+                        record.day
+                    )
+                }', " +
+                "price = ${record.price}, " +
+                "content = '${record.content}', " +
+                "payment_id = ${record.payment.id}, " +
+                "category_id = ${record.category.id} " +
+                "where id = ${record.id}"
 
-        dbHelper.wriable.update("record", values, "id=?", arrayOf(record.id.toString()))
+
+        dbHelper.wriable.execSQL(query)
     }
 
     override suspend fun updatePayment(payment: Payment) {

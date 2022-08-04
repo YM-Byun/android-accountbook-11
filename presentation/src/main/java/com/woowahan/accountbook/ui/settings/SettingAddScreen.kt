@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.woowahan.accountbook.R
 import com.woowahan.accountbook.ui.component.*
 import com.woowahan.accountbook.ui.itemList.InputTextItem
+import com.woowahan.accountbook.ui.main.SharedViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_INCOME
 import com.woowahan.accountbook.ui.navigate.ADD_PAYMENTS
 import com.woowahan.accountbook.ui.navigate.ADD_SPENDING
@@ -24,7 +25,8 @@ import kotlinx.coroutines.launch
 fun SettingAddScreen(
     navController: NavController,
     mode: String,
-    settingsAddViewModel: SettingsAddViewModel
+    settingsAddViewModel: SettingsAddViewModel,
+    sharedViewModel: SharedViewModel
 ) {
     var viewModel = remember { settingsAddViewModel }
     val colors = viewModel.getColors(mode)
@@ -59,7 +61,9 @@ fun SettingAddScreen(
             Spacer(modifier = Modifier.height(20.dp))
             LazyColumn {
                 item {
-                    InputTextItem(title = "이름", content = viewModel.name, padding = 16)
+                    InputTextItem(title = "이름", content = viewModel.name, padding = 16) {
+                        viewModel.name = it
+                    }
                     LightDivider(16)
                     if (mode != ADD_PAYMENTS) {
                         Spacer(modifier = Modifier.height(10.dp))
@@ -107,19 +111,19 @@ fun SettingAddScreen(
                 when (mode) {
                     ADD_PAYMENTS ->
                         coroutineScope.launch {
-                            viewModel.addPayment(viewModel.name.value)
+                            viewModel.addPayment(viewModel.name)
                         }
                     ADD_INCOME ->
                         coroutineScope.launch {
                             viewModel.addIncomeCategory(
-                                viewModel.name.value,
+                                viewModel.name,
                                 viewModel.selectedColorIdx.value
                             )
                         }
                     ADD_SPENDING ->
                         coroutineScope.launch {
                             viewModel.addSpendingCategory(
-                                viewModel.name.value,
+                                viewModel.name,
                                 viewModel.selectedColorIdx.value
                             )
                         }

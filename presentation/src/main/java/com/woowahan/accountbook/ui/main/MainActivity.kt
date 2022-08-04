@@ -41,6 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val mainViewModel by viewModels<MainViewModel>()
+    private val sharedViewModel by viewModels<SharedViewModel>()
 
     private val recordListViewModel by viewModels<RecordListViewModel>()
     private val recordAddViewModel by viewModels<RecordAddViewModel>()
@@ -52,7 +53,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreen(mainViewModel)
+            MainScreen()
         }
 
         mainViewModel.getRecords()
@@ -63,7 +64,7 @@ class MainActivity : ComponentActivity() {
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
-        MainScreen(mainViewModel)
+        MainScreen()
     }
 
     @Composable
@@ -76,7 +77,8 @@ class MainActivity : ComponentActivity() {
                 RecordListScreen(
                     navController,
                     mainViewModel,
-                    recordListViewModel
+                    recordListViewModel,
+                    sharedViewModel
                 )
             }
             composable(BottomNavItem.Calendar.screenRoute) {
@@ -86,25 +88,46 @@ class MainActivity : ComponentActivity() {
                 AnalysisScreen(mainViewModel, analysisViewModel)
             }
             composable(BottomNavItem.Settings.screenRoute) {
-                SettingsScreen(navController = navController, settingsViewModel)
+                SettingsScreen(navController = navController, settingsViewModel, sharedViewModel)
             }
             composable(BottomNavItem.AddRecordItem.screenRoute) {
-                RecordAddScreen(navController = navController, recordAddViewModel)
+                RecordAddScreen(
+                    navController = navController,
+                    recordAddViewModel,
+                    sharedViewModel
+                ) {
+                    mainViewModel.getRecords()
+                }
             }
             composable(BottomNavItem.AddPayments.screenRoute) {
-                SettingAddScreen(navController = navController, ADD_PAYMENTS, settingAddViewModel)
+                SettingAddScreen(
+                    navController = navController,
+                    ADD_PAYMENTS,
+                    settingAddViewModel,
+                    sharedViewModel
+                )
             }
             composable(BottomNavItem.AddIncome.screenRoute) {
-                SettingAddScreen(navController = navController, ADD_INCOME, settingAddViewModel)
+                SettingAddScreen(
+                    navController = navController,
+                    ADD_INCOME,
+                    settingAddViewModel,
+                    sharedViewModel
+                )
             }
             composable(BottomNavItem.AddSpending.screenRoute) {
-                SettingAddScreen(navController = navController, ADD_SPENDING, settingAddViewModel)
+                SettingAddScreen(
+                    navController = navController,
+                    ADD_SPENDING,
+                    settingAddViewModel,
+                    sharedViewModel
+                )
             }
         }
     }
 
     @Composable
-    private fun MainScreen(viewModel: MainViewModel) {
+    private fun MainScreen() {
         val navController = rememberNavController()
 
         AccountBookTheme {

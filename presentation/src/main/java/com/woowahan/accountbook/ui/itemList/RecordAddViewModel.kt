@@ -1,6 +1,8 @@
 package com.woowahan.accountbook.ui.itemList
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,15 +23,20 @@ import javax.inject.Inject
 class RecordAddViewModel @Inject constructor(
     private val addIncomeRecordUseCase: AddIncomeRecordUseCase,
     private val addSpendingRecordUseCase: AddSpendingRecordUseCase,
+
     private val getPaymentsUseCase: GetPaymentsUseCase,
     private val getSpendingCategoryUseCase: GetSpendingCategoryUseCase,
-    private val getIncomeCategoryUseCase: GetIncomeCategoryUseCase
+    private val getIncomeCategoryUseCase: GetIncomeCategoryUseCase,
+
+    private val updateRecordUseCase: UpdateRecordUseCase
 ) : ViewModel() {
-    var date = mutableStateOf("")
-    var price = mutableStateOf("")
-    var payment = mutableStateOf(Payment(0, ""))
-    var category = mutableStateOf(Category(0, "", 0))
-    var content = mutableStateOf("")
+    private var id by mutableStateOf(0)
+    private var type = ""
+    var date by mutableStateOf("")
+    var price by mutableStateOf("")
+    var payment by mutableStateOf(Payment(0, ""))
+    var category by mutableStateOf(Category(0, "", 0))
+    var content by mutableStateOf("")
 
     private val _payments = MutableLiveData<List<Payment>>(emptyList())
     val payments: LiveData<List<Payment>>
@@ -45,17 +52,17 @@ class RecordAddViewModel @Inject constructor(
 
 
     fun init() {
-        date.value = ""
-        price.value = ""
-        payment.value.name = ""
-        category.value.name = ""
-        content.value = ""
+        date = ""
+        price = ""
+        payment.name = ""
+        category.name = ""
+        content = ""
     }
 
     fun isValid(incomeClicked: Boolean): Boolean {
-        if (date.value.trim().isNotEmpty() && price.value.trim().isNotEmpty()) {
+        if (date.trim().isNotEmpty() && price.trim().isNotEmpty()) {
             if (!incomeClicked) {
-                return payment.value.name.isNotEmpty()
+                return payment.name.isNotEmpty()
             }
             return true
         }
@@ -69,6 +76,11 @@ class RecordAddViewModel @Inject constructor(
 
     suspend fun addIncomeRecord() {
         addIncomeRecordUseCase.execute(getNewRecord(DBHelper.INCOME))
+        init()
+    }
+
+    suspend fun updateRecord() {
+        updateRecordUseCase.execute(getNewRecord(type))
         init()
     }
 
@@ -94,29 +106,39 @@ class RecordAddViewModel @Inject constructor(
 
     private fun getNewRecord(mode: String): Record {
         val amount = if (mode == DBHelper.INCOME) {
-            price.value.toLong()
+            price.toLong()
         } else {
-            (price.value.toLong()) * -1
+            (price.toLong()) * -1
         }
 
-        if (category.value.name.isEmpty()) {
+        if (category.name.isEmpty()) {
             if (mode == DBHelper.INCOME) {
-                category.value.id = 1
+                category.id = 1
             } else {
-                category.value.id = 2
+                category.id = 2
             }
-            category.value.name = "미분류"
+            category.name = "미분류"
         }
         return Record(
-            0,
-            date.value.year(),
-            date.value.month(),
-            date.value.day(),
+            id,
+            date.year(),
+            date.month(),
+            date.day(),
             amount,
             mode,
-            payment.value,
-            content.value,
-            category.value
+            payment,
+            content,
+            category
         )
+    }
+
+    fun loadRecord(record: Record) {
+        this.id = record.id
+        this.date = "${record.year}년 ${record.month}월 ${record.day}일"
+        this.price = record.price.toString()
+        this.payment = record.payment.copy()
+        this.category = record.category.copy()
+        this.content = record.content
+        this.type = record.type
     }
 }

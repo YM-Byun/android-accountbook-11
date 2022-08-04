@@ -21,6 +21,7 @@ import com.woowahan.accountbook.extenstion.month
 import com.woowahan.accountbook.extenstion.year
 import com.woowahan.accountbook.ui.component.*
 import com.woowahan.accountbook.ui.main.MainViewModel
+import com.woowahan.accountbook.ui.main.SharedViewModel
 import com.woowahan.accountbook.ui.navigate.ADD_ITEM
 import com.woowahan.accountbook.ui.theme.Purple
 import com.woowahan.data.entity.DBHelper
@@ -32,7 +33,8 @@ import kotlinx.coroutines.launch
 fun RecordListScreen(
     navController: NavController,
     mainViewModel: MainViewModel,
-    recordViewModel: RecordListViewModel
+    recordViewModel: RecordListViewModel,
+    sharedViewModel: SharedViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -141,6 +143,15 @@ fun RecordListScreen(
                                 }
                             } else {
                                 selectedItems.add(it)
+                            }
+                        } else {
+                            sharedViewModel.sharingRecord(it)
+                            navController.navigate(ADD_ITEM) {
+                                navController.graph.startDestinationRoute?.let {
+                                    popUpTo(it) { saveState = true }
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
                         }
                     },
