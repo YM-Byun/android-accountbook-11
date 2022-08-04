@@ -70,6 +70,7 @@ fun InputPriceItem(title: String, price: String, onPriceChanged: (String) -> Uni
                 color = Purple,
                 fontWeight = FontWeight.Bold
             ),
+            visualTransformation = CommaStringVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
     }

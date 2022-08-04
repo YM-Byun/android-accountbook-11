@@ -106,9 +106,9 @@ class RecordAddViewModel @Inject constructor(
 
     private fun getNewRecord(mode: String): Record {
         val amount = if (mode == DBHelper.INCOME) {
-            price.toLong()
+            price.replace(",", "").toLong()
         } else {
-            (price.toLong()) * -1
+            (price.replace(",", "").toLong()) * -1
         }
 
         if (category.name.isEmpty()) {
