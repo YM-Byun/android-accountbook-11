@@ -92,9 +92,7 @@ fun RecordListScreen(
         floatingActionButton = {
             FloatingActionButton {
                 navController.navigate(ADD_ITEM) {
-                    navController.graph.startDestinationRoute?.let {
-                        popUpTo(it) { saveState = true }
-                    }
+                    navController.graph.startDestinationRoute
                     launchSingleTop = true
                     restoreState = true
                 }

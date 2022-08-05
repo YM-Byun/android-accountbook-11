@@ -64,9 +64,7 @@ fun SettingsScreen(
                         SettingsItemWithNoCategory(text = it.name) {
                             sharedViewModel.sharingPayment(it)
                             navController.navigate(ADD_PAYMENTS) {
-                                navController.graph.startDestinationRoute?.let {
-                                    popUpTo(it) { saveState = true }
-                                }
+                                navController.graph.startDestinationRoute
                                 launchSingleTop = true
                                 restoreState = true
                             }
