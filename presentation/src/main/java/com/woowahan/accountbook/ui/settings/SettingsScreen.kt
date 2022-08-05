@@ -93,9 +93,7 @@ fun SettingsScreen(
                             SettingsItemWithCategory(it.name, SpendingColors[it.color]) {
                                 sharedViewModel.sharingCategory(it)
                                 navController.navigate(ADD_SPENDING) {
-                                    navController.graph.startDestinationRoute?.let {
-                                        popUpTo(it) { saveState = true }
-                                    }
+                                    navController.graph.startDestinationRoute
                                     launchSingleTop = true
                                     restoreState = true
                                 }
@@ -125,9 +123,7 @@ fun SettingsScreen(
                             SettingsItemWithCategory(it.name, IncomeColors[it.color]) {
                                 sharedViewModel.sharingCategory(it)
                                 navController.navigate(ADD_INCOME) {
-                                    navController.graph.startDestinationRoute?.let {
-                                        popUpTo(it) { saveState = true }
-                                    }
+                                    navController.graph.startDestinationRoute
                                     launchSingleTop = true
                                     restoreState = true
                                 }
