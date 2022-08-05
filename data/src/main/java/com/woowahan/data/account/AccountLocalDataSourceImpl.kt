@@ -163,4 +163,8 @@ class AccountLocalDataSourceImpl(
             dbHelper.wriable.delete("record", "id=?", arrayOf(record.id.toString()))
         }
     }
+
+    override fun closeDB() {
+        dbHelper.close()
+    }
 }

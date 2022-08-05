@@ -88,4 +88,10 @@ object UseCaseModule {
     fun provideDeleteRecordsUseCase(repository: AccountRepository): DeleteRecordsUseCase {
         return DeleteRecordsUseCase(repository)
     }
+
+    @Singleton
+    @Provides
+    fun provideCloseDB(repository: AccountRepository): CloseDBUseCase {
+        return CloseDBUseCase(repository)
+    }
 }

@@ -47,4 +47,8 @@ class AccountRepositoryImpl(
     override suspend fun deleteRecords(records: List<Record>) {
         return dataSource.deleteRecords(records)
     }
+
+    override fun closeDB() {
+        return dataSource.closeDB()
+    }
 }

@@ -19,4 +19,6 @@ interface AccountRepository {
     suspend fun updatePayment(payment: Payment)
 
     suspend fun deleteRecords(records: List<Record>)
+
+    fun closeDB()
 }
