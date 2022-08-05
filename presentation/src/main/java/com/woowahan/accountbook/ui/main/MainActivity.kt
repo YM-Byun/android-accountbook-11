@@ -60,6 +60,10 @@ class MainActivity : ComponentActivity() {
         settingsViewModel.getSettings()
     }
 
+    override fun onDestroy() {
+        mainViewModel.closeDB()
+        super.onDestroy()
+    }
 
     @Preview(showBackground = true)
     @Composable
