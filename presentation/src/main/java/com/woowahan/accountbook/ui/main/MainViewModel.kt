@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.woowahan.data.entity.DBHelper
+import com.woowahan.domain.accountUseCase.CloseDBUseCase
 import com.woowahan.domain.accountUseCase.GetRecordsByMonthUseCase
 import com.woowahan.domain.model.Record
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getRecordsByMonthUseCase: GetRecordsByMonthUseCase,
+    private val closeDBUseCase: CloseDBUseCase
 ) : ViewModel() {
     private val calendar = Calendar.getInstance()
 
@@ -97,5 +99,9 @@ class MainViewModel @Inject constructor(
 
             _records.postValue(recordList)
         }
+    }
+
+    fun closeDB() {
+        closeDBUseCase.execute()
     }
 }
